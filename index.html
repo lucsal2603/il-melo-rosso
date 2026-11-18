@@ -3,443 +3,448 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Il Melo Rosso — Agriturismo Country Chic a Fortunago · Oltrepò Pavese</title>
-  <meta name="description" content="Agriturismo il Melo Rosso: cucina di casa, camere in una vera casa di famiglia e matrimoni country chic a Fortunago, uno dei Borghi più belli d'Italia, sulle colline dell'Oltrepò Pavese.">
-  <meta name="theme-color" content="#8E1F1B">
+  <title>Il Melo Rosso — Agriturismo Country Chic · Fortunago, Oltrepò Pavese</title>
+  <meta name="description" content="Agriturismo il Melo Rosso a Fortunago, uno dei Borghi più belli d'Italia: cucina di casa dall'orto alla tavola, camere in una vera casa di famiglia e matrimoni country chic sulle colline dell'Oltrepò Pavese.">
+  <meta name="theme-color" content="#6B1E22">
   <meta property="og:title" content="Il Melo Rosso — Agriturismo Country Chic">
-  <meta property="og:description" content="Una cascina rossa, calda e accogliente, circondata da un prato fiorito. Fortunago, Oltrepò Pavese.">
+  <meta property="og:description" content="Una cascina rossa tra le colline dell'Oltrepò Pavese. Cucina, camere e matrimoni.">
   <meta property="og:image" content="assets/img/nuove/copertina.jpg">
-  <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="assets/img/site/logo.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Manrope:wght@400;500;600;700&display=swap">
-  <link rel="preload" as="image" href="assets/img/nuove/copertina.jpg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="is-loading">
 
-  <!-- ============ LOADER ============ -->
-  <div class="loader" aria-hidden="true">
-    <div class="loader__stack">
-      <figure><img src="assets/img/nuove/img-7608.jpg" alt=""></figure>
-      <figure><img src="assets/img/nuove/13175261.jpg" alt=""></figure>
-      <figure><img src="assets/img/nuove/13660935-2.jpg" alt=""></figure>
-      <figure><img src="assets/img/nuove/0da5b5f9.jpg" alt=""></figure>
-      <figure><img src="assets/img/nuove/copertina.jpg" alt=""></figure>
-    </div>
-    <div class="loader__brand">
-      <img src="assets/img/site/logo.png" alt="">
-      <span>Il Melo Rosso</span>
-    </div>
-    <p class="loader__place">Fortunago — Oltrepò Pavese</p>
-    <div class="loader__count"><span class="js-count">0</span><sup>%</sup></div>
-    <div class="loader__curtain"></div>
+<!-- ================= SHAPES SPRITE ================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="s-apple" viewBox="0 0 100 100">
+    <polygon fill="#C8321F" points="50,26 60,19 74,20 86,29 92,43 91,59 84,75 72,88 60,93 50,89 40,93 28,88 16,75 9,59 8,43 14,29 26,20 40,19"/>
+    <polygon fill="#5B1A17" points="47,27 49,6 54,6 53,27"/>
+    <polygon fill="#3D6B35" points="54,16 63,5 79,3 74,12 61,19"/>
+  </symbol>
+  <symbol id="s-pear" viewBox="0 0 100 100">
+    <polygon fill="#3F7A3A" points="46,13 55,13 60,25 62,37 74,48 83,63 81,79 70,91 52,96 32,92 20,80 18,64 26,50 37,37 40,25"/>
+    <polygon fill="#4A2A18" points="48,15 50,1 55,1 53,15"/>
+  </symbol>
+  <symbol id="s-cherry" viewBox="0 0 100 100">
+    <polyline points="30,62 50,10 72,56" fill="none" stroke="#3D6B35" stroke-width="3.5" stroke-linejoin="round"/>
+    <polygon fill="#A8132B" points="16,62 29,55 42,59 47,72 41,86 28,91 15,85 10,72"/>
+    <polygon fill="#D2233C" points="58,56 71,49 84,53 90,66 84,80 71,85 58,79 53,67"/>
+    <polygon fill="#3D6B35" points="50,10 62,3 77,7 66,16"/>
+  </symbol>
+  <symbol id="s-grapes" viewBox="0 0 100 100">
+    <polygon fill="#3D6B35" points="48,4 66,2 82,12 64,18 52,13"/>
+    <polygon fill="#4A2A18" points="47,6 50,20 54,20 51,6"/>
+    <g fill="#5B2350">
+      <circle cx="34" cy="28" r="11"/><circle cx="56" cy="27" r="11"/><circle cx="76" cy="30" r="10"/>
+      <circle cx="44" cy="46" r="11"/><circle cx="66" cy="46" r="11"/><circle cx="25" cy="46" r="9"/>
+      <circle cx="35" cy="64" r="11"/><circle cx="57" cy="64" r="11"/><circle cx="46" cy="81" r="11"/>
+    </g>
+  </symbol>
+  <symbol id="s-leaf" viewBox="0 0 100 100">
+    <polygon fill="#3D6B35" points="8,90 16,58 34,34 60,16 94,8 88,38 70,62 44,80 18,90"/>
+    <polyline points="10,90 72,30" stroke="#2A4F25" stroke-width="3" fill="none"/>
+  </symbol>
+  <symbol id="s-flower" viewBox="0 0 100 100">
+    <g fill="#EFA7B3">
+      <ellipse cx="50" cy="24" rx="11" ry="21"/>
+      <ellipse cx="50" cy="24" rx="11" ry="21" transform="rotate(60 50 50)"/>
+      <ellipse cx="50" cy="24" rx="11" ry="21" transform="rotate(120 50 50)"/>
+      <ellipse cx="50" cy="24" rx="11" ry="21" transform="rotate(180 50 50)"/>
+      <ellipse cx="50" cy="24" rx="11" ry="21" transform="rotate(240 50 50)"/>
+      <ellipse cx="50" cy="24" rx="11" ry="21" transform="rotate(300 50 50)"/>
+    </g>
+    <polygon fill="#F2B41C" points="50,36 61,41 64,52 58,62 46,64 37,56 37,44"/>
+  </symbol>
+  <symbol id="s-cat" viewBox="0 0 100 100">
+    <polygon fill="#4A1418" points="34,22 37,6 46,17 55,17 63,6 66,22 67,33 62,43 70,51 77,64 79,80 75,93 70,93 70,86 64,93 34,93 29,80 32,64 38,51 37,43 32,33"/>
+    <polygon fill="#4A1418" points="72,90 86,86 94,74 92,62 87,64 88,74 80,82 70,84"/>
+  </symbol>
+  <symbol id="s-mushroom" viewBox="0 0 100 100">
+    <polygon fill="#F3E3C8" points="40,50 60,50 64,72 62,92 38,92 36,72"/>
+    <polygon fill="#8A4B2A" points="10,54 16,36 30,20 50,12 70,20 84,36 90,54 70,58 50,59 30,58"/>
+  </symbol>
+  <symbol id="s-bottle" viewBox="0 0 100 100">
+    <polygon fill="#3A0F14" points="43,2 57,2 57,24 64,36 66,48 66,96 34,96 34,48 36,36 43,24"/>
+    <polygon fill="#F3E3C8" points="38,56 62,56 62,78 38,78"/>
+    <polygon fill="#C8321F" points="43,2 57,2 57,12 43,12"/>
+  </symbol>
+  <symbol id="s-pumpkin" viewBox="0 0 100 100">
+    <polygon fill="#E2761F" points="20,36 34,28 50,30 66,28 80,36 92,52 90,70 78,84 62,90 50,88 38,90 22,84 10,70 8,52"/>
+    <polyline points="50,32 46,60 50,88" stroke="#B85A12" stroke-width="3" fill="none"/>
+    <polyline points="32,32 26,60 34,86" stroke="#B85A12" stroke-width="3" fill="none"/>
+    <polyline points="68,32 74,60 66,86" stroke="#B85A12" stroke-width="3" fill="none"/>
+    <polygon fill="#3D6B35" points="47,30 49,12 56,10 55,30"/>
+  </symbol>
+</svg>
+
+<!-- ================= LOADER ================= -->
+<div class="loader" aria-hidden="true">
+  <div class="loader__shapes">
+    <svg class="lshape" style="--x:10%;--y:12%;--s:13vw;--r:-12deg"><use href="#s-apple"/></svg>
+    <svg class="lshape" style="--x:30%;--y:5%;--s:9vw;--r:8deg"><use href="#s-flower"/></svg>
+    <svg class="lshape" style="--x:22%;--y:40%;--s:11vw;--r:14deg"><use href="#s-pear"/></svg>
+    <svg class="lshape" style="--x:5%;--y:60%;--s:10vw;--r:-6deg"><use href="#s-grapes"/></svg>
+    <svg class="lshape" style="--x:40%;--y:66%;--s:9vw;--r:-18deg"><use href="#s-cherry"/></svg>
+    <svg class="lshape" style="--x:70%;--y:8%;--s:10vw;--r:10deg"><use href="#s-leaf"/></svg>
+    <svg class="lshape" style="--x:86%;--y:32%;--s:9vw;--r:-10deg"><use href="#s-mushroom"/></svg>
+    <svg class="lshape" style="--x:64%;--y:60%;--s:12vw;--r:6deg"><use href="#s-pumpkin"/></svg>
+    <svg class="lshape" style="--x:88%;--y:70%;--s:8vw;--r:-4deg"><use href="#s-cat"/></svg>
   </div>
+  <div class="loader__count"><span class="js-count">0</span>%</div>
+  <div class="loader__wipe loader__wipe--a"></div>
+  <div class="loader__wipe loader__wipe--b"></div>
+</div>
 
-  <!-- ============ CURSOR ============ -->
-  <div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+<!-- ================= HEADER ================= -->
+<header class="hdr">
+  <a class="pill pill--line hdr__call" href="tel:+393351762614">
+    <span class="dot"></span><span class="roll"><span>Chiama</span><span>335 176 2614</span></span>
+  </a>
+  <a class="hdr__logo" href="#top" aria-label="Il Melo Rosso, torna all'inizio">
+    <img src="assets/img/site/logo.png" alt="" width="56" height="56">
+    <span class="hdr__name">Il Melo Rosso <em>agriturismo</em></span>
+  </a>
+  <button class="pill pill--line hdr__menu" aria-expanded="false" aria-label="Apri il menu">
+    <span class="roll"><span>Menu</span><span>Chiudi</span></span><span class="dot"></span>
+  </button>
+</header>
 
-  <!-- ============ NAV ============ -->
-  <header class="nav">
-    <a class="nav__logo" href="#top" aria-label="Il Melo Rosso — torna su">
-      <img src="assets/img/site/logo.png" alt="" width="44" height="44">
-      <span>Il Melo Rosso</span>
-    </a>
-    <nav class="nav__links" aria-label="Principale">
-      <a href="#cucina">Cucina</a>
-      <a href="#camere">Camere</a>
-      <a href="#matrimoni">Matrimoni</a>
-      <a href="#territorio">Fortunago</a>
-      <a href="#galleria">Galleria</a>
-    </nav>
-    <div class="nav__right">
-      <a class="pill-btn magnetic" href="#contatti"><span>Prenota</span></a>
-      <button class="burger" aria-label="Apri il menu" aria-expanded="false"><span></span><span></span></button>
+<div class="hud" aria-hidden="true">
+  <span>Fortunago · Oltrepò Pavese</span>
+  <span class="hud__scroll">Scorri per scoprire</span>
+  <span class="hud__idx"><b class="js-idx">01</b> / 10</span>
+</div>
+
+<!-- ================= MENU ================= -->
+<div class="menu" aria-hidden="true">
+  <div class="menu__shapes">
+    <svg class="mshape" style="--x:6%;--y:12%;--s:9vw"><use href="#s-apple"/></svg>
+    <svg class="mshape" style="--x:82%;--y:10%;--s:7vw"><use href="#s-leaf"/></svg>
+    <svg class="mshape" style="--x:86%;--y:66%;--s:8vw"><use href="#s-grapes"/></svg>
+    <svg class="mshape" style="--x:8%;--y:70%;--s:7vw"><use href="#s-pear"/></svg>
+  </div>
+  <ul class="menu__list">
+    <li><a href="#cascina"><span class="roll"><span>La Cascina</span><span>La Cascina</span></span></a></li>
+    <li><a href="#cucina"><span class="roll"><span>La Cucina</span><span>La Cucina</span></span></a></li>
+    <li><a href="#camere"><span class="roll"><span>Le Camere</span><span>Le Camere</span></span></a></li>
+    <li><a href="#matrimoni"><span class="roll"><span>Matrimoni</span><span>Matrimoni</span></span></a></li>
+    <li><a href="#territorio"><span class="roll"><span>Fortunago</span><span>Fortunago</span></span></a></li>
+    <li><a href="#contatti"><span class="roll"><span>Contatti</span><span>Contatti</span></span></a></li>
+  </ul>
+  <div class="menu__foot">
+    <a href="tel:+393351762614">335 176 2614</a>
+    <a href="mailto:agriturismo@ilmelorosso.it">agriturismo@ilmelorosso.it</a>
+    <a href="https://www.instagram.com/ilmelorosso" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div>
+
+<!-- ================= CURSOR PILL ================= -->
+<div class="follower" aria-hidden="true"><span class="dot"></span><span class="follower__t">Scopri</span></div>
+
+<main>
+
+  <!-- ================= HERO (WebGL wheel) ================= -->
+  <section class="hero" id="top">
+    <h1 class="sr-only">Il Melo Rosso — Agriturismo Country Chic a Fortunago, Oltrepò Pavese</h1>
+    <div class="hero__stage">
+      <div class="hero__table">
+        <svg viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"><polygon points="300,0 700,0 940,170 1000,620 0,620 60,170" /></svg>
+      </div>
+      <svg class="hero__ring" viewBox="0 0 1000 1000" aria-hidden="true">
+        <defs><path id="ringPath" d="M500,500 m-430,0 a430,430 0 1,1 860,0 a430,430 0 1,1 -860,0"/></defs>
+        <text><textPath href="#ringPath" textLength="2690" lengthAdjust="spacing">Il Melo Rosso ✦ Agriturismo ✦ Country Chic ✦ Fortunago ✦ Oltrepò Pavese ✦</textPath></text>
+      </svg>
+      <canvas class="hero__gl" aria-hidden="true"></canvas>
+      <div class="hero__fallback" aria-hidden="true">
+        <img src="assets/img/gl/img-7611.jpg" alt="">
+      </div>
+      <a class="pill pill--solid hero__tag" href="#cascina">
+        <span class="dot"></span><span class="hero__tagtxt">La Cascina</span>
+      </a>
     </div>
-  </header>
+  </section>
 
-  <!-- ============ MENU OVERLAY ============ -->
-  <div class="menu" aria-hidden="true">
-    <div class="menu__preview">
-      <img src="assets/img/nuove/13175261.jpg" alt="" data-key="cucina" class="is-active">
-      <img src="assets/img/camere/casetta-1.jpg" alt="" data-key="camere">
-      <img src="assets/img/nuove/13660935-2.jpg" alt="" data-key="matrimoni">
-      <img src="assets/img/nuove/img-7607-1.jpg" alt="" data-key="territorio">
-      <img src="assets/img/nuove/meloview16.jpg" alt="" data-key="galleria">
-      <img src="assets/img/nuove/img-8497.jpg" alt="" data-key="contatti">
+  <!-- ================= LA CASCINA ================= -->
+  <section class="intro" id="cascina">
+    <h2 class="mega js-chars">La Cascina</h2>
+    <div class="expand">
+      <div class="expand__frame">
+        <img src="assets/img/nuove/img-7611.jpg" alt="La facciata rossa del Melo Rosso con il giardino fiorito">
+        <h3 class="expand__title js-lines">Una cascina rossa<br>tra le colline<br>dell'Oltrepò</h3>
+      </div>
     </div>
-    <ul class="menu__list">
-      <li><a href="#cucina" data-key="cucina"><small>01</small>La Cucina</a></li>
-      <li><a href="#camere" data-key="camere"><small>02</small>Le Camere</a></li>
-      <li><a href="#matrimoni" data-key="matrimoni"><small>03</small>Matrimoni</a></li>
-      <li><a href="#territorio" data-key="territorio"><small>04</small>Fortunago</a></li>
-      <li><a href="#galleria" data-key="galleria"><small>05</small>Galleria</a></li>
-      <li><a href="#contatti" data-key="contatti"><small>06</small>Contatti</a></li>
+    <span class="diamond" aria-hidden="true"></span>
+    <p class="lead js-lines">Agriturismo e B&amp;B a Fortunago, uno dei Borghi più belli d'Italia. È la casa di campagna della famiglia: mobili, oggetti e storie sono rimasti qui.</p>
+    <span class="diamond" aria-hidden="true"></span>
+  </section>
+
+  <!-- ================= PROMESSA (falling shapes) ================= -->
+  <section class="promise" aria-label="La nostra filosofia">
+    <div class="promise__stage">
+      <svg class="pshape" style="--x:6%;--y:12%;--s:16vw;--r:-14deg"><use href="#s-apple"/></svg>
+      <svg class="pshape" style="--x:70%;--y:4%;--s:14vw;--r:12deg"><use href="#s-pear"/></svg>
+      <svg class="pshape" style="--x:24%;--y:60%;--s:13vw;--r:20deg"><use href="#s-grapes"/></svg>
+      <svg class="pshape" style="--x:78%;--y:56%;--s:15vw;--r:-8deg"><use href="#s-pumpkin"/></svg>
+      <svg class="pshape" style="--x:46%;--y:2%;--s:10vw;--r:6deg"><use href="#s-flower"/></svg>
+      <svg class="pshape" style="--x:0%;--y:62%;--s:10vw;--r:-24deg"><use href="#s-leaf"/></svg>
+      <svg class="pshape" style="--x:54%;--y:72%;--s:9vw;--r:10deg"><use href="#s-cherry"/></svg>
+      <svg class="pshape" style="--x:90%;--y:26%;--s:8vw;--r:-6deg"><use href="#s-mushroom"/></svg>
+      <svg class="pshape" style="--x:30%;--y:16%;--s:6vw;--r:4deg"><use href="#s-bottle"/></svg>
+      <p class="promise__text">Non è solo un agriturismo.<br>È una casa di famiglia<br>che apre la porta.</p>
+    </div>
+  </section>
+
+  <!-- ================= LA CUCINA ================= -->
+  <section class="cucina" id="cucina">
+    <h2 class="mega js-chars">La Cucina</h2>
+    <h3 class="caps js-lines">Dall'orto<br>alla tavola</h3>
+    <span class="diamond" aria-hidden="true"></span>
+    <p class="lead js-lines">I piatti cambiano ogni giorno in base a ciò che danno l'orto e la stalla. Il resto arriva da aziende agricole del territorio.</p>
+
+    <div class="trio">
+      <figure class="trio__item trio__item--l"><img src="assets/img/nuove/img-7616.jpg" alt="Salumi del territorio"></figure>
+      <figure class="trio__item trio__item--c"><img src="assets/img/site/b5302.jpg" alt="Buffet di antipasti in giardino"></figure>
+      <figure class="trio__item trio__item--r"><img src="assets/img/nuove/t30-1946176-2.jpg" alt="Tavola apparecchiata"></figure>
+      <div class="tabs" role="tablist">
+        <button class="tab is-active" data-set="0" role="tab">Antipasti</button>
+        <button class="tab" data-set="1" role="tab">Dolci</button>
+        <button class="tab" data-set="2" role="tab">Colazione</button>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="table__head"><span>La portata</span><span>Quante</span></div>
+      <div class="table__row"><span>Antipasti della casa</span><span>8 / 9</span></div>
+      <div class="table__row"><span>Primo</span><span>1</span></div>
+      <div class="table__row"><span>Secondo con contorno</span><span>1</span></div>
+      <div class="table__row"><span>Dolce &amp; caffè</span><span>✓</span></div>
+      <div class="table__row table__row--soft"><span>Pranzo · Cena</span><span>13:00 · 20:30</span></div>
+    </div>
+    <p class="note">Aperti tutti i giorni, solo su prenotazione · Segnalate allergie, intolleranze o menù vegetariano/vegano</p>
+    <div class="center"><a class="pill pill--solid pill--big" href="tel:+393351762614"><span class="dot"></span><span class="roll"><span>Prenota un tavolo</span><span>Chiama Paolo</span></span></a></div>
+  </section>
+
+  <!-- ================= PAOLO ================= -->
+  <section class="chef" aria-label="Paolo, il cuoco">
+    <div class="chef__word" aria-hidden="true"><span>Con il cuore ✦ Con il cuore ✦ Con il cuore ✦ Con il cuore ✦</span></div>
+    <figure class="chef__photo"><img src="assets/img/site/paolo.jpg" alt="Paolo Spina in cucina"></figure>
+    <svg class="chef__shape chef__shape--a" aria-hidden="true"><use href="#s-apple"/></svg>
+    <svg class="chef__shape chef__shape--b" aria-hidden="true"><use href="#s-leaf"/></svg>
+    <svg class="chef__shape chef__shape--c" aria-hidden="true"><use href="#s-cherry"/></svg>
+    <blockquote class="chef__quote">
+      <p class="js-lines">“Cucino con passione e fantasia: tutto fatto al momento, dagli antipasti al dolce. Vi aspetto al Melo Rosso!”</p>
+      <cite>Paolo Spina — cuoco &amp; padrone di casa</cite>
+    </blockquote>
+  </section>
+
+  <!-- ================= LE CAMERE ================= -->
+  <section class="rooms" id="camere">
+    <div class="rooms__head">
+      <span class="rooms__side">B&amp;B<br>con colazione</span>
+      <h2 class="caps caps--xl js-lines">Dormire<br>al Melo</h2>
+      <span class="rooms__side rooms__side--r">Mezza pensione<br>Pensione completa</span>
+    </div>
+
+    <div class="rooms__stack">
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/casetta-1.jpg" alt="La Casetta, depandance superior"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">01.</span>
+          <h3>La Casetta<br><small>(depandance superior)</small></h3>
+          <div class="rcard__cols">
+            <div><h4>La camera</h4><p>Ingresso indipendente sul giardino, soggiorno e vista sulle colline.</p></div>
+            <div><h4>Ospiti</h4><p>Fino a 4</p></div>
+          </div>
+        </div>
+      </article>
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/luna-1.jpg" alt="Camera della Luna"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">02.</span>
+          <h3>Camera<br>della Luna</h3>
+          <div class="rcard__cols">
+            <div><h4>La camera</h4><p>Antico letto alla francese, soppalco e cielo stellato nelle notti di luna piena.</p></div>
+            <div><h4>Ospiti</h4><p>Fino a 5</p></div>
+          </div>
+        </div>
+      </article>
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/nonno-1.jpg" alt="Camera del Nonno"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">03.</span>
+          <h3>Camera<br>del Nonno</h3>
+          <div class="rcard__cols">
+            <div><h4>La camera</h4><p>Luminosa e spaziosa, con vista sul giardino interno e sulle colline.</p></div>
+            <div><h4>Ospiti</h4><p>2</p></div>
+          </div>
+        </div>
+      </article>
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/zio-2.jpg" alt="Camera dello Zio"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">04.</span>
+          <h3>Camera<br>dello Zio</h3>
+          <div class="rcard__cols">
+            <div><h4>La camera</h4><p>Accogliente e tranquilla, con le finestre affacciate sul bosco.</p></div>
+            <div><h4>Ospiti</h4><p>2</p></div>
+          </div>
+        </div>
+      </article>
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/viola-1.jpg" alt="Depandance Viola"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">05.</span>
+          <h3>Depandance<br>Viola</h3>
+          <div class="rcard__cols">
+            <div><h4>La camera</h4><p>Accesso diretto e indipendente, affacciata sul bosco.</p></div>
+            <div><h4>Ospiti</h4><p>2 – 3</p></div>
+          </div>
+        </div>
+      </article>
+      <article class="rcard">
+        <div class="rcard__img"><img src="assets/img/camere/pv-1.jpg" alt="Camere di Paolo e Veronica"></div>
+        <div class="rcard__body">
+          <span class="rcard__n">06.</span>
+          <h3>Paolo<br>&amp; Veronica</h3>
+          <div class="rcard__cols">
+            <div><h4>Le camere</h4><p>Due matrimoniali attigue con bagno esclusivo: per famiglie o due coppie.</p></div>
+            <div><h4>Ospiti</h4><p>Fino a 4</p></div>
+          </div>
+        </div>
+      </article>
+    </div>
+    <p class="rooms__price">da <b>€100</b> a notte, colazione inclusa</p>
+  </section>
+
+  <!-- ================= MATRIMONI ================= -->
+  <section class="wed" id="matrimoni">
+    <h2 class="mega mega--light js-chars">Matrimoni</h2>
+    <h3 class="caps caps--light js-lines">Il sì più genuino<br>dell'Oltrepò</h3>
+    <span class="diamond diamond--light" aria-hidden="true"></span>
+    <p class="lead lead--light js-lines">Prato fiorito, veranda e tensostruttura. Un solo matrimonio al giorno: il vostro.</p>
+
+    <div class="drag" data-cursor="Trascina">
+      <div class="drag__track">
+        <figure class="dcard"><img src="assets/img/nuove/13660935-2.jpg" alt="Sposi a braccia aperte sulle colline" draggable="false"><figcaption>Sulle colline</figcaption></figure>
+        <figure class="dcard dcard--t"><img src="assets/img/nuove/9642710.jpg" alt="Bacio degli sposi in bianco e nero" draggable="false"><figcaption>Per sempre</figcaption></figure>
+        <figure class="dcard"><img src="assets/img/nuove/img-7615.jpg" alt="Altare floreale" draggable="false"><figcaption>L'altare</figcaption></figure>
+        <figure class="dcard dcard--t"><img src="assets/img/nuove/img-7841.jpg" alt="Tavola con fiori di campo" draggable="false"><figcaption>La tavola</figcaption></figure>
+        <figure class="dcard"><img src="assets/img/nuove/t30-1946176-3.jpg" alt="Cerimonia nel prato" draggable="false"><figcaption>Rito nel prato</figcaption></figure>
+        <figure class="dcard"><img src="assets/img/nuove/img-7844.jpg" alt="Sposi al tramonto" draggable="false"><figcaption>Al tramonto</figcaption></figure>
+        <figure class="dcard dcard--t"><img src="assets/img/site/485.jpg" alt="La sposa in giardino" draggable="false"><figcaption>In giardino</figcaption></figure>
+        <figure class="dcard"><img src="assets/img/site/b4154.jpg" alt="Tensostruttura allestita" draggable="false"><figcaption>Anche con la pioggia</figcaption></figure>
+        <figure class="dcard"><img src="assets/img/site/gatto.jpg" alt="Gli sposi e il gatto di casa" draggable="false"><figcaption>Ospite d'onore</figcaption></figure>
+        <figure class="dcard dcard--t"><img src="assets/img/site/514.jpg" alt="Taglio della torta" draggable="false"><figcaption>La torta</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b data-count="150" data-prefix="60–">0</b><span>ospiti</span></div>
+      <div class="stat"><b data-count="4.7" data-dec="1">0</b><span>su 5 · 47 recensioni</span></div>
+      <div class="stat"><b data-count="94" data-suffix="%">0</b><span>degli sposi ci consiglia</span></div>
+      <div class="stat"><b data-count="1">0</b><span>evento al giorno</span></div>
+    </div>
+    <div class="center"><a class="pill pill--apple pill--big" href="#contatti"><span class="dot"></span><span class="roll"><span>Richiedi un preventivo</span><span>Scrivici ora</span></span></a></div>
+  </section>
+
+  <!-- ================= FORTUNAGO ================= -->
+  <section class="land" id="territorio">
+    <h2 class="mega js-chars">Fortunago</h2>
+    <div class="land__row">
+      <figure class="land__img land__img--l"><img src="assets/img/nuove/meloview16.jpg" alt="Vista aerea della piscina tra i boschi"></figure>
+      <figure class="land__img land__img--c"><img src="assets/img/nuove/img-7607-1.jpg" alt="Le colline dell'Oltrepò Pavese"></figure>
+      <figure class="land__img land__img--r"><img src="assets/img/nuove/img-7606.jpg" alt="La piscina panoramica"></figure>
+    </div>
+    <span class="diamond" aria-hidden="true"></span>
+    <h3 class="caps js-lines">Uno dei borghi<br>più belli d'Italia</h3>
+    <p class="lead js-lines">Sulle colline dell'Oltrepò Pavese, terra di confine a sud della Lombardia, oltre il fiume Po.</p>
+    <ul class="chips">
+      <li>Piscina panoramica</li><li>Sentieri &amp; natura</li><li>Vini dell'Oltrepò</li><li>Pet friendly</li><li>Km 0</li>
     </ul>
-    <div class="menu__foot">
-      <a href="tel:+393351762614">335 176 2614</a>
-      <a href="mailto:agriturismo@ilmelorosso.it">agriturismo@ilmelorosso.it</a>
-      <a href="https://www.instagram.com/ilmelorosso" target="_blank" rel="noopener">Instagram</a>
+  </section>
+
+  <!-- ================= GALLERIA ================= -->
+  <section class="gallery" id="galleria">
+    <h3 class="caps js-lines">Entra nel mondo<br>incantato del Melo</h3>
+    <div class="mrow" data-dir="-1">
+      <div class="mrow__track">
+        <figure><img src="assets/img/nuove/copertina.jpg" alt="Vista aerea della cascina" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/0da5b5f9.jpg" alt="Il gatto di casa sul fieno" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/img-7608.jpg" alt="La casetta nel giardino" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/sala-esterno.jpg" alt="La sala vista da fuori" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/img-7614.jpg" alt="Festa nella sala" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/t30-2972737.jpg" alt="La porta blu" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/4079849.jpg" alt="Sedute di fieno" loading="lazy"></figure>
+      </div>
     </div>
+    <div class="mrow" data-dir="1">
+      <div class="mrow__track">
+        <figure><img src="assets/img/nuove/t30-819875.jpg" alt="Il giardino allestito" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/img-7838.jpg" alt="Panchina tra i fiori" loading="lazy"></figure>
+        <figure><img src="assets/img/site/melo-insta.jpg" alt="I cuccioli del Melo" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/t30-2973555-1.jpg" alt="Prati e colline" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/img-7843.jpg" alt="Dettaglio di una camera" loading="lazy"></figure>
+        <figure><img src="assets/img/site/matrimonio-melo.jpg" alt="Sposi davanti all'edera" loading="lazy"></figure>
+        <figure><img src="assets/img/nuove/img-8497.jpg" alt="La casa sotto il cielo blu" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECENSIONI ================= -->
+  <section class="reviews" aria-label="Recensioni">
+    <span class="diamond" aria-hidden="true"></span>
+    <div class="reviews__list">
+      <blockquote class="review is-on"><p>“Un weekend di pace e relax, in una bellissima casa di famiglia.”</p><cite>Alessandro</cite></blockquote>
+      <blockquote class="review"><p>“Posto stupendo immerso nelle colline. Cucina deliziosa e attenta alle intolleranze.”</p><cite>Stefano R.</cite></blockquote>
+      <blockquote class="review"><p>“Un'atmosfera affascinante e i piatti preparati dal signor Paolo.”</p><cite>Marisa</cite></blockquote>
+      <blockquote class="review"><p>“Cortesia e cura dei particolari ai massimi livelli. Prodotti bio e a km 0.”</p><cite>Waldahari</cite></blockquote>
+    </div>
+    <div class="reviews__dots"><button class="is-on" aria-label="Recensione 1"></button><button aria-label="Recensione 2"></button><button aria-label="Recensione 3"></button><button aria-label="Recensione 4"></button></div>
+    <p class="reviews__badges"><span>4,7 / 5 su matrimonio.com</span><span>Certificato di Eccellenza TripAdvisor</span></p>
+  </section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot" id="contatti">
+  <div class="foot__inner">
+    <p class="foot__ask">Hai una domanda o vuoi prenotare?<br>Scrivici a <a href="mailto:agriturismo@ilmelorosso.it">agriturismo@ilmelorosso.it</a></p>
+    <div class="foot__brand" aria-hidden="true"><span class="js-chars">Il Melo</span><em class="js-chars">Rosso</em></div>
+    <div class="foot__cols">
+      <div class="foot__logo">
+        <img src="assets/img/site/logo.png" alt="Il Melo Rosso" width="72" height="72">
+        <p>Agriturismo il Melo Rosso<br>di Spina Paolo Alberto Maurizio</p>
+        <p>P.IVA 02291450183</p>
+      </div>
+      <div>
+        <h4>Naviga</h4>
+        <a href="#cascina">La Cascina</a><a href="#cucina">La Cucina</a><a href="#camere">Le Camere</a><a href="#matrimoni">Matrimoni</a><a href="#territorio">Fortunago</a>
+      </div>
+      <div>
+        <h4>Dove siamo</h4>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Agriturismo+Il+Melo+Rosso+Fortunago" target="_blank" rel="noopener">Via Ca' De' Vecchi, 1<br>27040 Fortunago (PV)</a>
+      </div>
+      <div>
+        <h4>Contatti</h4>
+        <a href="tel:+390383875481">0383 875481</a><a href="tel:+393351762614">335 176 2614</a><a href="https://wa.me/393351762614" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <div>
+        <h4>Seguici</h4>
+        <a href="https://www.instagram.com/ilmelorosso" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/ilmelorosso" target="_blank" rel="noopener">Facebook</a><a href="https://www.tripadvisor.it/Restaurant_Review-g1809507-d2693939-Reviews-Il_Melo_Rosso_Agriturismo-Fortunago_Province_of_Pavia_Lombardy.html" target="_blank" rel="noopener">TripAdvisor</a>
+      </div>
+    </div>
+    <div class="foot__legal"><span>© <span class="js-year">2026</span> Il Melo Rosso</span><a href="#top">Torna su ↑</a></div>
   </div>
+</footer>
 
-  <main>
-    <!-- ============ HERO ============ -->
-    <section class="hero" id="top">
-      <div class="hero__media">
-        <img src="assets/img/nuove/copertina.jpg" alt="Vista aerea della cascina rossa del Melo Rosso immersa nel verde delle colline">
-      </div>
-      <div class="hero__shade"></div>
-      <p class="hero__kicker"><span>Agriturismo · Country Chic</span></p>
-      <h1 class="hero__title">
-        <span class="hero__line js-chars">Il Melo</span>
-        <span class="hero__line hero__line--it js-chars">Rosso</span>
-      </h1>
-      <div class="hero__bottom">
-        <p class="hero__meta">Fortunago (PV)<br>Uno dei Borghi più belli d'Italia</p>
-        <a class="badge" href="#intro" aria-label="Scorri">
-          <svg viewBox="0 0 200 200" class="badge__ring" aria-hidden="true">
-            <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-            <text><textPath href="#circ" textLength="486" lengthAdjust="spacing">Cucina ✺ Camere ✺ Matrimoni ✺ Scorri ✺</textPath></text>
-          </svg>
-          <span class="badge__arrow">↓</span>
-        </a>
-        <p class="hero__meta hero__meta--r">Cucina · Camere<br>Matrimoni</p>
-      </div>
-    </section>
+<div class="lightbox" aria-hidden="true"><img alt=""><button class="lightbox__x">Chiudi</button></div>
 
-    <!-- ============ MANIFESTO ============ -->
-    <section class="intro" id="intro">
-      <p class="eyebrow">( Benvenuti al Melo )</p>
-      <h2 class="manifesto js-words">
-        Una cascina <span class="pill"><img src="assets/img/nuove/t30-2972737.jpg" alt=""></span> rossa, calda e accogliente, circondata da un prato <span class="pill"><img src="assets/img/nuove/img-7608.jpg" alt=""></span> fiorito. Qui si viene per <em>rallentare</em> <span class="pill pill--round"><img src="assets/img/nuove/0da5b5f9.jpg" alt=""></span>
-      </h2>
-      <div class="intro__foot">
-        <img class="intro__borgo" src="assets/img/site/fortunago.jpg" alt="Fortunago, uno dei Borghi più belli d'Italia" width="60" height="113">
-        <p>Sulle colline dell'Oltrepò Pavese, dove orto, stalla e cucina sono una cosa sola.</p>
-      </div>
-    </section>
-
-    <!-- ============ ZOOM (pinned) ============ -->
-    <section class="zoom" aria-label="La casa">
-      <div class="zoom__pin">
-        <figure class="zoom__tile z1"><img src="assets/img/nuove/img-7609-1.jpg" alt=""></figure>
-        <figure class="zoom__tile z2"><img src="assets/img/nuove/img-7843.jpg" alt=""></figure>
-        <figure class="zoom__tile z3"><img src="assets/img/nuove/img-7606.jpg" alt=""></figure>
-        <figure class="zoom__tile z4"><img src="assets/img/nuove/img-7842.jpg" alt=""></figure>
-        <figure class="zoom__tile z5"><img src="assets/img/nuove/t30-2814615.jpg" alt=""></figure>
-        <figure class="zoom__tile z6"><img src="assets/img/nuove/img-7838.jpg" alt=""></figure>
-        <div class="zoom__center">
-          <img src="assets/img/nuove/img-7611.jpg" alt="La facciata rossa del Melo Rosso con il giardino">
-          <div class="zoom__caption">
-            <p class="eyebrow eyebrow--light">( La casa )</p>
-            <h2>Benvenuti<br><em>a casa</em></h2>
-            <p>La casa di campagna della famiglia, dove ogni mobile racconta una storia.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CUCINA ============ -->
-    <section class="cucina" id="cucina">
-      <div class="sec-head">
-        <p class="eyebrow">( 01 — La Cucina )</p>
-        <h2 class="big-title js-reveal">Cucina di casa, <em>dall'orto</em> alla tavola</h2>
-      </div>
-
-      <div class="cucina__grid">
-        <figure class="cimg cimg--a" data-cursor="Paolo"><div class="px"><img src="assets/img/site/paolo.jpg" alt="Paolo Spina, cuoco del Melo Rosso, al lavoro in cucina"></div></figure>
-        <figure class="cimg cimg--b"><div class="px"><img src="assets/img/nuove/13175261.jpg" alt="Crostate di frutta fresca"></div></figure>
-        <figure class="cimg cimg--c"><div class="px"><img src="assets/img/nuove/img-7616.jpg" alt="Antipasti di salumi del territorio"></div></figure>
-        <figure class="cimg cimg--d"><div class="px"><img src="assets/img/nuove/img-7609-1.jpg" alt="Dolci fatti in casa con noci"></div></figure>
-        <blockquote class="cucina__quote">
-          <p class="js-reveal">“Cucino con passione e fantasia: tutto fatto al momento, dagli antipasti al dolce.”</p>
-          <cite>Paolo Spina — cuoco &amp; padrone di casa</cite>
-        </blockquote>
-      </div>
-
-      <ul class="courses">
-        <li><span class="courses__n">8/9</span><span class="courses__t">antipasti</span></li>
-        <li><span class="courses__n">1</span><span class="courses__t">primo</span></li>
-        <li><span class="courses__n">1</span><span class="courses__t">secondo con contorno</span></li>
-        <li><span class="courses__n">+</span><span class="courses__t">dolce &amp; caffè</span></li>
-      </ul>
-      <div class="cucina__info">
-        <p><strong>Pranzo</strong> 13:00</p>
-        <p><strong>Cena</strong> 20:30</p>
-        <p>Aperti tutti i giorni, <em>solo su prenotazione</em></p>
-        <a class="pill-btn pill-btn--red magnetic" href="tel:+393351762614"><span>Prenota un tavolo</span></a>
-      </div>
-    </section>
-
-    <!-- ============ VIDEO / SEMPLICEMENTE GENUINO ============ -->
-    <section class="genuino" aria-label="Semplicemente genuino">
-      <div class="genuino__pin">
-        <span class="genuino__word genuino__word--l">Semplicemente</span>
-        <div class="genuino__video">
-          <img src="assets/img/site/b5302.jpg" alt="Buffet all'aperto sotto gli ombrelloni nel giardino del Melo Rosso" loading="lazy">
-        </div>
-        <span class="genuino__word genuino__word--r"><em>genuino</em></span>
-      </div>
-    </section>
-
-    <!-- ============ MARQUEE ============ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <span>Orto &amp; stalla</span><i>✺</i><span><em>Km 0</em></span><i>✺</i><span>Piscina panoramica</span><i>✺</i><span><em>Pet friendly</em></span><i>✺</i><span>Country chic</span><i>✺</i><span><em>Cucina di casa</em></span><i>✺</i>
-        <span>Orto &amp; stalla</span><i>✺</i><span><em>Km 0</em></span><i>✺</i><span>Piscina panoramica</span><i>✺</i><span><em>Pet friendly</em></span><i>✺</i><span>Country chic</span><i>✺</i><span><em>Cucina di casa</em></span><i>✺</i>
-      </div>
-    </div>
-
-    <!-- ============ CAMERE (stacked cards) ============ -->
-    <section class="rooms" id="camere">
-      <div class="sec-head">
-        <p class="eyebrow">( 02 — Le Camere )</p>
-        <h2 class="big-title js-reveal">Dormire in una <em>casa di famiglia</em></h2>
-      </div>
-
-      <div class="rooms__stack">
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/casetta-1.jpg" alt="La Casetta, depandance superior"></div>
-          <div class="room__body">
-            <span class="room__num">01</span>
-            <h3>La Casetta</h3>
-            <p>Depandance superior con ingresso indipendente sul giardino e vista sulle colline.</p>
-            <ul class="tags"><li>fino a 4 ospiti</li><li>soggiorno</li><li>indipendente</li></ul>
-          </div>
-        </article>
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/luna-1.jpg" alt="Camera della Luna"></div>
-          <div class="room__body">
-            <span class="room__num">02</span>
-            <h3>Camera della Luna</h3>
-            <p>Antico letto alla francese, soppalco e, nelle notti di luna piena, un cielo stellato mozzafiato.</p>
-            <ul class="tags"><li>fino a 5 ospiti</li><li>soppalco</li><li>bagno privato</li></ul>
-          </div>
-        </article>
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/nonno-1.jpg" alt="Camera del Nonno"></div>
-          <div class="room__body">
-            <span class="room__num">03</span>
-            <h3>Camera del Nonno</h3>
-            <p>Luminosa e spaziosa, al primo piano, con vista sul giardino interno e sulle colline.</p>
-            <ul class="tags"><li>2 ospiti</li><li>matrimoniale</li><li>bagno privato</li></ul>
-          </div>
-        </article>
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/zio-2.jpg" alt="Camera dello Zio"></div>
-          <div class="room__body">
-            <span class="room__num">04</span>
-            <h3>Camera dello Zio</h3>
-            <p>Accogliente e tranquilla, con le finestre affacciate sul bosco.</p>
-            <ul class="tags"><li>2 ospiti</li><li>matrimoniale</li><li>vista bosco</li></ul>
-          </div>
-        </article>
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/viola-1.jpg" alt="Depandance Viola"></div>
-          <div class="room__body">
-            <span class="room__num">05</span>
-            <h3>Depandance Viola</h3>
-            <p>Accesso diretto e indipendente, affacciata sul bosco confinante.</p>
-            <ul class="tags"><li>2–3 ospiti</li><li>indipendente</li></ul>
-          </div>
-        </article>
-        <article class="room">
-          <div class="room__media"><img src="assets/img/camere/pv-1.jpg" alt="Camere di Paolo e Veronica"></div>
-          <div class="room__body">
-            <span class="room__num">06</span>
-            <h3>Camere di Paolo &amp; Veronica</h3>
-            <p>Due matrimoniali attigue con bagno ad uso esclusivo: perfette per famiglie o due coppie.</p>
-            <ul class="tags"><li>fino a 4 ospiti</li><li>2 camere</li></ul>
-          </div>
-        </article>
-      </div>
-
-      <div class="rooms__foot">
-        <p><span class="rooms__from">da €100</span> a notte, colazione inclusa</p>
-        <p>B&amp;B · Mezza pensione · Pensione completa</p>
-      </div>
-    </section>
-
-    <!-- ============ MATRIMONI (horizontal) ============ -->
-    <section class="wed" id="matrimoni">
-      <div class="wed__pin">
-        <div class="wed__track">
-          <div class="wed__intro">
-            <p class="eyebrow eyebrow--light">( 03 — Matrimoni )</p>
-            <h2>Il sì più <em>genuino</em> dell'Oltrepò</h2>
-            <p>Prato fiorito, veranda e tensostruttura. Un solo matrimonio al giorno: il vostro.</p>
-            <a class="pill-btn pill-btn--light magnetic" href="#contatti"><span>Richiedi un preventivo</span></a>
-          </div>
-          <figure class="wcard wcard--xl" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/13660935-2.jpg" alt="Sposi a braccia aperte davanti alle colline"></div><figcaption><span>01</span> Sulle colline</figcaption></figure>
-          <figure class="wcard wcard--tall wcard--down" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/9642710.jpg" alt="Bacio degli sposi in bianco e nero"></div><figcaption><span>02</span> Per sempre</figcaption></figure>
-          <figure class="wcard wcard--m wcard--up" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/img-7615.jpg" alt="Altare floreale sotto la tensostruttura"></div><figcaption><span>03</span> L'altare</figcaption></figure>
-          <figure class="wcard wcard--l" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/t30-1946176-3.jpg" alt="Cerimonia nel prato con balle di fieno"></div><figcaption><span>04</span> Rito nel prato</figcaption></figure>
-          <figure class="wcard wcard--tall wcard--up" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/img-7841.jpg" alt="Tavola apparecchiata con fiori di campo"></div><figcaption><span>05</span> La tavola</figcaption></figure>
-          <figure class="wcard wcard--m wcard--down" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/nuove/img-7844.jpg" alt="Sposi al tramonto sul prato"></div><figcaption><span>06</span> Al tramonto</figcaption></figure>
-          <figure class="wcard wcard--l" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/site/b4154.jpg" alt="Tensostruttura allestita per il ricevimento"></div><figcaption><span>07</span> Anche con la pioggia</figcaption></figure>
-          <figure class="wcard wcard--m wcard--up" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/site/gatto.jpg" alt="Gli sposi e il gatto di casa"></div><figcaption><span>08</span> Ospite d'onore</figcaption></figure>
-          <figure class="wcard wcard--tall" data-cursor="Guarda"><div class="wcard__img"><img src="assets/img/site/514.jpg" alt="Taglio della torta di notte"></div><figcaption><span>09</span> La torta</figcaption></figure>
-          <div class="wed__outro">
-            <h3>60<small>—</small>150</h3>
-            <p>ospiti</p>
-          </div>
-        </div>
-        <div class="wed__progress"><span></span></div>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><span class="stat__n" data-count="4.7" data-dec="1">0</span><span class="stat__l">su 5 · 47 recensioni<br>su matrimonio.com</span></div>
-        <div class="stat"><span class="stat__n" data-count="94" data-suffix="%">0</span><span class="stat__l">degli sposi<br>ci consiglia</span></div>
-        <div class="stat"><span class="stat__n" data-count="1">0</span><span class="stat__l">solo evento<br>al giorno</span></div>
-        <div class="stat"><span class="stat__n" data-count="3">0</span><span class="stat__l">scenari: prato, veranda<br>e tensostruttura</span></div>
-      </div>
-    </section>
-
-    <!-- ============ TERRITORIO ============ -->
-    <section class="land" id="territorio">
-      <div class="land__pin">
-        <h2 class="land__word" aria-label="Fortunago">Fortunago</h2>
-        <p class="land__sub">( 04 — Uno dei Borghi più belli d'Italia )</p>
-      </div>
-      <div class="land__cards">
-        <article class="lcard">
-          <div class="lcard__img"><img src="assets/img/nuove/meloview16.jpg" alt="Vista aerea della piscina tra i boschi"></div>
-          <h3>Piscina <em>panoramica</em></h3>
-        </article>
-        <article class="lcard lcard--offset">
-          <div class="lcard__img"><img src="assets/img/nuove/t30-2973555-1.jpg" alt="Prati e colline dell'Oltrepò Pavese"></div>
-          <h3>Sentieri &amp; <em>natura</em></h3>
-        </article>
-        <article class="lcard">
-          <div class="lcard__img"><img src="assets/img/nuove/img-8497.jpg" alt="La casa vista dal prato sotto il cielo blu"></div>
-          <h3>Il borgo &amp; <em>le colline</em></h3>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============ GALLERIA ============ -->
-    <section class="gallery" id="galleria">
-      <div class="sec-head sec-head--center">
-        <p class="eyebrow">( 05 — Galleria )</p>
-        <h2 class="big-title js-reveal">Entra nel mondo <em>incantato</em> del Melo</h2>
-      </div>
-      <div class="gallery__cols">
-        <div class="gcol" data-speed="-12">
-          <figure class="gitem"><img src="assets/img/nuove/img-7614.jpg" alt="Festa nella sala interna" loading="lazy"></figure>
-          <figure class="gitem gitem--tall"><img src="assets/img/nuove/img-7838.jpg" alt="Panchina bianca nel giardino fiorito" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/nuove/sala-esterno.jpg" alt="La sala vista da fuori attraverso le porte blu" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/site/b3601.jpg" alt="Aperitivo sotto gli ombrelloni" loading="lazy"></figure>
-        </div>
-        <div class="gcol" data-speed="10">
-          <figure class="gitem"><img src="assets/img/nuove/4079849.jpg" alt="Sedute di fieno per la cerimonia" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/nuove/t30-1946176-2.jpg" alt="Tavolo degli sposi" loading="lazy"></figure>
-          <figure class="gitem gitem--tall"><img src="assets/img/site/485.jpg" alt="La sposa nel giardino" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/nuove/t30-819875.jpg" alt="Giardino con fieno e sedie bianche" loading="lazy"></figure>
-        </div>
-        <div class="gcol" data-speed="-18">
-          <figure class="gitem gitem--tall"><img src="assets/img/nuove/img-7606.jpg" alt="Piscina sotto il cielo blu" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/nuove/t30-1946176-1.jpg" alt="Centrotavola con fiori di campo" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/site/508g.jpg" alt="Buffet dei dolci" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/site/casa2.jpg" alt="Il cane di casa nel giardino" loading="lazy"></figure>
-        </div>
-        <div class="gcol" data-speed="8">
-          <figure class="gitem"><img src="assets/img/site/matrimonio-melo.jpg" alt="Sposi davanti al muro d'edera" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/nuove/img-7842.jpg" alt="La colazione in giardino" loading="lazy"></figure>
-          <figure class="gitem"><img src="assets/img/site/melo-insta.jpg" alt="I cuccioli di golden retriever del Melo" loading="lazy"></figure>
-          <figure class="gitem gitem--tall"><img src="assets/img/nuove/img-7841.jpg" alt="Tavola con fiori bianchi" loading="lazy"></figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ RECENSIONI ============ -->
-    <section class="reviews">
-      <div class="reviews__top">
-        <p class="eyebrow">( Dicono di noi )</p>
-        <div class="reviews__badges">
-          <span><strong>4,7</strong>/5 matrimonio.com</span>
-          <span><strong>TripAdvisor</strong> Certificato di Eccellenza</span>
-        </div>
-      </div>
-      <div class="reviews__slider">
-        <blockquote class="review is-active">
-          <p>“Un bellissimo weekend di pace e relax. La stanza era calda e accogliente come tutta la struttura: una bellissima casa di famiglia.”</p>
-          <cite>Alessandro</cite>
-        </blockquote>
-        <blockquote class="review">
-          <p>“Posto stupendo e curato, immerso nelle colline pavesi. Cucina deliziosa e attenta a chi ha intolleranze.”</p>
-          <cite>Stefano R.</cite>
-        </blockquote>
-        <blockquote class="review">
-          <p>“Un'atmosfera affascinante e i piatti preparati personalmente dal titolare, il signor Paolo.”</p>
-          <cite>Marisa</cite>
-        </blockquote>
-        <blockquote class="review">
-          <p>“Perfetto per il completo relax. Cortesia e cura dei particolari ai massimi livelli. Prodotti bio e a km 0.”</p>
-          <cite>Waldahari</cite>
-        </blockquote>
-      </div>
-      <div class="reviews__nav">
-        <button class="rbtn" data-dir="-1" aria-label="Recensione precedente">←</button>
-        <div class="reviews__bar"><span></span></div>
-        <button class="rbtn" data-dir="1" aria-label="Recensione successiva">→</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- ============ FOOTER / CONTATTI ============ -->
-  <footer class="footer" id="contatti">
-    <div class="footer__bg"><img src="assets/img/nuove/img-7607-1.jpg" alt="" loading="lazy"></div>
-    <div class="footer__inner">
-      <div class="footer__cta">
-        <p class="eyebrow eyebrow--light">( Vieni a trovarci )</p>
-        <h2 class="footer__title">Ti aspettiamo<br><em>al Melo</em></h2>
-        <a class="circle-btn magnetic" href="tel:+393351762614" data-cursor="Chiama"><span>Chiama<br>Paolo</span></a>
-      </div>
-
-      <div class="footer__grid">
-        <div>
-          <h4>Telefono</h4>
-          <a href="tel:+390383875481">0383 875481</a>
-          <a href="tel:+393351762614">335 176 2614</a>
-          <a href="https://wa.me/393351762614" target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-        <div>
-          <h4>Email</h4>
-          <a href="mailto:agriturismo@ilmelorosso.it">agriturismo@ilmelorosso.it</a>
-        </div>
-        <div>
-          <h4>Dove siamo</h4>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=Agriturismo+Il+Melo+Rosso+Via+Ca'+De'+Vecchi+1+Fortunago" target="_blank" rel="noopener">Via Ca' De' Vecchi, 1<br>27040 Fortunago (PV)</a>
-        </div>
-        <div>
-          <h4>Seguici</h4>
-          <a href="https://www.instagram.com/ilmelorosso" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://www.facebook.com/ilmelorosso" target="_blank" rel="noopener">Facebook</a>
-          <a href="https://www.tripadvisor.it/Restaurant_Review-g1809507-d2693939-Reviews-Il_Melo_Rosso_Agriturismo-Fortunago_Province_of_Pavia_Lombardy.html" target="_blank" rel="noopener">TripAdvisor</a>
-        </div>
-      </div>
-
-      <div class="footer__giant" aria-hidden="true">Il Melo Rosso</div>
-
-      <div class="footer__legal">
-        <p>© <span class="js-year">2026</span> Agriturismo il Melo Rosso di Spina Paolo Alberto Maurizio · P.IVA 02291450183</p>
-        <a href="#top" class="totop">Torna su ↑</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ============ LIGHTBOX ============ -->
-  <div class="lightbox" aria-hidden="true">
-    <button class="lightbox__close" aria-label="Chiudi">Chiudi ✕</button>
-    <img alt="">
-  </div>
-
-  <script src="assets/vendor/gsap.min.js"></script>
-  <script src="assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="assets/vendor/lenis.min.js"></script>
-  <script src="js/main.js"></script>
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="js/hero-gl.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
