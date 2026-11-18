@@ -98,37 +98,52 @@
   letters(rPre, ROOMS[0].pre); letters(rBig, ROOMS[0].big);
   rStk.appendChild(roomSticker(ROOMS[0]));
 
+  // dir = 1 → avanti: la camera attuale esce a sinistra, la nuova entra da destra (e viceversa)
   function goRoom(n, dir) {
     if (rBusy) return;
     rBusy = true;
     rI = (n + ROOMS.length) % ROOMS.length;
     const r = ROOMS[rI];
+    const W = innerWidth;
     const old = $(".stk", rStk);
-    gsap.timeline({ onComplete: () => (rBusy = false) })
-      .to(root, { "--room": r.bg, "--room-ink": r.ink, "--room-soft": r.soft, duration: .8, ease: "power2.inOut" }, 0)
-      .to($$(".wl", rStage), { yPercent: -110 * dir, duration: .4, ease: "power3.in", stagger: .02 }, 0)
-      .add(() => {
-        const a = letters(rPre, r.pre), b = letters(rBig, r.big);
-        gsap.fromTo([...a, ...b], { yPercent: 110 * dir }, { yPercent: 0, duration: .7, ease: "back.out(1.6)", stagger: .03 });
-      }, .45)
-      .to(old, { x: -260 * dir, rotation: -200 * dir, scale: .6, opacity: 0, duration: .55, ease: "power3.in", onComplete: () => old.remove() }, 0)
+    const d = rStk.offsetWidth || 300;
+    const D = W / 2 + d / 2 + 60;                 // fino a fuori schermo
+    const roll = D / (Math.PI * d) * 360;          // rotola come una ruota
+    const word = $(".rooms__word");
+    const cards = [$(".rooms__card--a"), $(".rooms__card--b")];
+    const OUT = .65, IN = .95, SWAP = .5;
+
+    const tl = gsap.timeline({ onComplete: () => (rBusy = false) });
+    tl.to(root, { "--room": r.bg, "--room-ink": r.ink, "--room-soft": r.soft, duration: .9, ease: "power2.inOut" }, 0)
+
+      // sticker: esce rotolando oltre il bordo
+      .to(old, { x: -D * dir, rotation: -roll * dir, duration: OUT, ease: "power2.in", onComplete: () => old.remove() }, 0)
+      // nuovo sticker: entra dall'altro lato, da fuori schermo
       .add(() => {
         const s = roomSticker(r);
         rStk.appendChild(s);
-        gsap.fromTo(s, { x: 300 * dir, rotation: 260 * dir, scale: .6, opacity: 0 }, { x: 0, rotation: 0, scale: 1, opacity: 1, duration: 1, ease: "back.out(1.3)" });
-      }, .35)
-      .to([".rooms__card--a", ".rooms__card--b"], { y: -40, scale: .7, opacity: 0, duration: .35, ease: "power2.in", stagger: .05 }, 0)
-      .add(() => { rCardA.src = r.cards[0]; rCardB.src = r.cards[1]; }, .4)
-      .to(".rooms__card--a", { y: 0, scale: 1, opacity: 1, rotation: gsap.utils.random(-12, -5), duration: .8, ease: "back.out(2)" }, .55)
-      .to(".rooms__card--b", { y: 0, scale: 1, opacity: 1, rotation: gsap.utils.random(5, 12), duration: .8, ease: "back.out(2)" }, .62)
-      .to(".rooms__info", { opacity: 0, x: -20, duration: .25 }, 0)
+        gsap.fromTo(s, { x: D * dir, rotation: roll * dir }, { x: 0, rotation: 0, duration: IN, ease: "power3.out" });
+      }, SWAP)
+
+      // parola gigante: stesso percorso
+      .to(word, { x: -W * 1.2 * dir, duration: OUT, ease: "power2.in" }, 0)
+      .add(() => { letters(rPre, r.pre); letters(rBig, r.big); }, OUT)
+      .fromTo(word, { x: W * 1.2 * dir }, { x: 0, duration: IN, ease: "power3.out", immediateRender: false }, OUT)
+
+      // foto laterali: escono e rientrano anche loro
+      .to(cards, { x: -W * dir, duration: OUT, ease: "power2.in", stagger: .05 }, 0)
+      .add(() => { rCardA.src = r.cards[0]; rCardB.src = r.cards[1]; }, OUT + .05)
+      .fromTo(cards, { x: W * dir }, { x: 0, duration: IN, ease: "power3.out", stagger: .06, immediateRender: false }, SWAP + .1)
+
+      // testi informativi
+      .to(".rooms__info", { opacity: 0, x: -30 * dir, duration: .3 }, 0)
       .add(() => {
         rTags.innerHTML = r.tags.map(t => `<li>${t}</li>`).join("");
         rDesc.textContent = r.desc;
         rIdx.textContent = String(rI + 1).padStart(2, "0");
-      }, .3)
-      .to(".rooms__info", { opacity: 1, x: 0, duration: .5 }, .5)
-      .fromTo(".roundbtn", { scale: 1 }, { scale: 1.15, duration: .2, yoyo: true, repeat: 1 }, .4);
+      }, .32)
+      .fromTo(".rooms__info", { x: 30 * dir }, { opacity: 1, x: 0, duration: .6, immediateRender: false }, .6)
+      .fromTo(".roundbtn", { scale: 1 }, { scale: 1.15, duration: .2, yoyo: true, repeat: 1 }, .6);
   }
   $$(".rooms .arrow").forEach(b => b.addEventListener("click", () => goRoom(rI + +b.dataset.dir, +b.dataset.dir)));
   (function swipe() {
@@ -195,12 +210,34 @@
     /* MOMENTS horizontal */
     const track = $(".moments__track");
     const dist = () => track.scrollWidth - innerWidth;
-    hScroll = gsap.to(track, { x: () => -dist(), ease: "none", scrollTrigger: { trigger: ".moments__pin", start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
+    // le parole seguono un'onda: salgono leggermente e poi riscendono andando a destra
+    const panels = $$(".mpanel");
+    const wordsEls = panels.map(p => $(".mpanel__words", p));
+    const waveY = () => innerHeight * .09;
+    hScroll = gsap.to(track, {
+      x: () => -dist(), ease: "none",
+      onUpdate() {
+        const x = -gsap.getProperty(track, "x");
+        panels.forEach((p, i) => {
+          // fase 0..1 del pannello rispetto al centro dello schermo
+          const ph = (x + innerWidth / 2 - p.offsetLeft) / p.offsetWidth;
+          const k = Math.max(-.6, Math.min(1.6, ph));
+          gsap.set(wordsEls[i], { y: -Math.sin(k * Math.PI) * waveY(), rotation: -Math.cos(k * Math.PI) * 2.4 });
+        });
+      },
+      scrollTrigger: { trigger: ".moments__pin", start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
+    });
     $$(".mpanel").forEach(p => {
       const ca = { containerAnimation: hScroll };
       $$(".mpanel__stk", p).forEach((s, i) => {
         gsap.fromTo(s, { rotation: -180, scale: .4 }, { rotation: 120 * (i ? -1 : 1), scale: 1, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
         gsap.fromTo(s, { y: 120 }, { y: -60, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
+      });
+      // foto grandi che coprono in parte il testo, a velocità diverse
+      $$(".mpanel__pic", p).forEach((pic, k) => {
+        const sp = [1, -.7, 1.3][k];
+        gsap.fromTo(pic, { x: innerWidth * .18 * sp, y: 60 * sp, rotation: -14 * sp, scale: .7 },
+          { x: -innerWidth * .12 * sp, y: -50 * sp, rotation: 8 * sp, scale: 1, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
       });
       gsap.fromTo($(".mpanel__img", p), { rotation: -22, scale: .6 }, { rotation: 6, scale: 1.05, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "center center", scrub: true } });
       const sc = $(".scribble", p);
