@@ -1,8 +1,8 @@
-# Il Melo Rosso — nuovo sito (v2)
+# Il Melo Rosso — nuovo sito (v3 · "Scegli il tuo momento")
 
 Sito one-page in HTML, CSS e JavaScript, senza WordPress né database: funziona su qualsiasi hosting e su GitHub Pages.
 
-Riferimento di stile: **Agrumea Farm** (Sito del Giorno su Awwwards, 5/11/2026: grafica 3D, GSAP e Lenis), adattato al Melo Rosso.
+Riferimento di stile: **Sweet Tape** (Sito del Giorno su Awwwards, 17/11/2026), pagina https://sweet-tape.com/products come home; le altre sezioni seguono lo stile della loro home. Il codice è scritto da zero.
 
 ## Vederlo in locale
 ```bash
@@ -11,33 +11,31 @@ python3 -m http.server 8080
 Poi apri http://localhost:8080
 
 ## Sezioni e animazioni
-1. **Caricamento**: frutti illustrati (mela, pera, uva, ciliegie, zucca, gatto…) che saltano fuori, contatore %, doppia tendina rossa/bordeaux
-2. **Hero 3D (WebGL)**: 10 foto su una ruota che gira con lo scroll; le foto si piegano e cambiano colore ai bordi in base alla velocità; scritta circolare gigante che ruota sulla "tavola" bordeaux; etichetta che cambia con la foto davanti; clic su una foto per andare alla sezione
-3. **La Cascina**: titolo gigante lettera per lettera, immagine che si allarga a tutto schermo con il titolo sopra
-4. **Promessa**: forme illustrate che cadono dall'alto, si fermano e poi escono
-5. **La Cucina**: tre foto che entrano dai lati, schede Antipasti/Dolci/Colazione con cambio foto animato, tabella del menù che si disegna
-6. **Paolo**: scritta "Con il cuore" che scorre dietro la foto, che ruota; frutti che fluttuano
-7. **Le Camere**: card numerate impilate che si inclinano una sull'altra
-8. **Matrimoni**: galleria da trascinare con il mouse/dito (si piega con la velocità) e numeri che contano
-9. **Fortunago**: foto laterali che entrano ruotando, foto centrale che si ingrandisce
-10. **Galleria**: due nastri di foto in direzioni opposte che accelerano con lo scroll (clic = foto grande)
-11. **Recensioni** a rotazione e **footer** con il nome gigante
+1. **Caricamento**: il logo salta fuori e gira, poi archi colorati salgono e scoprono la pagina (gli stessi archi fanno da transizione quando si clicca un link)
+2. **Scegli il tuo momento**: 6 adesivi rotondi (Cucina, Camere, Matrimoni, Piscina, Colazione, Fortunago). Passandoci sopra **tutta la pagina cambia colore**, l'adesivo si ingrandisce e compare la scritta a mano "cliccami!". Clic = vai alla sezione
+3. **Menu "Tirami"**: l'etichetta in alto a destra si tira giù (o si clicca) e il menu scende con un rimbalzo
+4. **La storia**: collage con post-it, polaroid attaccate con lo scotch e cartoncino kraft; il testo si colora mentre scorri, la lista "Da fare" si spunta da sola, un adesivo cade dall'alto
+5. **Fascia ondulata**: la scritta corre lungo l'onda e cambia direzione con lo scroll
+6. **Le camere**: slider a colori. Ogni camera ha il suo colore, la parola gigante cambia lettera per lettera e l'adesivo rotola via (frecce o swipe)
+7. **Perché il Melo**: scroll orizzontale "PER GUSTARE / PER RIPOSARE / PER FESTEGGIARE / PER SCOPRIRE" con foto, adesivi che ruotano, frecce disegnate a mano
+8. **Matrimoni**: foto grande che si apre, adesivo e striscia di foto che scorre
+9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
+10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link)
+
+Passando con il mouse sui testi del menu, del footer e sulle parole grandi, le lettere saltellano.
 
 ## File
 - `index.html`: contenuti e testi
-- `css/style.css`: stile (colori nelle variabili in cima)
-- `js/main.js`: animazioni
-- `src/hero-gl.js`: sorgente della ruota 3D. Se lo modifichi, ricompila con:
-  `npx esbuild src/hero-gl.js --bundle --minify --format=iife --global-name=MeloGL --outfile=js/hero-gl.min.js` (serve `npm i three esbuild`)
-- `assets/img/nuove/`: le 29 foto nuove di matrimonio.com
-- `assets/img/gl/`: versioni leggere delle foto della ruota 3D
-
-## Modifiche rapide
-- **Foto ed etichette della ruota**: in `js/main.js`, l'elenco `heroItems`
-- **Foto delle schede della cucina**: in `js/main.js`, l'elenco `sets`
-- **Colori**: `--cream`, `--wine`, `--apple` in cima a `css/style.css`
+- `css/style.css`: stile (colori principali in `:root`)
+- `js/main.js`: animazioni. In cima trovi:
+  - `P`: gli adesivi (foto, colori, etichette)
+  - `ROOMS`: le camere dello slider (testi, foto, colori)
+  - `SOCIAL`: i bottoni del footer
+- `assets/img/paper.jpg`: texture di carta stropicciata (generata, nessun diritto di terzi)
+- `assets/img/stk/`: ritagli quadrati delle foto per gli adesivi
+- `assets/vendor/`: GSAP, ScrollTrigger, Lenis, Matter.js (fisica del footer)
 
 ## Da verificare prima della messa online
-- Prezzo "da €100 a notte" (listino 2024) e dati recensioni (4,7/5, 94%)
+- Prezzo "da €100 a notte" (listino 2024) e dati recensioni (4,7/5, 47 recensioni)
 - Banner cookie/privacy (il sito attuale usa iubenda)
 - Diritti delle foto di Barbara Buschiazzo anche per il nuovo sito
