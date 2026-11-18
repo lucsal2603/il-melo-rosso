@@ -24,18 +24,41 @@ Poi apri http://localhost:8080
 
 Passando con il mouse sui testi del menu, del footer e sulle parole grandi, le lettere saltellano.
 
+## Le pagine interne
+Ogni adesivo della home apre la sua pagina, in stile scheda prodotto di Sweet Tape:
+`cucina.html`, `camere.html`, `matrimoni.html`, `piscina.html`, `colazione.html`, `fortunago.html`.
+
+Ogni pagina ha il colore del suo adesivo e queste sezioni:
+1. **Apertura**: titolo gigante che cade lettera per lettera, adesivo che gira; scorrendo, l'adesivo rotola fino alla descrizione
+2. **Descrizione**: testo grande che si colora mentre scorri, foto con lo scotch, etichette e pulsante (prenota / preventivo / come arrivare)
+3. **Varianti**: card con adesivi (pranzo e cena, le 6 camere, rito e festa...)
+4. **Superpoteri**: la sezione si ferma e le card scorrono una alla volta; il titolo si "mescola" e si ricompone
+5. **Frase + galleria**: frase grande, foto con lo scotch, striscia di foto che scorre (clic = foto grande)
+6. **Prossima tappa**: l'adesivo della pagina successiva, cliccabile
+7. Footer con la fisica, uguale in tutte le pagine (cliccando un adesivo si apre la sua pagina)
+
+**Per modificare testi e foto delle pagine interne** apri `tools/build_pages.py`, cambia l'elenco `PAGES` e lancia:
+```bash
+python3 tools/build_pages.py
+```
+Lo script riscrive le 6 pagine e aggiorna anche menu, intestazione e footer della home, così restano uguali ovunque.
+(Se modifichi a mano un file `cucina.html` ecc., la modifica viene persa al prossimo lancio dello script.)
+
 ## File
-- `index.html`: contenuti e testi
+- `index.html`: contenuti e testi della home
 - `css/style.css`: stile (colori principali in `:root`)
-- `js/main.js`: animazioni. In cima trovi:
-  - `P`: gli adesivi (foto, colori, etichette)
+- `js/core.js`: parti comuni a tutte le pagine (adesivi e loro colori `P`, menu, transizioni ad archi, footer con la fisica, bottoni social `SOCIAL`)
+- `js/page.js`: animazioni delle pagine interne
+- `css/page.css`: stile delle pagine interne
+- `js/main.js`: animazioni della home. In cima trovi:
   - `ROOMS`: le camere dello slider (testi, foto, colori)
-  - `SOCIAL`: i bottoni del footer
 - `assets/img/paper.jpg`: texture di carta stropicciata (generata, nessun diritto di terzi)
 - `assets/img/stk/`: ritagli quadrati delle foto per gli adesivi
 - `assets/vendor/`: GSAP, ScrollTrigger, Lenis, Matter.js (fisica del footer)
 
 ## Da verificare prima della messa online
-- Prezzo "da €100 a notte" (listino 2024) e dati recensioni (4,7/5, 47 recensioni)
+- Prezzi delle camere (listino 2024 del sito attuale: depandance da €140, bagno privato da €120, bagno attiguo da €100, letto aggiunto €20, pranzo light da €25, cena da €40)
+- Dati recensioni (4,7/5, 47 recensioni, 94%) e servizi matrimoni presi da matrimonio.com
+- Pagina Piscina: non ci sono informazioni su orari e stagione di apertura, i testi sono solo descrittivi
 - Banner cookie/privacy (il sito attuale usa iubenda)
 - Diritti delle foto di Barbara Buschiazzo anche per il nuovo sito

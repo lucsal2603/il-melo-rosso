@@ -25,10 +25,11 @@
   <span style="--a:#F59DB0"></span><span style="--a:#F58A1F"></span><span style="--a:#F5CF33"></span><span style="--a:#8E80F0"></span><span style="--a:#3A0A0C"></span>
 </div>
 
+<!-- SHARED:TOP -->
 <!-- ============ HEADER ============ -->
 <header class="hdr">
   <p class="hdr__claim">Una cascina rossa<br>sulle colline dell'Oltrepò</p>
-  <a class="hdr__logo" href="#home" aria-label="Il Melo Rosso, torna all'inizio"><img src="assets/img/site/logo.png" alt="Il Melo Rosso" width="64" height="64"></a>
+  <a class="hdr__logo" href="index.html" aria-label="Il Melo Rosso, torna alla home"><img src="assets/img/site/logo.png" alt="Il Melo Rosso" width="64" height="64"></a>
   <button class="tag" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu">
     <span class="tag__string"></span>
     <span class="tag__paper"><span class="tag__txt">Tirami</span></span>
@@ -38,12 +39,14 @@
 <!-- ============ PULL-DOWN MENU ============ -->
 <nav class="menu" id="menu" aria-hidden="true">
   <ul class="menu__list">
-    <li><a href="#home" data-hop><img src="assets/img/stk/img-7608.jpg" alt=""><span>Home</span></a></li>
-    <li><a href="#storia" data-hop><img src="assets/img/stk/0da5b5f9.jpg" alt=""><span>La storia</span></a></li>
-    <li><a href="#camere" data-hop><img src="assets/img/stk/luna-1.jpg" alt=""><span>Le camere</span></a></li>
-    <li><a href="#momenti" data-hop><img src="assets/img/stk/13175261.jpg" alt=""><span>La cucina</span></a></li>
-    <li><a href="#matrimoni" data-hop><img src="assets/img/stk/13660935-2.jpg" alt=""><span>Matrimoni</span></a></li>
-    <li><a href="#contatti" data-hop><img src="assets/img/stk/img-7607-1.jpg" alt=""><span>Contatti</span></a></li>
+    <li><a href="index.html" data-hop><img src="assets/img/stk/img-7608.jpg" alt=""><span>Home</span></a></li>
+    <li><a href="cucina.html" data-hop><img src="assets/img/stk/13175261.jpg" alt=""><span>La cucina</span></a></li>
+    <li><a href="camere.html" data-hop><img src="assets/img/stk/luna-1.jpg" alt=""><span>Le camere</span></a></li>
+    <li><a href="matrimoni.html" data-hop><img src="assets/img/stk/13660935-2.jpg" alt=""><span>Matrimoni</span></a></li>
+    <li><a href="piscina.html" data-hop><img src="assets/img/stk/img-7606.jpg" alt=""><span>Piscina</span></a></li>
+    <li><a href="colazione.html" data-hop><img src="assets/img/stk/img-7842.jpg" alt=""><span>Colazione</span></a></li>
+    <li><a href="fortunago.html" data-hop><img src="assets/img/stk/img-7607-1.jpg" alt=""><span>Fortunago</span></a></li>
+    <li><a href="#contatti" data-hop><img src="assets/img/stk/img-7609-1.jpg" alt=""><span>Contatti</span></a></li>
   </ul>
   <div class="menu__foot">
     <a href="tel:+393351762614">335 176 2614</a>
@@ -52,6 +55,7 @@
   </div>
   <p class="menu__hand">tira di nuovo per chiudere ↑</p>
 </nav>
+<!-- /SHARED:TOP -->
 
 <main>
 
@@ -157,6 +161,7 @@
       </div>
     </div>
     <p class="rooms__price">B&amp;B da <b>€100</b> a notte · colazione inclusa · mezza pensione o pensione completa</p>
+    <div class="center"><a class="pill rooms__more" href="camere.html" data-hop>Tutte le camere →</a></div>
   </section>
 
   <!-- ============ MOMENTI · HORIZONTAL ============ -->
@@ -173,7 +178,7 @@
           <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/site/paolo.jpg" alt="Paolo in cucina"></figure><span data-hop>gustare</span></h3>
           <div class="mpanel__stk" data-player="cucina" style="--x:66%;--y:-4%"></div>
           <div class="mpanel__stk mpanel__stk--sm" data-player="colazione" style="--x:84%;--y:58%"></div>
-          <ul class="mpanel__chips"><li>8/9 antipasti</li><li>primo · secondo · dolce</li><li>pranzo 13:00 · cena 20:30</li></ul>
+          <ul class="mpanel__chips"><li>8/9 antipasti</li><li>primo · secondo · dolce</li><li>pranzo 13:00 · cena 20:30</li><li class="mpanel__go"><a href="cucina.html" data-hop>Scopri la cucina →</a></li></ul>
           <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M6,90 C70,10 170,10 286,70"/><path d="M270,52 L288,72 L264,80"/></svg>
         </article>
         <article class="mpanel" data-panel="1">
@@ -181,7 +186,7 @@
           <p class="hand mpanel__hand">sei camere in una<br>vera casa di famiglia</p>
           <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/camere/luna-1.jpg" alt="Camera della Luna"></figure><span data-hop>riposare</span></h3>
           <div class="mpanel__stk" data-player="camere" style="--x:70%;--y:-6%"></div>
-          <ul class="mpanel__chips"><li>B&amp;B</li><li>mezza pensione</li><li>pensione completa</li></ul>
+          <ul class="mpanel__chips"><li>B&amp;B</li><li>mezza pensione</li><li>pensione completa</li><li class="mpanel__go"><a href="camere.html" data-hop>Scopri le camere →</a></li></ul>
           <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M10,20 C80,110 200,110 290,30"/><path d="M272,26 L292,28 L284,48"/></svg>
         </article>
         <article class="mpanel" data-panel="2">
@@ -189,7 +194,7 @@
           <p class="hand mpanel__hand">un solo matrimonio<br>al giorno: il vostro</p>
           <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7615.jpg" alt="Altare floreale"></figure><span data-hop>festeggiare</span></h3>
           <div class="mpanel__stk" data-player="matrimoni" style="--x:74%;--y:56%"></div>
-          <ul class="mpanel__chips"><li>60 – 150 ospiti</li><li>4,7 / 5 · 47 recensioni</li><li>tensostruttura</li></ul>
+          <ul class="mpanel__chips"><li>60 – 150 ospiti</li><li>4,7 / 5 · 47 recensioni</li><li>tensostruttura</li><li class="mpanel__go"><a href="matrimoni.html" data-hop>Scopri i matrimoni →</a></li></ul>
           <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M6,60 C90,0 160,120 290,50"/><path d="M270,40 L292,50 L276,68"/></svg>
         </article>
         <article class="mpanel" data-panel="3">
@@ -198,7 +203,7 @@
           <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7606.jpg" alt="La piscina panoramica"></figure><span data-hop>scoprire</span></h3>
           <div class="mpanel__stk" data-player="piscina" style="--x:62%;--y:-8%"></div>
           <div class="mpanel__stk mpanel__stk--sm" data-player="fortunago" style="--x:86%;--y:60%"></div>
-          <ul class="mpanel__chips"><li>piscina panoramica</li><li>sentieri</li><li>vini dell'Oltrepò</li><li>pet friendly</li></ul>
+          <ul class="mpanel__chips"><li>piscina panoramica</li><li>sentieri</li><li>vini dell'Oltrepò</li><li>pet friendly</li><li class="mpanel__go"><a href="fortunago.html" data-hop>Scopri Fortunago →</a></li></ul>
         </article>
       </div>
     </div>
@@ -218,6 +223,7 @@
       <figure><img src="assets/img/site/gatto.jpg" alt="Sposi e il gatto di casa" loading="lazy"></figure>
       <figure><img src="assets/img/nuove/img-7844.jpg" alt="Sposi al tramonto" loading="lazy"></figure>
     </div>
+    <div class="center"><a class="pill pill--dark" href="matrimoni.html" data-hop>Scopri i matrimoni →</a></div>
   </section>
 
   <!-- ============ CTA · VIENI A TROVARCI ============ -->
@@ -235,14 +241,16 @@
   </section>
 </main>
 
+<!-- SHARED:FOOT -->
 <!-- ============ FOOTER · PHYSICS ============ -->
 <footer class="foot" id="contatti">
   <div class="foot__curve" aria-hidden="true"></div>
   <nav class="foot__nav" aria-label="Footer">
-    <a href="#momenti" data-hop>La cucina</a>
-    <a href="#camere" data-hop>Le camere</a>
-    <a href="#matrimoni" data-hop>Matrimoni</a>
-    <a href="https://www.google.com/maps/search/?api=1&amp;query=Agriturismo+Il+Melo+Rosso+Fortunago" target="_blank" rel="noopener" data-hop>Dove siamo</a>
+    <a href="cucina.html" data-hop>La cucina</a>
+    <a href="camere.html" data-hop>Le camere</a>
+    <a href="matrimoni.html" data-hop>Matrimoni</a>
+    <a href="fortunago.html" data-hop>Fortunago</a>
+    <a href="https://www.google.com/maps/search/?api=1&amp;query=Agriturismo+Il+Melo+Rosso+Via+Ca%27+De%27+Vecchi+1+Fortunago" target="_blank" rel="noopener" data-hop>Dove siamo</a>
   </nav>
   <div class="foot__brand">
     <img src="assets/img/site/logo.png" alt="" width="90" height="90">
@@ -257,11 +265,15 @@
     <p>© <span class="js-year">2026</span> Il Melo Rosso</p>
   </div>
 </footer>
+<!-- /SHARED:FOOT -->
 
+<!-- SHARED:SCRIPTS -->
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/vendor/matter.min.js"></script>
+<script src="js/core.js"></script>
 <script src="js/main.js"></script>
+<!-- /SHARED:SCRIPTS -->
 </body>
 </html>

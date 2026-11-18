@@ -320,6 +320,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .mpanel__stk { position: absolute; left: var(--x); top: var(--y); width: clamp(140px, 14vw, 240px); z-index: 2; }
 .mpanel__stk--sm { width: clamp(100px, 9vw, 160px); }
 .mpanel__chips { list-style: none; margin: 0; padding: 0; position: absolute; right: 9vw; bottom: 14%; display: flex; flex-wrap: wrap; gap: .4rem; max-width: 340px; justify-content: flex-end; }
+.mpanel__chips li.mpanel__go { background: var(--cream); color: var(--wine); }
+.mpanel__chips li.mpanel__go a { display: block; }
 .mpanel__chips li { background: var(--ink); color: var(--bg); border-radius: 99px; padding: .35rem .85rem; font-size: .7rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; transition: background-color .6s, color .6s; }
 .scribble { position: absolute; right: -2vw; top: 22%; width: clamp(160px, 18vw, 300px); fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -356,6 +358,10 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
 .pill { display: inline-flex; align-items: center; height: 46px; padding: 0 1.3rem; border-radius: 99px; background: var(--cream); color: var(--wine); font-weight: 800; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; transition: transform .5s var(--bounce), background-color .3s; }
 .pill:hover { transform: scale(1.08) rotate(-3deg); background: #F7D648; }
+.pill--dark { background: var(--wine); color: var(--cream); }
+.rooms__more { margin-top: -.6rem; }
+.center { display: flex; justify-content: center; }
+.wedding .center { margin-top: clamp(2.5rem, 5vw, 4rem); }
 
 /* =========================================================
    FOOTER · PHYSICS
