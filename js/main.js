@@ -254,7 +254,7 @@
     if (!it) { theme(DEFAULT); gsap.to(note, { opacity: 0, duration: .25 }); return; }
     theme(P[it.dataset.player]);
     const r = it.getBoundingClientRect(), h = $(".pick").getBoundingClientRect();
-    gsap.to(note, { x: r.left - h.left + r.width * .62, y: r.top - h.top - r.width * .12, opacity: 1, rotation: -6, duration: .45, ease: "back.out(2)" });
+    gsap.to(note, { x: r.left - h.left + r.width * .78, y: r.top - h.top - r.width * .42, opacity: 1, rotation: -6, duration: .45, ease: "back.out(2)" });
   }
   items.forEach(it => {
     it.addEventListener("mouseenter", () => activate(it));
