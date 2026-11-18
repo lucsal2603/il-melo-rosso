@@ -210,20 +210,15 @@
     /* MOMENTS horizontal */
     const track = $(".moments__track");
     const dist = () => track.scrollWidth - innerWidth;
-    // le parole seguono un'onda: salgono leggermente e poi riscendono andando a destra
+    // tutto il nastro (parole, foto, adesivi) segue un percorso a onda:
+    // andando a destra sale leggermente e poi riscende, una volta per pannello
     const panels = $$(".mpanel");
-    const wordsEls = panels.map(p => $(".mpanel__words", p));
-    const waveY = () => innerHeight * .09;
+    const amp = () => innerHeight * .13;
     hScroll = gsap.to(track, {
       x: () => -dist(), ease: "none",
       onUpdate() {
-        const x = -gsap.getProperty(track, "x");
-        panels.forEach((p, i) => {
-          // fase 0..1 del pannello rispetto al centro dello schermo
-          const ph = (x + innerWidth / 2 - p.offsetLeft) / p.offsetWidth;
-          const k = Math.max(-.6, Math.min(1.6, ph));
-          gsap.set(wordsEls[i], { y: -Math.sin(k * Math.PI) * waveY(), rotation: -Math.cos(k * Math.PI) * 2.4 });
-        });
+        const pr = dist() ? -gsap.getProperty(track, "x") / dist() : 0;
+        gsap.set(track, { y: -Math.sin(pr * panels.length * Math.PI) * amp() });
       },
       scrollTrigger: { trigger: ".moments__pin", start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
     });
