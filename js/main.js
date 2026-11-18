@@ -34,8 +34,14 @@
     current = it;
     if (!it) { theme(M.DEFAULT); gsap.to(note, { opacity: 0, duration: .25 }); return; }
     theme(P[it.dataset.player]);
+    // la punta della freccia (angolo in basso a destra della nota) cade sul centro-alto dell'adesivo puntato
     const r = it.getBoundingClientRect(), h = $(".pick").getBoundingClientRect();
-    gsap.to(note, { x: r.left - h.left + r.width * .78, y: r.top - h.top - r.width * .42, opacity: 1, rotation: -6, duration: .45, ease: "back.out(2)" });
+    const arrow = $("svg", note).getBoundingClientRect(), box = note.getBoundingClientRect();
+    const tipX = (arrow.right - box.left) - arrow.width * .12;   // punta della freccia dentro la nota
+    const tipY = (arrow.bottom - box.top) - arrow.height * .2;
+    const targetX = r.left - h.left + r.width * .5;               // centro dell'adesivo
+    const targetY = r.top - h.top - r.height * .12;               // bordo alto (l'adesivo si ingrandisce)
+    gsap.to(note, { x: targetX - tipX, y: targetY - tipY, opacity: 1, rotation: 0, duration: .45, ease: "back.out(2)" });
   }
   items.forEach(it => {
     it.addEventListener("mouseenter", () => activate(it));
