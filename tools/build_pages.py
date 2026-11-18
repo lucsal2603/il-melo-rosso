@@ -237,7 +237,7 @@ def shared_top():
     <a href="{MAIL}">agriturismo@ilmelorosso.it</a>
     <span>Via Ca' De' Vecchi 1 · Fortunago (PV)</span>
   </div>
-  <p class="menu__hand">tira di nuovo per chiudere ↑</p>
+  <p class="menu__hand">tirami su per chiudere ↑</p>
 </nav>'''
 
 def shared_foot():

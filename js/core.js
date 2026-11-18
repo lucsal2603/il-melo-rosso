@@ -185,20 +185,30 @@ window.Melo = (() => {
     });
   }
 
-  /* ---------------- MENU "TIRAMI" ---------------- */
+  /* ---------------- MENU "TIRAMI" ----------------
+     Il menu scende come una tenda e l'etichetta resta appesa al suo bordo.
+     Tutto è "gommoso": l'etichetta si allunga e rimbalza, non ruota mai
+     (così non si stacca dal bordo alto dello schermo). */
   const menu = $(".menu"), tag = $(".tag"), tagTxt = $(".tag__txt");
-  let menuOpen = false;
+  let menuOpen = false, dragging = false, hovering = false;
   gsap.set(menu, { yPercent: -104, visibility: "visible" });
-  const TAG_DROP = () => innerHeight - 118;
+  gsap.set(tag, { transformOrigin: "50% 0%" });
+  const TAG_DROP = () => menu.offsetHeight - 16;
+  const stretch = (amt = 1.32) => gsap.timeline()
+    .to(tag, { scaleY: amt, scaleX: 2 - amt * .9 > .8 ? 2 - amt * .9 : .8, duration: .22, ease: "power2.out", overwrite: "auto" })
+    .to(tag, { scaleY: 1, scaleX: 1, duration: 1.3, ease: "elastic.out(1.1, .28)" });
+
   function openMenu() {
     if (menuOpen) return;
     menuOpen = true;
     menu.setAttribute("aria-hidden", "false"); tag.setAttribute("aria-expanded", "true");
     lenis && lenis.stop();
     tagTxt.textContent = "Chiudi";
-    gsap.to(menu, { yPercent: 0, duration: 1.3, ease: "elastic.out(1, .62)", overwrite: true });
-    gsap.to(tag, { y: TAG_DROP(), duration: 1.3, ease: "elastic.out(1, .62)", overwrite: true });
-    gsap.fromTo(".menu__list li", { y: -60, rotation: () => gsap.utils.random(-8, 8) }, { y: 0, rotation: 0, duration: 1.1, ease: "elastic.out(1, .5)", stagger: .05, delay: .15 });
+    gsap.to(menu, { yPercent: 0, duration: 1.6, ease: "elastic.out(1, .55)", overwrite: true });
+    gsap.to(tag, { y: TAG_DROP(), duration: 1.6, ease: "elastic.out(1, .55)", overwrite: "auto" });
+    stretch(1.38);
+    gsap.fromTo(".menu__list li", { y: -80, rotation: () => gsap.utils.random(-10, 10) }, { y: 0, rotation: 0, duration: 1.4, ease: "elastic.out(1, .45)", stagger: .045, delay: .12 });
+    gsap.fromTo(".menu__hand", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .8, delay: .9, ease: "back.out(2)" });
   }
   function closeMenu(fast) {
     if (!menuOpen) return;
@@ -206,36 +216,63 @@ window.Melo = (() => {
     menu.setAttribute("aria-hidden", "true"); tag.setAttribute("aria-expanded", "false");
     lenis && lenis.start();
     tagTxt.textContent = "Tirami";
-    gsap.to(menu, { yPercent: -104, duration: fast ? .5 : .8, ease: "power3.inOut", overwrite: true });
-    gsap.to(tag, { y: 0, duration: fast ? .5 : 1, ease: fast ? "power3.inOut" : "elastic.out(1, .5)", overwrite: true });
+    const d = fast ? .55 : .9;
+    gsap.to(menu, { yPercent: -104, duration: d, ease: "power3.inOut", overwrite: true });
+    gsap.to(tag, { y: 0, duration: d, ease: "power3.inOut", overwrite: "auto", onComplete: () => stretch(1.22) });
   }
+
   (function pullTag() {
-    let down = false, sy = 0, dy = 0, base = 0;
+    let sy = 0, dy = 0, base = 0, lastY = 0, lastT = 0;
     tag.addEventListener("pointerdown", e => {
-      down = true; sy = e.clientY; dy = 0; base = menuOpen ? TAG_DROP() : 0;
+      dragging = true; sy = lastY = e.clientY; lastT = performance.now(); dy = 0; base = menuOpen ? TAG_DROP() : 0;
       tag.setPointerCapture(e.pointerId);
       gsap.killTweensOf([menu, tag]);
+      gsap.to(tag, { scaleY: 1.12, scaleX: .94, duration: .3, ease: "power2.out" });
     });
     tag.addEventListener("pointermove", e => {
-      if (!down) return;
+      if (!dragging) return;
       dy = e.clientY - sy;
-      const y = Math.max(0, Math.min(TAG_DROP(), base + dy));
-      gsap.set(tag, { y });
-      gsap.set(menu, { yPercent: -104 + (y / TAG_DROP()) * 104 });
+      const now = performance.now();
+      const v = (e.clientY - lastY) / Math.max(1, now - lastT) * 1000; lastY = e.clientY; lastT = now;
+      // resistenza elastica oltre i limiti
+      let y = base + dy;
+      const max = TAG_DROP();
+      if (y < 0) y = y * .25;
+      if (y > max) y = max + (y - max) * .25;
+      const s = 1.12 + Math.min(Math.abs(v) / 2600, .3);
+      gsap.to(tag, { y, scaleY: s, scaleX: 2.06 - s, duration: .25, ease: "power3.out", overwrite: "auto" });
+      gsap.to(menu, { yPercent: -104 + Math.max(0, Math.min(1.08, y / max)) * 104, duration: .45, ease: "power3.out", overwrite: true });
     });
     const up = () => {
-      if (!down) return;
-      down = false;
+      if (!dragging) return;
+      dragging = false;
+      gsap.to(tag, { scaleY: 1, scaleX: 1, duration: 1.1, ease: "elastic.out(1.1, .3)" });
       if (Math.abs(dy) < 6) { menuOpen ? closeMenu() : openMenu(); return; }
-      const wantOpen = menuOpen ? dy > -90 : dy > 90;
+      const wantOpen = menuOpen ? dy > -80 : dy > 80;
       if (wantOpen) { menuOpen = false; openMenu(); } else { menuOpen = true; closeMenu(); }
     };
     tag.addEventListener("pointerup", up);
     tag.addEventListener("pointercancel", up);
-    if (fine) tag.addEventListener("mouseenter", () => { if (!menuOpen) gsap.fromTo(tag, { rotation: 0 }, { keyframes: [{ rotation: 9 }, { rotation: -7 }, { rotation: 4 }, { rotation: 0 }], duration: 1, ease: "power1.inOut" }); });
-    gsap.to(tag, { rotation: 3, duration: 1.6, yoyo: true, repeat: -1, ease: "sine.inOut", delay: 4 });
+
+    // hover: l'etichetta si allunga come se qualcuno la tirasse (resta attaccata)
+    if (fine) {
+      tag.addEventListener("mouseenter", () => {
+        hovering = true;
+        if (!dragging) gsap.to(tag, { scaleY: 1.16, scaleX: .93, duration: .9, ease: "elastic.out(1.1, .32)", overwrite: "auto" });
+      });
+      tag.addEventListener("mouseleave", () => {
+        hovering = false;
+        if (!dragging) gsap.to(tag, { scaleY: 1, scaleX: 1, duration: 1.1, ease: "elastic.out(1.1, .3)", overwrite: "auto" });
+      });
+    }
+    // invito: ogni tanto l'etichetta dà un piccolo "strattone"
+    gsap.delayedCall(4, function tug() {
+      if (!menuOpen && !dragging && !hovering && !document.body.classList.contains("is-loading")) stretch(1.12);
+      gsap.delayedCall(5.5, tug);
+    });
   })();
   addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+  addEventListener("resize", () => { if (menuOpen) gsap.set(tag, { y: TAG_DROP() }); });
   // current page in menu
   $$(".menu__list a").forEach(a => { if (a.getAttribute("href") === here) a.classList.add("is-here"); });
 
