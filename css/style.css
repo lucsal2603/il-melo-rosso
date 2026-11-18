@@ -271,6 +271,9 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .rooms__pre .wl, .rooms__big .wl { display: inline-block; }
 .rooms__mask { display: block; overflow: hidden; padding: .02em .05em .04em; }
 .rooms__stk { position: absolute; left: 50%; top: 50%; width: clamp(220px, min(30vw, 50vh), 460px); transform: translate(-50%, -50%); z-index: 3; }
+/* durante il cambio ci sono due adesivi: stanno sovrapposti nello stesso punto, così niente salti */
+.rooms__stk { aspect-ratio: 1; }
+.rooms__stk > .stk { position: absolute; inset: 0; }
 .rooms__card { position: absolute; z-index: 2; border-radius: 26px; overflow: hidden; box-shadow: 0 24px 40px -18px rgba(0, 0, 0, .45); background: var(--cream); padding: 8px; }
 .rooms__card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 20px; }
 .rooms__card--a { left: 17%; top: 22%; width: clamp(120px, 13vw, 210px); transform: rotate(-9deg); }
