@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Melo Cond";
+  src: url("../assets/fonts/melo-cond.woff2") format("woff2");
+  font-weight: 900; font-style: normal; font-display: swap;
+}
 /* =========================================================
    IL MELO ROSSO — v3 · "Scegli il tuo momento"
    ========================================================= */
@@ -12,6 +17,7 @@
   --room: #F58A1F; --room-ink: #5A2400; --room-soft: #FFD23F;
 
   --disp: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --cond: "Melo Cond", "Anton", "Arial Narrow", sans-serif;   /* condensato extra-bold, come Sweet Tape */
   --body: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --hand: "Nothing You Could Do", "Comic Sans MS", cursive;
   --pad: clamp(1rem, 3vw, 3rem);
@@ -304,43 +310,82 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .rooms__price b { font-family: var(--disp); font-size: 1.6em; font-weight: 400; }
 
 /* =========================================================
-   MOMENTS · HORIZONTAL
+   MOMENTS · TELA GIGANTE
+   Come Sweet Tape: una grande tela 2D con le parole giganti
+   su altezze diverse; la "telecamera" scende, corre a destra,
+   va in diagonale verso la parola successiva (giù, su, giù).
    ========================================================= */
-.moments { position: relative; padding-top: clamp(5rem, 10vw, 9rem); z-index: 1; }
-.moments__head { text-align: center; padding: 0 var(--pad); }
-.moments__title { font-family: var(--disp); text-transform: uppercase; font-size: clamp(2.4rem, 5vw, 5.6rem); line-height: .92; max-width: 13ch; margin: 1rem auto 0; }
-.moments__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
-.moments__track { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; will-change: transform; }
-.mpanel { position: relative; flex: none; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 8vw 0 6vw; }
-.mpanel__words {
-  display: flex; align-items: center; gap: 2.4vh;
-  font-family: var(--disp); text-transform: uppercase; white-space: nowrap;
-  font-size: clamp(6rem, 26vh, 20rem); line-height: .85; color: var(--ink);
+.moments {
+  position: relative; z-index: 1;
+  --gs: min(38.2vw, 61vh);      /* dimensione parole giganti (550px a 1440×900) */
+  --pu: min(1vw, 1.6vh);        /* unità per foto e adesivi */
 }
-.mpanel__words { position: relative; z-index: 1; will-change: transform; }
-.mpanel__pic {
-  position: absolute; z-index: 2; margin: 0;
-  width: var(--w); aspect-ratio: 1;
+.moments__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
+.gcanvas { position: absolute; left: 0; top: 0; width: 1px; height: 1px; will-change: transform; }
+.gcanvas > * { position: absolute; left: 0; top: 0; }
+.gtitle { width: 100vw; display: flex; flex-direction: column; align-items: center; gap: 1.1rem; text-align: center; color: var(--ink); }
+.gtitle .pillbox { transform: rotate(-2deg); margin: 0; }
+.gtitle__h {
+  margin: 0; font-family: var(--cond); font-weight: 900; text-transform: uppercase;
+  font-size: calc(var(--pu) * 6.25); line-height: .8; letter-spacing: -.01em;
+  -webkit-text-stroke: .014em currentColor;
+}
+.grow { width: max-content; color: var(--ink); }
+.giant {
+  position: relative; z-index: 1; margin: 0;
+  display: flex; align-items: center; white-space: nowrap;
+  font-family: var(--cond); font-weight: 900; text-transform: uppercase;
+  font-size: var(--gs); line-height: .82; letter-spacing: -.005em;
+  -webkit-text-stroke: .016em currentColor;
+}
+.giant__n { align-self: flex-start; flex: none; margin: .07em .06em 0 0; font-family: var(--hand); font-size: .09em; line-height: 1; -webkit-text-stroke: 0; }
+.gw { display: flex; }
+.gclip { display: block; flex: none; overflow: hidden; margin: -.2em -.05em 0; padding: .2em .05em 0; }
+.gch { display: block; }
+.gslot { flex: none; position: relative; z-index: 2; width: .5947em; margin: 0 .03em; rotate: var(--tilt, 3deg); translate: 0 var(--dy, -.12em); }
+.gslot img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .14em; box-shadow: -.018em .026em .04em rgba(0, 0, 0, .35); }
+.gslot .tape, .gprop--shot .tape { width: 34%; height: 11%; margin-left: -17%; top: -5%; }
+.gprop {
+  position: absolute; left: var(--px); top: var(--py); z-index: var(--pz, 2);
+  width: calc(var(--pw) * var(--pu)); margin: 0; rotate: var(--pr, 0deg);
   will-change: transform;
 }
-.mpanel__pic img { width: 100%; height: 100%; object-fit: cover; border-radius: 34px; box-shadow: 0 26px 44px -20px rgba(0, 0, 0, .55); }
-.mpanel__pic--a { --w: clamp(190px, 36vh, 400px); left: 20%; top: 4%; }
-.mpanel__pic--b { --w: clamp(210px, 40vh, 440px); left: 50%; bottom: 2%; }
-.mpanel__pic--c { --w: clamp(170px, 32vh, 360px); left: 78%; top: 12%; }
-.mpanel__stk { z-index: 3 !important; }
-.mpanel__chips, .mpanel__hand, .mpanel__n { z-index: 4; }
-.mpanel__img { position: relative; flex: none; width: 21vh; aspect-ratio: 1; transform: rotate(-6deg); }
-.mpanel__img img { width: 100%; height: 100%; object-fit: cover; border-radius: 30px; box-shadow: 0 20px 34px -16px rgba(0, 0, 0, .5); }
-.mpanel__n { position: absolute; left: 6vw; top: 16%; font-size: 2.6rem; font-family: var(--hand); line-height: 1; }
-.mpanel__hand { position: absolute; left: 10vw; bottom: 16%; font-size: clamp(1.3rem, 1.9vw, 2.1rem); transform: rotate(-3deg); }
-.mpanel__hand::before { content: ""; position: absolute; left: -1.2rem; top: -.6rem; width: 70%; height: 1.5px; background: currentColor; transform: rotate(-2deg); }
-.mpanel__stk { position: absolute; left: var(--x); top: var(--y); width: clamp(140px, 14vw, 240px); z-index: 2; }
-.mpanel__stk--sm { width: clamp(100px, 9vw, 160px); }
-.mpanel__chips { list-style: none; margin: 0; padding: 0; position: absolute; right: 9vw; bottom: 14%; display: flex; flex-wrap: wrap; gap: .4rem; max-width: 340px; justify-content: flex-end; }
-.mpanel__chips li.mpanel__go { background: var(--cream); color: var(--wine); }
-.mpanel__chips li.mpanel__go a { display: block; }
-.mpanel__chips li { background: var(--ink); color: var(--bg); border-radius: 99px; padding: .35rem .85rem; font-size: .7rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; transition: background-color .6s, color .6s; }
-.scribble { position: absolute; right: -2vw; top: 22%; width: clamp(160px, 18vw, 300px); fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.gprop--shot img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 14%; box-shadow: .6vw .9vw 1.4vw rgba(0, 0, 0, .35); }
+.gprop--stk { display: block; filter: drop-shadow(.35vw .5vw .6vw rgba(0, 0, 0, .3)); }
+.gprop--stk .stk { transition: transform .5s var(--bounce); }
+.gprop--stk:hover .stk { transform: scale(1.08); }
+.gnote {
+  position: absolute; left: var(--px); top: var(--py); z-index: 3; margin: 0;
+  padding: .55em 0 0 .9em; white-space: nowrap; color: var(--ink);
+  font-size: clamp(1.1rem, 1.6vw, 1.9rem); line-height: 1.12; transform: rotate(-4deg);
+}
+.gnote::before { content: ""; position: absolute; left: -.3em; right: 10%; top: .25em; height: 1.5px; background: currentColor; transform: rotate(-3deg); }
+.gnote::after { content: ""; position: absolute; left: .35em; top: -.2em; bottom: -.4em; width: 1.5px; background: currentColor; transform: rotate(-2deg); }
+.gchips { position: absolute; left: var(--px); top: var(--py); z-index: 4; margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; width: max-content; max-width: 46vw; }
+.gchips li { background: var(--ink); color: var(--bg); border-radius: 99px; padding: .4rem .9rem; font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; transition: background-color .6s, color .6s; }
+.gchips li.gchips__go { background: var(--cream); color: var(--wine); }
+.gchips li.gchips__go a { display: block; }
+.garrow { width: calc(var(--pu) * 26); height: auto; overflow: visible; color: var(--ink); opacity: .8; }
+.garrow path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+
+@media (max-width: 743px) {
+  .moments { --gs: 91.67vw; }
+  .gtitle__h { font-size: 14vw; }
+  .gprop--shot { width: 40vw; }
+  .gprop--stk { width: 34vw; }
+  .gnote { font-size: 1.05rem; }
+  .gchips { max-width: 80vw; }
+  .gchips li { font-size: .62rem; padding: .32rem .7rem; }
+  .garrow { width: 62vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moments__pin { height: auto; overflow: visible; padding: 4rem 6vw; }
+  .gcanvas { position: static; width: auto; height: auto; display: flex; flex-direction: column; gap: 4rem; }
+  .gcanvas > * { position: relative; }
+  .moments { --gs: 18vw; }
+  .gprop, .garrow { display: none; }
+  .gnote, .gchips { position: relative; left: auto; top: auto; margin-top: 1rem; }
+}
 
 /* =========================================================
    WEDDING
@@ -454,16 +499,6 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .roundbtn { right: 1.2rem; top: auto; bottom: 30%; width: 92px; }
   .rooms__nav { bottom: 2%; }
 
-  .mpanel { padding: 0 14vw 0 8vw; }
-  .mpanel__words { font-size: 22vh; }
-  .mpanel__img { width: 17vh; }
-  .mpanel__chips { right: 8vw; bottom: 9%; max-width: 70vw; }
-  .mpanel__hand { left: 8vw; bottom: 24%; }
-  .mpanel__stk { width: 30vw; }
-  .mpanel__stk--sm { width: 22vw; }
-  .mpanel__pic--a { --w: 40vw; top: 12%; }
-  .mpanel__pic--b { --w: 46vw; bottom: 20%; }
-  .mpanel__pic--c { --w: 36vw; top: 20%; }
 
   .wedding__photo { height: 70vh; }
   .wedding__stk { width: 32vw; right: 4vw; top: 0; }

@@ -17,7 +17,7 @@ Poi apri http://localhost:8080
 4. **La storia**: collage con post-it, polaroid attaccate con lo scotch e cartoncino kraft; il testo si colora mentre scorri, la lista "Da fare" si spunta da sola, un adesivo cade dall'alto
 5. **Fascia ondulata**: la scritta corre lungo l'onda e cambia direzione con lo scroll
 6. **Le camere**: slider a colori. Ogni camera ha il suo colore, la parola gigante cambia lettera per lettera e l'adesivo rotola via (frecce o swipe)
-7. **Perché il Melo**: scroll orizzontale "PER GUSTARE / PER RIPOSARE / PER FESTEGGIARE / PER SCOPRIRE" con foto, adesivi che ruotano, frecce disegnate a mano
+7. **Perché il Melo**: tela gigante come Sweet Tape. "PER GUSTARE / PER RIPOSARE / PER FESTEGGIARE / PER SCOPRIRE" sono su altezze diverse (alta, bassa, alta, bassa); la telecamera scende dal titolo, corre lungo ogni parola e va in diagonale verso la successiva. Le lettere salgono quando arriva la telecamera; foto, adesivi e frecce disegnate a mano entrano a scatto. Font "Melo Cond" (assets/fonts, Jost Black condensato, licenza OFL), simile al Futura Condensed di Sweet Tape
 8. **Matrimoni**: foto grande che si apre, adesivo e striscia di foto che scorre
 9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
 10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link)

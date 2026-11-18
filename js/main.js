@@ -207,42 +207,100 @@
     gsap.from(".rooms__word .wl", { yPercent: 110, duration: .9, ease: "back.out(1.6)", stagger: .04, scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
     gsap.from(".roundbtn, .rooms__info, .rooms__nav, .rooms__more", { y: 50, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".rooms__stage", start: "top 55%" } });
 
-    /* MOMENTS horizontal */
-    const track = $(".moments__track");
-    const dist = () => track.scrollWidth - innerWidth;
-    // tutto il nastro (parole, foto, adesivi) segue un percorso a onda:
-    // andando a destra sale leggermente e poi riscende, una volta per pannello
-    const panels = $$(".mpanel");
-    const amp = () => innerHeight * .13;
-    hScroll = gsap.to(track, {
-      x: () => -dist(), ease: "none",
-      onUpdate() {
-        const pr = dist() ? -gsap.getProperty(track, "x") / dist() : 0;
-        gsap.set(track, { y: -Math.sin(pr * panels.length * Math.PI) * amp() });
-      },
-      scrollTrigger: { trigger: ".moments__pin", start: "top top", end: () => "+=" + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
-    });
-    $$(".mpanel").forEach(p => {
-      const ca = { containerAnimation: hScroll };
-      $$(".mpanel__stk", p).forEach((s, i) => {
-        gsap.fromTo(s, { rotation: -180, scale: .4 }, { rotation: 120 * (i ? -1 : 1), scale: 1, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
-        gsap.fromTo(s, { y: 120 }, { y: -60, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
+    /* MOMENTS · tela gigante (come Sweet Tape)
+       Le parole stanno su altezze diverse (alta, bassa, alta, bassa) e la
+       "telecamera" va verso di loro: scende dal titolo alla prima parola,
+       corre a destra lungo la parola, poi va in diagonale verso la successiva. */
+    (() => {
+      const pin = $(".moments__pin"), cv = $(".gcanvas"), title = $(".gtitle");
+      const rows = $$(".grow"), arrows = $$(".garrow");
+      if (!pin || !rows.length) return;
+      // lettere singole dentro una "finestra": salgono dal basso quando arriva la telecamera
+      const rowChars = rows.map(r => $$(".gw", r).flatMap(w => {
+        const txt = w.textContent; w.textContent = "";
+        return [...txt].map(ch => {
+          const clip = document.createElement("span"); clip.className = "gclip";
+          const c = document.createElement("span"); c.className = "gch"; c.textContent = ch;
+          clip.appendChild(c); w.appendChild(clip); return c;
+        });
+      }));
+      const props = rows.map(r => $$(".gprop", r).map(el => ({ el, pp: parseFloat(el.dataset.pp) || 0, stk: el.classList.contains("gprop--stk") })));
+      const arrowPaths = arrows.map(a => $$("path", a).map(path => { const L = path.getTotalLength(); gsap.set(path, { strokeDasharray: L, strokeDashoffset: L }); return { path, L }; }));
+      gsap.set(rowChars.flat(), { yPercent: 135 });
+      rows.forEach(r => {
+        gsap.set($$(".gprop", r), { scale: 0 });
+        gsap.set($(".gslot", r), { scale: 0, rotation: -24 });
+        gsap.set([$(".gnote", r), $(".giant__n", r)], { opacity: 0, y: 30 });
+        gsap.set($$(".gchips li", r), { scale: 0 });
       });
-      // foto grandi che coprono in parte il testo, a velocità diverse
-      $$(".mpanel__pic", p).forEach((pic, k) => {
-        const sp = [1, -.7, 1.3][k];
-        gsap.fromTo(pic, { x: innerWidth * .18 * sp, y: 60 * sp, rotation: -14 * sp, scale: .7 },
-          { x: -innerWidth * .12 * sp, y: -50 * sp, rotation: 8 * sp, scale: 1, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "right left", scrub: true } });
+
+      let W = 0, H = 0, rowH = 0, R = [], A = [], K = [];
+      function layout() {
+        W = pin.clientWidth; H = pin.clientHeight;
+        const fs = parseFloat(getComputedStyle($(".giant", rows[0])).fontSize);
+        const mob = W < 744;
+        rowH = rows[0].offsetHeight;
+        const drop = fs * 1.23;                 // dislivello tra parola alta e bassa
+        const gap = fs * (mob ? 1.05 : .9);     // spazio tra una parola e la successiva
+        const y0 = H * (mob ? .74 : .8);        // la prima parola spunta in basso all'inizio
+        gsap.set(title, { x: 0, y: H * .42 - title.offsetHeight / 2 });
+        let x = W * (mob ? .03 : .045);
+        R = rows.map((r, i) => {
+          const y = y0 + (i % 2 ? drop : 0), w = r.offsetWidth;
+          gsap.set(r, { x, y });
+          const o = { x, y, w }; x += w + gap; return o;
+        });
+        A = arrows.map((ar, i) => {
+          const a = R[i], b = R[i + 1], aw = ar.getBoundingClientRect().width;
+          const ax = a.x + a.w + (gap - aw) / 2, ay = (a.y + b.y) / 2 + rowH * .5 - aw * .33;
+          gsap.set(ar, { x: ax, y: ay });
+          return { x: ax, w: aw };
+        });
+        const lead = W * (mob ? .03 : .045), tail = W * (mob ? .92 : .72);
+        K = [{ x: 0, y: 0 }];
+        R.forEach(r => {
+          const cy = r.y + rowH / 2 - H / 2, sx = r.x - lead;
+          K.push({ x: sx, y: cy }, { x: Math.max(sx, r.x + r.w - tail), y: cy });
+        });
+        render();
+      }
+      const cam = { x: 0, y: 0 };
+      const done = rows.map(() => false);
+      function reveal(i) {
+        done[i] = true;
+        const r = rows[i];
+        gsap.to(rowChars[i], { yPercent: 0, duration: 1, ease: "power4.out", stagger: .05 });
+        gsap.to($(".gslot", r), { scale: 1, rotation: 0, duration: 1.3, ease: "elastic.out(1, .6)", delay: .15 });
+        gsap.to($$(".gprop", r), { scale: 1, duration: 1, ease: "back.out(1.7)", stagger: .09, delay: .25 });
+        gsap.to([$(".giant__n", r), $(".gnote", r)], { opacity: 1, y: 0, duration: .8, ease: "back.out(2)", stagger: .1, delay: .35 });
+        gsap.to($$(".gchips li", r), { scale: 1, duration: .6, ease: "back.out(2.5)", stagger: .07, delay: .5 });
+      }
+      function render() {
+        gsap.set(cv, { x: -cam.x, y: -cam.y });
+        R.forEach((r, i) => {
+          const rel = cam.x - r.x;
+          props[i].forEach(({ el, pp, stk }) => gsap.set(el, stk ? { x: rel * pp, rotation: rel * .05 } : { x: rel * pp }));
+          if (!done[i] && cam.x + W > r.x + W * .12 && cam.y + H > r.y + rowH * .35) reveal(i);
+        });
+        A.forEach((a, i) => {
+          const pr = gsap.utils.clamp(0, 1, (cam.x + W * .85 - a.x) / (a.w * 1.4));
+          arrowPaths[i].forEach(({ path, L }, k) => gsap.set(path, { strokeDashoffset: L * (1 - gsap.utils.clamp(0, 1, k ? pr * 3 - 2 : pr * 1.4)) }));
+        });
+      }
+      layout();
+      M.fontsReady.then(() => { layout(); ScrollTrigger.refresh(); });
+      ScrollTrigger.addEventListener("refreshInit", layout);
+      const segLen = i => Math.hypot(K[i + 1].x - K[i].x, K[i + 1].y - K[i].y);
+      const total = () => K.slice(1).reduce((s, k, i) => s + segLen(i), 0) * .85;
+      const tl = gsap.timeline({
+        defaults: { ease: "none" }, onUpdate: render,
+        scrollTrigger: { trigger: pin, start: "top top", end: () => "+=" + total(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
       });
-      gsap.fromTo($(".mpanel__img", p), { rotation: -22, scale: .6 }, { rotation: 6, scale: 1.05, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left right", end: "center center", scrub: true } });
-      const sc = $(".scribble", p);
-      if (sc) $$("path", sc).forEach(path => {
-        const L = path.getTotalLength();
-        gsap.fromTo(path, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, ease: "none", scrollTrigger: { trigger: p, ...ca, start: "left 70%", end: "center 40%", scrub: true } });
-      });
-      gsap.from($$(".mpanel__chips li", p), { scale: 0, rotation: -20, duration: .6, ease: "back.out(2.5)", stagger: .08, scrollTrigger: { trigger: p, ...ca, start: "left 55%" } });
-      gsap.from([$(".mpanel__n", p), $(".mpanel__hand", p)], { y: 40, opacity: 0, duration: .8, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: p, ...ca, start: "left 60%" } });
-    });
+      for (let i = 0; i < K.length - 1; i++) {
+        tl.fromTo(cam, { x: () => K[i].x, y: () => K[i].y }, { x: () => K[i + 1].x, y: () => K[i + 1].y, duration: Math.max(1, segLen(i)), immediateRender: false });
+      }
+      hScroll = tl;
+    })();
 
     /* WEDDING */
     gsap.fromTo(".wedding__photo img", { yPercent: -15 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".wedding__photo", start: "top bottom", end: "bottom top", scrub: true } });

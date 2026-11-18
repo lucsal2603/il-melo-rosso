@@ -10,6 +10,7 @@
   <meta property="og:description" content="Cucina, camere, matrimoni e piscina sulle colline dell'Oltrepò Pavese.">
   <meta property="og:image" content="assets/img/nuove/copertina.jpg">
   <link rel="icon" type="image/png" href="assets/img/site/logo.png">
+  <link rel="preload" href="assets/fonts/melo-cond.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600;700;800&family=Nothing+You+Could+Do&display=swap">
@@ -165,59 +166,51 @@
     <div class="center"><a class="pill rooms__more" href="camere.html" data-hop>Tutte le camere →</a></div>
   </section>
 
-  <!-- ============ MOMENTI · HORIZONTAL ============ -->
+  <!-- ============ MOMENTI · TELA GIGANTE (come Sweet Tape) ============ -->
   <section class="moments" id="momenti">
-    <div class="moments__head">
-      <span class="pillbox pillbox--ink">Perché il Melo</span>
-      <h2 class="moments__title js-hop-in">Siamo qui per i momenti di tutti i giorni.</h2>
-    </div>
     <div class="moments__pin">
-      <div class="moments__track">
-        <article class="mpanel" data-panel="0">
-          <span class="mpanel__n">①</span>
-          <p class="hand mpanel__hand">la cucina di Paolo:<br>dall'orto alla tavola</p>
-          <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/site/paolo.jpg" alt="Paolo in cucina"></figure><span data-hop>gustare</span></h3>
-          <figure class="mpanel__pic mpanel__pic--a"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7616.jpg" alt="Salumi del territorio" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--b"><i class="tape tape--top"></i><img src="assets/img/nuove/13175261.jpg" alt="Crostate di frutta" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--c"><i class="tape tape--top"></i><img src="assets/img/site/508g.jpg" alt="Buffet dei dolci" loading="lazy"></figure>
-          <div class="mpanel__stk" data-player="cucina" style="--x:66%;--y:-4%"></div>
-          <div class="mpanel__stk mpanel__stk--sm" data-player="colazione" style="--x:84%;--y:58%"></div>
-          <ul class="mpanel__chips"><li>8/9 antipasti</li><li>primo · secondo · dolce</li><li>pranzo 13:00 · cena 20:30</li><li class="mpanel__go"><a href="cucina.html" data-hop>Scopri la cucina →</a></li></ul>
-          <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M6,90 C70,10 170,10 286,70"/><path d="M270,52 L288,72 L264,80"/></svg>
-        </article>
-        <article class="mpanel" data-panel="1">
-          <span class="mpanel__n">②</span>
-          <p class="hand mpanel__hand">sei camere in una<br>vera casa di famiglia</p>
-          <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/camere/luna-1.jpg" alt="Camera della Luna"></figure><span data-hop>riposare</span></h3>
-          <figure class="mpanel__pic mpanel__pic--a"><i class="tape tape--top"></i><img src="assets/img/camere/casetta-2.jpg" alt="La Casetta" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--b"><i class="tape tape--top"></i><img src="assets/img/camere/nonno-2.jpg" alt="Camera del Nonno" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--c"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7843.jpg" alt="Dettaglio di una camera" loading="lazy"></figure>
-          <div class="mpanel__stk" data-player="camere" style="--x:70%;--y:-6%"></div>
-          <ul class="mpanel__chips"><li>B&amp;B</li><li>mezza pensione</li><li>pensione completa</li><li class="mpanel__go"><a href="camere.html" data-hop>Scopri le camere →</a></li></ul>
-          <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M10,20 C80,110 200,110 290,30"/><path d="M272,26 L292,28 L284,48"/></svg>
-        </article>
-        <article class="mpanel" data-panel="2">
-          <span class="mpanel__n">③</span>
-          <p class="hand mpanel__hand">un solo matrimonio<br>al giorno: il vostro</p>
-          <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7615.jpg" alt="Altare floreale"></figure><span data-hop>festeggiare</span></h3>
-          <figure class="mpanel__pic mpanel__pic--a"><i class="tape tape--top"></i><img src="assets/img/nuove/9642710.jpg" alt="Il bacio degli sposi" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--b"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7841.jpg" alt="Tavola con fiori" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--c"><i class="tape tape--top"></i><img src="assets/img/site/gatto.jpg" alt="Sposi e il gatto di casa" loading="lazy"></figure>
-          <div class="mpanel__stk" data-player="matrimoni" style="--x:74%;--y:56%"></div>
-          <ul class="mpanel__chips"><li>60 – 150 ospiti</li><li>4,7 / 5 · 47 recensioni</li><li>tensostruttura</li><li class="mpanel__go"><a href="matrimoni.html" data-hop>Scopri i matrimoni →</a></li></ul>
-          <svg class="scribble" viewBox="0 0 300 120" aria-hidden="true"><path d="M6,60 C90,0 160,120 290,50"/><path d="M270,40 L292,50 L276,68"/></svg>
-        </article>
-        <article class="mpanel" data-panel="3">
-          <span class="mpanel__n">④</span>
-          <p class="hand mpanel__hand">uno dei Borghi<br>più belli d'Italia</p>
-          <h3 class="mpanel__words"><span data-hop>Per</span><figure class="mpanel__img"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7606.jpg" alt="La piscina panoramica"></figure><span data-hop>scoprire</span></h3>
-          <figure class="mpanel__pic mpanel__pic--a"><i class="tape tape--top"></i><img src="assets/img/nuove/meloview16.jpg" alt="La piscina dall'alto" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--b"><i class="tape tape--top"></i><img src="assets/img/nuove/img-7607-1.jpg" alt="Le colline" loading="lazy"></figure>
-          <figure class="mpanel__pic mpanel__pic--c"><i class="tape tape--top"></i><img src="assets/img/nuove/t30-2973555-1.jpg" alt="Prati e boschi" loading="lazy"></figure>
-          <div class="mpanel__stk" data-player="piscina" style="--x:62%;--y:-8%"></div>
-          <div class="mpanel__stk mpanel__stk--sm" data-player="fortunago" style="--x:86%;--y:60%"></div>
-          <ul class="mpanel__chips"><li>piscina panoramica</li><li>sentieri</li><li>vini dell'Oltrepò</li><li>pet friendly</li><li class="mpanel__go"><a href="fortunago.html" data-hop>Scopri Fortunago →</a></li></ul>
-        </article>
+      <div class="gcanvas">
+        <div class="gtitle">
+          <span class="pillbox pillbox--ink">Perché il Melo</span>
+          <h2 class="gtitle__h js-hop-in">Siamo qui<br>per i momenti<br>di tutti i giorni.</h2>
+        </div>
+        <div class="grow" data-row="0">
+          <h3 class="giant" aria-label="Per gustare"><span class="giant__n" aria-hidden="true">①</span><span class="gw" aria-hidden="true">Per</span><span class="gslot" style="--tilt:3.2deg;--dy:-0.118em"><img src="assets/img/site/paolo.jpg" alt="Paolo in cucina"><i class="tape tape--top"></i></span><span class="gw" aria-hidden="true">gustare</span></h3>
+          <figure class="gprop gprop--shot" data-pp="-0.03" style="--px:97%;--py:-16%;--pw:15;--pr:-8deg;--pz:2"><img src="assets/img/nuove/img-7616.jpg" alt="Salumi del territorio" loading="lazy"><i class="tape tape--top"></i></figure>
+          <figure class="gprop gprop--shot" data-pp="0.03" style="--px:52%;--py:56%;--pw:13;--pr:5deg;--pz:2"><img src="assets/img/nuove/13175261.jpg" alt="Crostate di frutta" loading="lazy"><i class="tape tape--top"></i></figure>
+          <a class="gprop gprop--stk" href="cucina.html" data-player="cucina" data-pp="0.03" style="--px:70%;--py:-24%;--pw:17;--pr:-6deg;--pz:3"></a>
+          <a class="gprop gprop--stk" href="colazione.html" data-player="colazione" data-pp="-0.02" style="--px:92%;--py:50%;--pw:14;--pr:-14deg;--pz:3"></a>
+          <p class="gnote hand" style="--px:22%;--py:80%">la cucina di Paolo:<br>dall'orto alla tavola</p>
+          <ul class="gchips" style="--px:66%;--py:104%"><li>8/9 antipasti</li><li>primo · secondo · dolce</li><li>pranzo 13:00 · cena 20:30</li><li class="gchips__go"><a href="cucina.html" data-hop>Scopri la cucina →</a></li></ul>
+        </div>
+        <svg class="garrow" viewBox="0 0 260 173" aria-hidden="true"><path d="M8,18 C60,10 112,40 150,78 C180,108 205,132 236,150"/><path d="M212,152 L238,151 L229,126"/></svg>
+        <div class="grow" data-row="1">
+          <h3 class="giant" aria-label="Per riposare"><span class="giant__n" aria-hidden="true">②</span><span class="gw" aria-hidden="true">Per</span><span class="gslot" style="--tilt:9.6deg;--dy:-0.3em"><img src="assets/img/camere/luna-1.jpg" alt="Camera della Luna"><i class="tape tape--top"></i></span><span class="gw" aria-hidden="true">riposare</span></h3>
+          <figure class="gprop gprop--shot" data-pp="-0.025" style="--px:34%;--py:24%;--pw:19;--pr:-5deg;--pz:1"><img src="assets/img/camere/casetta-2.jpg" alt="La Casetta" loading="lazy"><i class="tape tape--top"></i></figure>
+          <figure class="gprop gprop--shot" data-pp="0.03" style="--px:86%;--py:-20%;--pw:14;--pr:7deg;--pz:2"><img src="assets/img/camere/nonno-2.jpg" alt="Camera del Nonno" loading="lazy"><i class="tape tape--top"></i></figure>
+          <a class="gprop gprop--stk" href="camere.html" data-player="camere" data-pp="0.04" style="--px:-4%;--py:48%;--pw:17;--pr:12deg;--pz:3"></a>
+          <p class="gnote hand" style="--px:16%;--py:-26%">sei camere in una<br>vera casa di famiglia</p>
+          <ul class="gchips" style="--px:60%;--py:104%"><li>B&amp;B</li><li>mezza pensione</li><li>pensione completa</li><li class="gchips__go"><a href="camere.html" data-hop>Scopri le camere →</a></li></ul>
+        </div>
+        <svg class="garrow garrow--up" viewBox="0 0 260 173" aria-hidden="true"><path d="M8,155 C60,163 112,133 150,95 C180,65 205,41 236,23"/><path d="M212,21 L238,22 L229,47"/></svg>
+        <div class="grow" data-row="2">
+          <h3 class="giant" aria-label="Per festeggiare"><span class="giant__n" aria-hidden="true">③</span><span class="gw" aria-hidden="true">Per</span><span class="gslot" style="--tilt:-4deg;--dy:-0.14em"><img src="assets/img/nuove/img-7615.jpg" alt="Altare floreale"><i class="tape tape--top"></i></span><span class="gw" aria-hidden="true">festeggiare</span></h3>
+          <figure class="gprop gprop--shot" data-pp="0.03" style="--px:40%;--py:-22%;--pw:16;--pr:-7deg;--pz:2"><img src="assets/img/nuove/9642710.jpg" alt="Il bacio degli sposi" loading="lazy"><i class="tape tape--top"></i></figure>
+          <figure class="gprop gprop--shot" data-pp="-0.03" style="--px:78%;--py:52%;--pw:14;--pr:6deg;--pz:2"><img src="assets/img/nuove/img-7841.jpg" alt="Tavola con fiori" loading="lazy"><i class="tape tape--top"></i></figure>
+          <a class="gprop gprop--stk" href="matrimoni.html" data-player="matrimoni" data-pp="0.02" style="--px:94%;--py:-18%;--pw:16;--pr:-10deg;--pz:3"></a>
+          <p class="gnote hand" style="--px:24%;--py:82%">un solo matrimonio<br>al giorno: il vostro</p>
+          <ul class="gchips" style="--px:56%;--py:104%"><li>60 – 150 ospiti</li><li>4,7 / 5 · 47 recensioni</li><li>tensostruttura</li><li class="gchips__go"><a href="matrimoni.html" data-hop>Scopri i matrimoni →</a></li></ul>
+        </div>
+        <svg class="garrow" viewBox="0 0 260 173" aria-hidden="true"><path d="M8,18 C60,10 112,40 150,78 C180,108 205,132 236,150"/><path d="M212,152 L238,151 L229,126"/></svg>
+        <div class="grow" data-row="3">
+          <h3 class="giant" aria-label="Per scoprire"><span class="giant__n" aria-hidden="true">④</span><span class="gw" aria-hidden="true">Per</span><span class="gslot" style="--tilt:6deg;--dy:-0.22em"><img src="assets/img/nuove/img-7606.jpg" alt="La piscina panoramica"><i class="tape tape--top"></i></span><span class="gw" aria-hidden="true">scoprire</span></h3>
+          <figure class="gprop gprop--shot" data-pp="-0.03" style="--px:30%;--py:30%;--pw:18;--pr:-6deg;--pz:1"><img src="assets/img/nuove/meloview16.jpg" alt="La piscina dall'alto" loading="lazy"><i class="tape tape--top"></i></figure>
+          <figure class="gprop gprop--shot" data-pp="0.03" style="--px:90%;--py:-22%;--pw:14;--pr:8deg;--pz:2"><img src="assets/img/nuove/img-7607-1.jpg" alt="Le colline" loading="lazy"><i class="tape tape--top"></i></figure>
+          <a class="gprop gprop--stk" href="piscina.html" data-player="piscina" data-pp="0.03" style="--px:62%;--py:-26%;--pw:16;--pr:-8deg;--pz:3"></a>
+          <a class="gprop gprop--stk" href="fortunago.html" data-player="fortunago" data-pp="-0.02" style="--px:96%;--py:54%;--pw:13;--pr:10deg;--pz:3"></a>
+          <p class="gnote hand" style="--px:12%;--py:-24%">uno dei Borghi<br>più belli d'Italia</p>
+          <ul class="gchips" style="--px:58%;--py:104%"><li>piscina panoramica</li><li>sentieri</li><li>vini dell'Oltrepò</li><li>pet friendly</li><li class="gchips__go"><a href="fortunago.html" data-hop>Scopri Fortunago →</a></li></ul>
+        </div>
       </div>
     </div>
   </section>
