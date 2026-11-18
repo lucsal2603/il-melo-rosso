@@ -22,12 +22,12 @@ window.Melo = (() => {
   /* ---------------- DATA ---------------- */
   const DEFAULT = { bg: "#E5372B", ink: "#3A0A0C", hill: "#C4261C", title: "#3A0A0C" };
   const P = {
-    cucina:    { url: "cucina.html",    label: "La|cucina",  img: "assets/img/stk/13175261.jpg",   bg: "#F58A1F", ink: "#5A2400", hill: "#D9700D", title: "#FFD23F", ring: "cucina di casa ✦ dall'orto alla tavola ✦ " },
-    camere:    { url: "camere.html",    label: "Le|camere",  img: "assets/img/stk/casetta-1.jpg",  bg: "#8E80F0", ink: "#1E1660", hill: "#7262DD", title: "#D7D1FF", ring: "sei camere ✦ casa di famiglia ✦ b&b ✦ " },
-    matrimoni: { url: "matrimoni.html", label: "Matrimoni",  img: "assets/img/stk/13660935-2.jpg", bg: "#F59DB0", ink: "#6E1330", hill: "#E3829A", title: "#FFE3EA", ring: "un solo matrimonio al giorno ✦ il vostro ✦ " },
-    piscina:   { url: "piscina.html",   label: "Piscina",    img: "assets/img/stk/img-7606.jpg",   bg: "#5BC6EE", ink: "#073C55", hill: "#3AAEDB", title: "#DDF5FF", ring: "piscina panoramica ✦ tra i boschi ✦ " },
-    colazione: { url: "colazione.html", label: "Colazione",  img: "assets/img/stk/img-7842.jpg",   bg: "#F5CF33", ink: "#5A3D00", hill: "#DDB41A", title: "#FFF5C2", ring: "colazione in giardino ✦ fatta in casa ✦ " },
-    fortunago: { url: "fortunago.html", label: "Fortunago",  img: "assets/img/stk/img-7607-1.jpg", bg: "#8CCB3A", ink: "#173D08", hill: "#6FB021", title: "#E8FFC2", ring: "uno dei borghi più belli d'italia ✦ " }
+    cucina:    { url: "cucina.html",    label: "La|cucina",  img: "assets/img/stk/13175261.jpg",   bg: "#F58A1F", ink: "#5A2400", hill: "#D9700D", title: "#FFD23F", ring: "cucina di casa   dall'orto alla tavola   " },
+    camere:    { url: "camere.html",    label: "Le|camere",  img: "assets/img/stk/casetta-1.jpg",  bg: "#8E80F0", ink: "#1E1660", hill: "#7262DD", title: "#D7D1FF", ring: "sei camere   casa di famiglia   b&b   " },
+    matrimoni: { url: "matrimoni.html", label: "Matrimoni",  img: "assets/img/stk/13660935-2.jpg", bg: "#F59DB0", ink: "#6E1330", hill: "#E3829A", title: "#FFE3EA", ring: "un solo matrimonio al giorno   il vostro   " },
+    piscina:   { url: "piscina.html",   label: "Piscina",    img: "assets/img/stk/img-7606.jpg",   bg: "#5BC6EE", ink: "#073C55", hill: "#3AAEDB", title: "#DDF5FF", ring: "piscina panoramica   tra i boschi   " },
+    colazione: { url: "colazione.html", label: "Colazione",  img: "assets/img/stk/img-7842.jpg",   bg: "#F5CF33", ink: "#5A3D00", hill: "#DDB41A", title: "#FFF5C2", ring: "colazione in giardino   fatta in casa   " },
+    fortunago: { url: "fortunago.html", label: "Fortunago",  img: "assets/img/stk/img-7607-1.jpg", bg: "#8CCB3A", ink: "#173D08", hill: "#6FB021", title: "#E8FFC2", ring: "uno dei borghi più belli d'italia   " }
   };
   const SOCIAL = [
     { href: "https://www.instagram.com/ilmelorosso", label: "Instagram", icon: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/>' },
@@ -48,7 +48,9 @@ window.Melo = (() => {
     const lines = label.split("|");
     const longest = Math.max(...lines.map(l => l.length));
     const fs = Math.min(17, 52 / (0.46 * longest));
-    const txt = (ring || "il melo rosso ✦ fortunago ✦ oltrepò pavese ✦ ").toUpperCase();
+    const txt = (ring || "il melo rosso   fortunago   oltrepò pavese   ").toUpperCase();
+    // spazi multipli → spazi non separabili, così l'SVG non li unisce
+    const ringTxt = t => t.replace(/ {2,}/g, m => "\u00A0".repeat(m.length));
     const el = document.createElement("div");
     el.className = "stk";
     el.innerHTML = `
@@ -59,7 +61,7 @@ window.Melo = (() => {
         </defs>
         <circle cx="100" cy="100" r="99" fill="${shade(bg, -0.28)}"/>
         <circle cx="100" cy="100" r="94" fill="${bg}"/>
-        <text class="stk__arc" fill="${ink}"><textPath href="#${id}p" textLength="505" lengthAdjust="spacing">${txt}${txt.length < 40 ? txt : ""}</textPath></text>
+        <text class="stk__arc" fill="${ink}"><textPath href="#${id}p" textLength="505" lengthAdjust="spacing">${ringTxt(txt + (txt.length < 40 ? txt : ""))}</textPath></text>
         <circle cx="100" cy="100" r="67" fill="#FFF4E2"/>
         <image href="${img}" x="36" y="36" width="128" height="128" clip-path="url(#${id}c)" preserveAspectRatio="xMidYMid slice"/>
         <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="2"/>

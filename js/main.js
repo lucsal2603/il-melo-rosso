@@ -94,7 +94,7 @@
     el.innerHTML = `<span class="rooms__mask">${[...text].map(c => `<span class="wl">${c === " " ? "&nbsp;" : c}</span>`).join("")}</span>`;
     return $$(".wl", el);
   };
-  const roomSticker = r => sticker({ img: r.img, bg: r.bg, ink: r.ink, label: r.big, ring: "le camere del melo rosso ✦ b&b ✦ " });
+  const roomSticker = r => sticker({ img: r.img, bg: r.bg, ink: r.ink, label: r.big, ring: "le camere del melo rosso   b&b   " });
   letters(rPre, ROOMS[0].pre); letters(rBig, ROOMS[0].big);
   rStk.appendChild(roomSticker(ROOMS[0]));
 
