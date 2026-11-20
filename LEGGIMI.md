@@ -24,7 +24,7 @@ Poi apri http://localhost:8080
 
 Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse.
 
-Gli adesivi rotondi non si capovolgono mai: al massimo si inclinano di una ventina di gradi (anche quelli che cadono nel footer).
+Gli adesivi rotondi girano durante le animazioni ma si fermano sempre dritti (giri completi), anche quelli che cadono nel footer.
 
 ## Le pagine interne
 Ogni adesivo della home apre la sua pagina, in stile scheda prodotto di Sweet Tape:
@@ -34,8 +34,8 @@ Ogni pagina ha il colore del suo adesivo e queste sezioni:
 1. **Apertura**: titolo gigante che cade lettera per lettera, adesivo che entra con un rimbalzo; scorrendo, l'adesivo scende fino alla descrizione e arriva dritto
 2. **Descrizione**: testo grande che si colora mentre scorri, foto con lo scotch, etichette e pulsante (prenota / preventivo / come arrivare)
 3. **Varianti**: card con adesivi (pranzo e cena, le 6 camere, rito e festa...)
-4. **Superpoteri**: la sezione si ferma e le schede sono le facce di un solido 3D che ruota scorrendo; sopra e sotto si vedono le facce vicine inclinate e un po' trasparenti. Il titolo della scheda si "mescola" e si ricompone
-5. **Frase + galleria**: frase grande, foto con lo scotch, striscia di foto che scorre (clic = foto grande)
+4. **Superpoteri**: la sezione si ferma e le schede sono le facce di un solido 3D che ruota scorrendo; sopra e sotto si vedono le facce vicine inclinate e un po' trasparenti (sopra la prima scheda c'è l'ultima, sotto l'ultima c'è la prima). Il titolo della scheda si "mescola" e si ricompone
+5. **Frase + galleria**: frase grande, foto con lo scotch, striscia di foto infinita che scorre da sola e accelera con lo scroll (clic = foto grande)
 6. **Prossima tappa**: l'adesivo della pagina successiva, cliccabile
 7. Footer con la fisica, uguale in tutte le pagine (cliccando un adesivo si apre la sua pagina)
 

@@ -389,7 +389,7 @@ window.Melo = (() => {
         }
         wrap.appendChild(el);
         const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .45, friction: .08, frictionAir: .012, density: .002 });
-        Body.setAngularVelocity(b, gsap.utils.random(-.04, .04));
+        Body.setAngularVelocity(b, gsap.utils.random(-.15, .15));
         b.el = el; b.size = size;
         bodies.push(b);
         Composite.add(engine.world, b);
@@ -429,8 +429,14 @@ window.Melo = (() => {
       if (!running) return;
       acc += Math.min(64, time - (last || time)); last = time;
       while (acc >= FIXED) { Engine.update(engine, FIXED); acc -= FIXED; }
-      // gli adesivi possono inclinarsi ma non capovolgersi: angolo limitato a ±20°
-      bodies.forEach(b => { const m = .35; if (b.angle > m || b.angle < -m) { Body.setAngle(b, Math.max(-m, Math.min(m, b.angle))); Body.setAngularVelocity(b, 0); } });
+      // gli adesivi girano mentre cadono e rotolano; quando si fermano si raddrizzano piano
+      // (sono cerchi: girarli non cambia gli urti)
+      bodies.forEach(b => {
+        if (b.speed < .35 && Math.abs(b.angularVelocity) < .03) {
+          const up = Math.round(b.angle / (Math.PI * 2)) * Math.PI * 2;
+          Body.setAngle(b, b.angle + (up - b.angle) * .06); Body.setAngularVelocity(b, 0);
+        }
+      });
       bodies.forEach(b => { b.el.style.transform = `translate(${b.position.x - b.size / 2}px, ${b.position.y - b.size / 2}px) rotate(${b.angle}rad)`; });
       requestAnimationFrame(step);
     }

@@ -57,7 +57,7 @@
   const heroChars = M.hopIns.filter(h => h.el.closest(".pick")).flatMap(h => h.chars);
   if (!reduce) {
     gsap.set(heroChars, { yPercent: -160, rotation: () => gsap.utils.random(-40, 40), opacity: 0 });
-    gsap.set(".pick__item", { yPercent: 160, rotation: -22 });
+    gsap.set(".pick__item", { yPercent: 160, rotation: -360 });
     gsap.set(".pick__hill", { yPercent: 40 });
     gsap.set(".hdr__claim, .hdr__logo, .tag", { opacity: 0 });
   }
@@ -315,7 +315,7 @@
       wheelBtns.forEach((b, i) => {
         const ang = Math.PI + (i - wheelRot.a) * .62;
         const on = Math.max(0, 1 - Math.abs(i - wheelRot.a));
-        gsap.set(b, { x: Math.cos(ang) * r + r * .62, y: Math.sin(ang) * r, scale: .72 + on * .45, rotation: (i - wheelRot.a) * 8, opacity: .55 + on * .45, zIndex: Math.round(on * 10) });
+        gsap.set(b, { x: Math.cos(ang) * r + r * .62, y: Math.sin(ang) * r, scale: .72 + on * .45, rotation: (i - wheelRot.a) * 360, opacity: .55 + on * .45, zIndex: Math.round(on * 10) });
       });
     }
 
@@ -340,6 +340,7 @@
         .to(flip, { rotationY: 90 * dir, scale: .85, duration: .3, ease: "power2.in" }, 0)
         .add(() => { spin.innerHTML = ""; spin.appendChild(mkSticker(d)); }, .3)
         .fromTo(flip, { rotationY: -90 * dir }, { rotationY: 0, scale: 1, duration: 1.1, ease: "elastic.out(1, .5)", immediateRender: false }, .3)
+        .fromTo(spin, { rotation: -360 * dir }, { rotation: 0, duration: 1.3, ease: "back.out(1.2)", immediateRender: false }, 0)   // gira e si ferma dritto
         // foto: si staccano e volano via, ne arrivano altre che si attaccano col nastro
         .to(cards, { y: -H * .9 * dir, rotation: (k) => (k ? 40 : -40) * dir, duration: .42, ease: "power2.in", stagger: .05 }, 0)
         .add(() => {
@@ -389,13 +390,12 @@
           }
         });
         // entrata: l'adesivo arriva rotolando, le foto si attaccano
-        gsap.from(stkBox, { scale: .3, rotation: -20, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: wSec, start: "top 60%" } });
+        gsap.from(stkBox, { scale: .3, rotation: -360, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: wSec, start: "top 60%" } });
         gsap.from(cards, { scale: 1.5, opacity: 0, rotation: () => gsap.utils.random(-25, 25), duration: 1, ease: "back.out(1.6)", stagger: .12, scrollTrigger: { trigger: wSec, start: "top 45%" } });
-        gsap.from(".wd__explore", { scale: 0, rotation: -20, duration: 1.1, ease: "back.out(2)", scrollTrigger: { trigger: wSec, start: "top 40%" } });
+        gsap.from(".wd__explore", { scale: 0, rotation: -360, duration: 1.1, ease: "back.out(2)", scrollTrigger: { trigger: wSec, start: "top 40%" } });
         gsap.from($$(".wd__title .hc", wSec), { yPercent: 110, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .04, scrollTrigger: { trigger: wSec, start: "top 55%" } });
         // vita continua: l'adesivo gira piano, il bordo del pulsante ruota, le foto ondeggiano
-        gsap.fromTo(spin, { rotation: -6 }, { rotation: 6, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });   // ondeggia piano, il titolo resta dritto
-        gsap.to(".wd__explore svg", { rotation: -360, duration: 18, ease: "none", repeat: -1, transformOrigin: "50% 50%" });
+                gsap.to(".wd__explore svg", { rotation: -360, duration: 18, ease: "none", repeat: -1, transformOrigin: "50% 50%" });
         cards.forEach((c, k) => gsap.to($("img", c), { y: k ? 10 : -10, rotation: k ? -2 : 2, duration: 2.6 + k * .4, ease: "sine.inOut", yoyo: true, repeat: -1 }));
         // il mouse sposta leggermente foto e adesivo (profondità)
         if (fine) {
@@ -426,7 +426,9 @@
 
     /* STORY */
     gsap.from(".story__big > span", { yPercent: 40, scale: .7, ease: "none", stagger: .1, scrollTrigger: { trigger: ".story", start: "top bottom", end: "top 30%", scrub: true } });
-    gsap.fromTo(".story__drop", { y: 0, rotation: -20 }, { y: () => innerHeight * (M.mobile() ? .55 : 1.1), rotation: 15, ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
+    gsap.fromTo(".story__drop", { y: 0 }, { y: () => innerHeight * (M.mobile() ? .55 : 1.1), ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
+    // mentre cade fa un giro completo e si ferma dritto
+    gsap.fromTo(".story__drop", { rotation: -360 }, { rotation: 0, duration: 1.8, ease: "power2.out", scrollTrigger: { trigger: ".story", start: "top 60%", toggleActions: "play none none reverse" } });
     $$(".story__board [data-speed]").forEach(el => {
       const sp = parseFloat(el.dataset.speed);
       gsap.fromTo(el, { y: 220 * sp }, { y: -220 * sp, rotation: `+=${(sp - 1) * 14}`, ease: "none", scrollTrigger: { trigger: ".story__board", start: "top bottom", end: "bottom top", scrub: true } });
@@ -453,11 +455,11 @@
         if (off > 0) off -= unit;
         tp.setAttribute("startOffset", off);
       });
-      gsap.fromTo(".wave__stk", { rotation: -18, scale: .5 }, { rotation: 18, scale: 1, ease: "none", scrollTrigger: { trigger: ".wave", start: "top bottom", end: "bottom top", scrub: true } });
+      gsap.fromTo(".wave__stk", { rotation: -360, scale: .5 }, { rotation: 0, scale: 1, duration: 1.4, ease: "back.out(1.3)", scrollTrigger: { trigger: ".wave", start: "top 75%", toggleActions: "play none none reverse" } });
     })();
 
     /* ROOMS */
-    gsap.from(".rooms__stk", { scale: .3, rotation: -20, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
+    gsap.from(".rooms__stk", { scale: .3, rotation: -360, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
     gsap.from(".rooms__card", { scale: 0, duration: 1, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".rooms__stage", start: "top 60%" } });
     gsap.from(".rooms__word .wl", { yPercent: 110, duration: .9, ease: "back.out(1.6)", stagger: .04, scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
     gsap.from(".roundbtn, .rooms__info, .rooms__nav, .rooms__more", { y: 50, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".rooms__stage", start: "top 55%" } });
@@ -479,7 +481,7 @@
           clip.appendChild(c); w.appendChild(clip); return c;
         });
       }));
-      const props = rows.map(r => $$(".gprop", r).map(el => ({ el, pp: parseFloat(el.dataset.pp) || 0, stk: el.classList.contains("gprop--stk") })));
+      const props = rows.map(r => $$(".gprop", r).map(el => ({ el, pp: parseFloat(el.dataset.pp) || 0, stk: el.classList.contains("gprop--stk"), cx: 0 })));
       const arrowPaths = arrows.map(a => $$("path", a).map(path => { const L = path.getTotalLength(); gsap.set(path, { strokeDasharray: L, strokeDashoffset: L }); return { path, L }; }));
       gsap.set(rowChars.flat(), { yPercent: 135 });
       rows.forEach(r => {
@@ -500,6 +502,7 @@
         const y0 = H * (mob ? .74 : .8);        // la prima parola spunta in basso all'inizio
         gsap.set(title, { x: 0, y: H * .42 - title.offsetHeight / 2 });
         let x = W * (mob ? .03 : .045);
+        props.flat().forEach(p => { p.cx = p.el.offsetLeft + p.el.offsetWidth / 2; });   // centro dell'adesivo nella sua riga
         R = rows.map((r, i) => {
           const y = y0 + (i % 2 ? drop : 0), w = r.offsetWidth;
           gsap.set(r, { x, y });
@@ -534,8 +537,8 @@
         gsap.set(cv, { x: -cam.x, y: -cam.y });
         R.forEach((r, i) => {
           const rel = cam.x - r.x;
-          // gli adesivi oscillano un po' ma restano sempre dritti (mai capovolti)
-          props[i].forEach(({ el, pp, stk }) => gsap.set(el, stk ? { x: rel * pp, rotation: Math.sin(rel / 420) * 16 } : { x: rel * pp }));
+          // gli adesivi girano mentre passano e sono dritti quando arrivano al centro dello schermo
+          props[i].forEach(p => gsap.set(p.el, p.stk ? { x: rel * p.pp, rotation: (cam.x + W / 2 - (r.x + p.cx)) / W * 200 } : { x: rel * p.pp }));
           if (!done[i] && cam.x + W > r.x + W * .12 && cam.y + H > r.y + rowH * .35) reveal(i);
         });
         A.forEach((a, i) => {

@@ -30,7 +30,9 @@
   if (lb) {
     lb.addEventListener("click", closeLb);
     addEventListener("keydown", e => { if (e.key === "Escape") closeLb(); });
-    $$(".pq__strip figure, .pq__img, .pd__card").forEach(f => f.addEventListener("click", () => openLb($("img", f))));
+    $$(".pq__img, .pd__card").forEach(f => f.addEventListener("click", () => openLb($("img", f))));
+    // striscia infinita: un solo ascoltatore vale anche per le foto ripetute
+    $(".pq__strip")?.addEventListener("click", e => { const f = e.target.closest("figure"); if (f) openLb($("img", f)); });
   }
 
   /* ---------- scramble testo ---------- */
@@ -52,7 +54,7 @@
   const heroChars = M.hopIns.filter(h => h.el.closest(".ph")).flatMap(h => h.chars);
   if (!reduce) {
     gsap.set(heroChars, { yPercent: -160, rotation: () => gsap.utils.random(-40, 40), opacity: 0 });
-    gsap.set(".ph__stk", { scale: 0, rotation: -22 });
+    gsap.set(".ph__stk", { scale: 0, rotation: -360 });
     gsap.set(".ph__pill, .ph__hand", { opacity: 0, y: 20 });
     gsap.set(".ph__hill", { yPercent: 40 });
     gsap.set(".hdr__claim, .hdr__logo, .tag", { opacity: 0 });
@@ -87,7 +89,7 @@
     measure();
     ScrollTrigger.addEventListener("refreshInit", measure);
     gsap.timeline({ scrollTrigger: { trigger: ".ph", start: "top top", endTrigger: ".pd", end: "center 55%", scrub: 1, invalidateOnRefresh: true } })
-      .to(stk, { x: () => to.x - from.x, y: () => to.y - from.y, scale: () => to.w / from.w, rotation: 0, ease: "power1.inOut" }, 0)
+      .to(stk, { x: () => to.x - from.x, y: () => to.y - from.y, scale: () => to.w / from.w, rotation: 720, ease: "power1.inOut" }, 0)   // due giri: arriva dritto
       .to(".ph__title", { yPercent: -55, ease: "none", duration: .45 }, 0)
       .to(".ph__hand, .ph__pill", { opacity: 0, y: -40, ease: "none", duration: .25 }, 0);
 
@@ -111,9 +113,10 @@
     });
     $$(".ps__card").forEach(card => {
       const s = $(".stk", card);
-      gsap.fromTo(s, { rotation: -20 }, { rotation: 0, ease: "none", scrollTrigger: { trigger: card, start: "top bottom", end: "center 55%", scrub: true } });
+      // gira quando arriva sullo schermo e si ferma sempre dritto (non dipende da dove ti fermi con lo scroll)
+      gsap.fromTo(s, { rotation: -360 }, { rotation: 0, duration: 1.4, ease: "back.out(1.3)", scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" } });
       if (!fine) return;
-      card.addEventListener("mouseenter", () => { gsap.to(card, { scale: 1.06, rotation: `+=${gsap.utils.random(-5, 5)}`, duration: .5, ease: "back.out(3)" }); gsap.fromTo(s, { rotation: -16 }, { rotation: 0, duration: 1, ease: "elastic.out(1.2, .35)" }); });
+      card.addEventListener("mouseenter", () => { gsap.to(card, { scale: 1.06, rotation: `+=${gsap.utils.random(-5, 5)}`, duration: .5, ease: "back.out(3)" }); gsap.fromTo(s, { rotation: -360 }, { rotation: 0, duration: 1, ease: "back.out(1.4)" }); });
       card.addEventListener("mouseleave", () => gsap.to(card, { scale: 1, duration: .7, ease: "elastic.out(1, .5)" }));
     });
 
@@ -123,9 +126,13 @@
       if (!cards.length) return;
       // prisma 3D: le schede + facce decorative fino a chiudere il solido (6 facce = 60° l'una)
       const FACES = Math.max(6, cards.length + 2), STEP = 360 / FACES;
-      for (let k = cards.length; k < FACES; k++) {
-        const g = document.createElement("div");
-        g.className = "pw__card pw__card--ghost"; g.setAttribute("aria-hidden", "true");
+      // facce in più per chiudere il solido: copie delle schede, così sopra la prima
+      // si vede l'ultima e sotto l'ultima si vede la prima
+      const n = cards.length;
+      for (let k = n; k < FACES; k++) {
+        const idx = (k - n < (FACES - n) / 2) ? (k - n) % n : (n - (FACES - k) % n) % n;
+        const g = cards[idx].cloneNode(true);
+        g.classList.remove("is-on"); g.classList.add("pw__card--copy"); g.setAttribute("aria-hidden", "true");
         track.appendChild(g);
       }
       const faces = $$(".pw__card", track);
@@ -171,11 +178,42 @@
     /* FRASE + GALLERIA */
     gsap.fromTo(".pq__img", { scale: .7, rotation: 8, borderRadius: "200px" }, { scale: 1, rotation: -2, borderRadius: "44px", ease: "none", scrollTrigger: { trigger: ".pq__row", start: "top bottom", end: "center center", scrub: true } });
     gsap.from(".pq__tape", { scale: 2.2, opacity: 0, rotation: "+=40", duration: .7, ease: "back.out(2)", stagger: .2, scrollTrigger: { trigger: ".pq__row", start: "top 45%" } });
-    gsap.fromTo(".pq__stk", { rotation: -20, scale: .3 }, { rotation: 0, scale: 1, ease: "none", scrollTrigger: { trigger: ".pq__row", start: "top bottom", end: "bottom 40%", scrub: true } });
-    gsap.fromTo(".pq__strip", { x: () => innerWidth * .25 }, { x: () => -($(".pq__strip").scrollWidth - innerWidth * .75), ease: "none", scrollTrigger: { trigger: ".pq__strip", start: "top bottom", end: "bottom top", scrub: true, invalidateOnRefresh: true } });
+    gsap.fromTo(".pq__stk", { rotation: -360, scale: .3 }, { rotation: 0, scale: 1, duration: 1.4, ease: "back.out(1.3)", scrollTrigger: { trigger: ".pq__stk", start: "top 85%", toggleActions: "play none none reverse" } });
+    // striscia di foto infinita: scorre sempre (più veloce mentre scorri la pagina, e nel verso dello scroll)
+    // e non finisce mai, nemmeno sugli schermi grandi
+    (function strip() {
+      const el = $(".pq__strip");
+      if (!el || !el.children.length) return;
+      const orig = [...el.children];
+      const clone = f => { const c = f.cloneNode(true); c.setAttribute("aria-hidden", "true"); $("img", c).alt = ""; return c; };
+      // gruppo che si ripete: numero pari di foto, così l'alternanza su/giù resta regolare alle giunzioni
+      if (orig.length % 2) orig.forEach(f => el.appendChild(clone(f)));
+      const unit = [...el.children];
+      unit.forEach(f => el.appendChild(clone(f)));
+      let set = 0;
+      const fill = () => {
+        set = el.children[unit.length].offsetLeft - el.children[0].offsetLeft;   // larghezza di un giro
+        while (el.scrollWidth < innerWidth * 2 + set * 2) unit.forEach(f => el.appendChild(clone(f)));
+      };
+      fill();
+      let off = 0, boost = 0, dir = 1, on = false;
+      ScrollTrigger.create({
+        trigger: el, start: "top bottom", end: "bottom top",
+        onToggle: s => { on = s.isActive; },
+        onUpdate: s => { boost = Math.min(16, Math.abs(s.getVelocity()) / 140); dir = s.direction || dir; },
+        onRefresh: fill
+      });
+      gsap.ticker.add(() => {
+        if (!on || !set) return;
+        off += (.7 + boost) * dir; boost *= .93;
+        off = ((off % set) + set) % set;
+        gsap.set(el, { x: -off - set });
+      });
+      gsap.set(el, { x: -set });
+    })();
 
     /* PROSSIMA TAPPA */
-    gsap.fromTo(".pn__stk", { rotation: -12, scale: .4 }, { rotation: 0, scale: 1, ease: "none", scrollTrigger: { trigger: ".pn", start: "top bottom", end: "center 60%", scrub: true } });
+    gsap.fromTo(".pn__stk", { rotation: -360, scale: .4 }, { rotation: 0, scale: 1, duration: 1.4, ease: "back.out(1.3)", scrollTrigger: { trigger: ".pn__stk", start: "top 85%", toggleActions: "play none none reverse" } });
     gsap.from(".pn__title", { yPercent: 60, scale: .8, ease: "none", scrollTrigger: { trigger: ".pn", start: "top bottom", end: "top 30%", scrub: true } });
     if (fine) {
       const link = $(".pn__link");
