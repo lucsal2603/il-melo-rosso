@@ -77,18 +77,25 @@
 .pw { position: relative; z-index: 1; }
 .pw__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 3vw, 3rem); }
 .pw__side { font-family: var(--disp); text-transform: uppercase; font-size: clamp(3rem, 11vw, 12rem); line-height: .9; color: var(--ink); }
-.pw__stack { position: relative; width: clamp(240px, 24vw, 360px); height: 100%; flex: none;
-  -webkit-mask-image: linear-gradient(transparent 4%, #000 30%, #000 70%, transparent 96%); mask-image: linear-gradient(transparent 4%, #000 30%, #000 70%, transparent 96%); }
-.pw__track { position: absolute; left: 0; right: 0; top: calc(50% - clamp(240px, 24vw, 360px) / 2); display: flex; flex-direction: column; gap: 4vh; will-change: transform; }
+/* il solido 3D: le schede sono le facce di un prisma che ruota scorrendo;
+   sopra e sotto si vedono le facce vicine, inclinate e un po' trasparenti */
+.pw__stack { position: relative; width: clamp(260px, 28vw, 420px); height: 100%; flex: none; perspective: 1200px; perspective-origin: 50% 50%; }
+.pw__track { position: absolute; left: 0; right: 0; top: 50%; aspect-ratio: 1; transform-style: preserve-3d; will-change: transform; }
 .pw__card {
-  aspect-ratio: 1; border-radius: clamp(36px, 4vw, 60px);
+  position: absolute; inset: 0;
+  border-radius: clamp(28px, 3vw, 44px);
   background: var(--hill); color: var(--ink);
   display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
   padding: 1.6rem; gap: .6rem;
-  opacity: .55; transform: scale(.88);
-  transition: background-color .5s, opacity .5s, transform .6s var(--bounce);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  opacity: .5;
+  transition: background-color .5s, opacity .5s;
 }
-.pw__card.is-on { background: var(--title); opacity: 1; transform: scale(1); box-shadow: 0 30px 50px -26px rgba(0, 0, 0, .5); }
+.pw__card.is-on { background: var(--title); opacity: 1; }
+.pw__card--ghost {   /* facce decorative che chiudono il solido */
+  background: repeating-linear-gradient(-45deg, var(--hill) 0 18px, color-mix(in srgb, var(--hill) 82%, var(--ink)) 18px 36px);
+  opacity: .4;
+}
 .pw__icon { width: clamp(52px, 5vw, 76px); height: clamp(52px, 5vw, 76px); fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .pw__h { font-family: var(--disp); text-transform: uppercase; font-size: clamp(1.9rem, 2.8vw, 3rem); line-height: .95; min-height: 1em; }
 .pw__card p { margin: 0; font-size: .86rem; font-weight: 600; line-height: 1.4; max-width: 24ch; }
@@ -137,8 +144,8 @@
 @media (max-width: 860px) {
   .ph__title { top: 9.5rem; }
   .ph__l2 { font-size: min(26vw, calc(180vw / var(--len))); }
-  .ph__stk { top: 50%; width: 62vw; margin-left: -31vw; }
-  .ph__hand { right: auto; left: 8vw; top: auto; bottom: 7vh; color: var(--cream); }
+  .ph__stk { top: 43%; width: 56vw; margin-left: -28vw; }   /* più in alto: la nota a mano sotto resta libera */
+  .ph__hand { right: auto; left: 8vw; top: auto; bottom: 11vh; font-size: 1.15rem; color: var(--cream); }
   .ph__hand::before { display: none; }
   .ph__hill { top: 70%; }
 
@@ -156,10 +163,14 @@
 
   .pw__pin { flex-direction: column; gap: 0; }
   .pw__side { position: absolute; left: 0; right: 0; text-align: center; font-size: 19vw; z-index: 2; pointer-events: none; }
-  .pw__side--l { top: 13%; }
-  .pw__side--r { bottom: 13%; }
-  .pw__stack { width: 62vw; }
-  .pw__track { top: calc(50% - 31vw); }
+  /* telefono: schede larghe (testo su righe lunghe, non una colonnina) e solo la scheda attiva visibile */
+  .pw__side--l { top: 11%; }
+  .pw__side--r { bottom: 11%; }
+  .pw__stack { width: 86vw; }
+  .pw__stack { perspective: 900px; }
+  .pw__track { aspect-ratio: 5 / 4; }
+  .pw__card { border-radius: 30px; padding: 1.2rem 1.5rem; gap: .5rem; }
+  .pw__card p { max-width: 34ch; font-size: .86rem; }
   .pw__note { bottom: 3%; font-size: .7rem; }
 
   .pq__row { grid-template-columns: 1fr; }
@@ -172,8 +183,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pd__txt .ic { opacity: 1; }
-  .pw__card { opacity: 1; transform: none; background: var(--title); }
+  .pw__card { position: relative; opacity: 1; transform: none !important; background: var(--title); aspect-ratio: 1; }
+  .pw__card--ghost { display: none; }
   .pw__pin { height: auto; flex-wrap: wrap; padding: 4rem var(--pad); }
-  .pw__stack { height: auto; }
-  .pw__track { position: relative; top: 0; }
+  .pw__stack { height: auto; perspective: none; }
+  .pw__track { position: relative; top: 0; aspect-ratio: auto; display: flex; flex-direction: column; gap: 1rem; }
 }

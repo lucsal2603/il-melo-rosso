@@ -282,7 +282,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .rooms__pre { font-size: clamp(2.4rem, 7vw, 8rem); }
 .rooms__big { font-size: clamp(5rem, 23vw, 26rem); white-space: nowrap; }
 .rooms__pre .wl, .rooms__big .wl { display: inline-block; }
-.rooms__mask { display: block; overflow: hidden; padding: .3em .05em .04em; margin-top: -.28em; }
+/* le lettere entrano dal basso (taglio solo sotto e ai lati); sopra resta spazio per il salto al passaggio del mouse */
+.rooms__mask { display: block; padding: .02em .05em .04em; clip-path: inset(-60% -4% 0 -4%); }
 .rooms__stk { position: absolute; left: 50%; top: 50%; width: clamp(220px, min(30vw, 50vh), 460px); transform: translate(-50%, -50%); z-index: 3; }
 /* durante il cambio ci sono due adesivi: stanno sovrapposti nello stesso punto, così niente salti */
 .rooms__stk { aspect-ratio: 1; }
@@ -301,18 +302,18 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   background: var(--cream); color: var(--room-ink);
   display: grid; place-items: center;
   box-shadow: 0 14px 24px -10px rgba(0, 0, 0, .4);
-  transition: transform .6s var(--bounce);
+  transition: scale .6s var(--bounce), rotate .6s var(--bounce);
 }
-.roundbtn:hover { transform: scale(1.12) rotate(-8deg); }
+.roundbtn:hover { scale: 1.12; rotate: -8deg; }
 .roundbtn svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 14s linear infinite; }
 .roundbtn text { font-family: var(--body); font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; fill: currentColor; }
 .roundbtn > span { font-family: var(--disp); font-size: 1.15rem; text-transform: uppercase; display: flex; align-items: center; gap: .3rem; }
 .roundbtn > span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--room); }
 @keyframes spin { to { transform: rotate(360deg); } }
 .rooms__nav { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; align-items: center; gap: 1.2rem; z-index: 4; }
-.arrow { width: 54px; height: 54px; border-radius: 50%; background: var(--room-ink); color: var(--room); font-size: 1.3rem; font-weight: 800; transition: transform .5s var(--bounce), background-color .7s, color .7s; }
-.arrow:hover { transform: scale(1.15); }
-.rooms__idx { font-family: var(--disp); font-size: 1.3rem; }
+.arrow { width: 54px; height: 54px; border-radius: 50%; background: var(--room-ink); color: var(--room); font-size: 1.3rem; font-weight: 800; transition: scale .5s var(--bounce), background-color .7s, color .7s; }
+.arrow:hover { scale: 1.15; }
+.rooms__idx { font-family: var(--disp); font-size: 1.3rem; white-space: nowrap; }
 .rooms__price { text-align: center; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 0 var(--pad); }
 .rooms__price b { font-family: var(--disp); font-size: 1.6em; font-weight: 400; }
 
@@ -469,9 +470,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .wd__roll { position: absolute; right: min(11vw, 18vh); top: 31vh; z-index: 4; margin: 0; font-size: clamp(1rem, 1.4vw, 1.4rem); rotate: -12deg; color: var(--wink); }
 
 @media (max-width: 743px) {
-  .wd__kicker { top: 11vh; font-size: .56rem; }
-  .wd__kicker { top: 10vh; }
-  .wd__top { top: 15.5vh; font-size: 24vw; }
+  .wd__kicker { top: calc(76px + 2vh); font-size: .56rem; }   /* sotto il logo dell'intestazione */
+  .wd__top { top: calc(104px + 3vh); font-size: 22vw; }
   .wd__big { top: 47vh; }
   .wd__stk { top: 43vh; width: 46vw; }
   .wd__explore { width: 21vw; left: 66vw; top: 27vh; }
@@ -506,8 +506,10 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .cta__card h2 { font-family: var(--disp); text-transform: uppercase; font-size: clamp(3rem, 8.2vw, 9.4rem); line-height: .86; }
 .cta__card p { margin: 1rem 0 1.6rem; font-weight: 700; font-size: .95rem; color: var(--cream); }
 .cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
-.pill { display: inline-flex; align-items: center; height: 46px; padding: 0 1.3rem; border-radius: 99px; background: var(--cream); color: var(--wine); font-weight: 800; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; transition: transform .5s var(--bounce), background-color .3s; }
-.pill:hover { transform: scale(1.08) rotate(-3deg); background: #F7D648; }
+/* hover con "scale"/"rotate" separati: la proprietà transform resta libera per le animazioni GSAP
+   (una transizione CSS su transform le confonde e lasciava i pulsanti a grandezza zero) */
+.pill { display: inline-flex; align-items: center; height: 46px; padding: 0 1.3rem; border-radius: 99px; background: var(--cream); color: var(--wine); font-weight: 800; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; transition: scale .5s var(--bounce), rotate .5s var(--bounce), background-color .3s; }
+.pill:hover { scale: 1.08; rotate: -3deg; background: #F7D648; }
 .pill--dark { background: var(--wine); color: var(--cream); }
 .rooms__more { margin-top: -.6rem; }
 .center { display: flex; justify-content: center; }
@@ -521,7 +523,7 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .foot__nav a { font-family: var(--disp); text-transform: uppercase; font-size: clamp(1.1rem, 2.2vw, 2.2rem); display: flex; flex-direction: column; align-items: center; gap: .3rem; }
 .foot__nav a::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .foot__brand { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; margin-top: clamp(1rem, 3vh, 2.5rem); }
-.foot__brand img { width: clamp(70px, 7vw, 100px); border-radius: 50%; background: var(--cream); padding: 3px; margin-bottom: .8rem; position: relative; z-index: 2; transform: rotate(-8deg); }
+.foot__brand img { width: clamp(70px, 7vw, 100px); height: auto; aspect-ratio: 1; border-radius: 50%; background: var(--cream); padding: 3px; margin-bottom: .8rem; position: relative; z-index: 2; transform: rotate(-8deg); }
 .foot__big { display: flex; flex-direction: column; align-items: center; font-family: var(--disp); text-transform: uppercase; line-height: .8; text-align: center; }
 .foot__big > span:first-child { font-size: clamp(3rem, 9vw, 10rem); }
 .foot__big > span:last-child { font-size: clamp(4rem, 15vw, 16rem); transform: rotate(-3deg); }
@@ -559,31 +561,35 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .story { padding-top: 34vh; }
   .story__curve { height: 36vh; }
   .story__big { font-size: 20vw; }
-  .story__board { height: 250vh; }
+  .story__board { height: 230vh; }
   .note--todo { left: 6%; top: 3%; width: 56vw; }
   .polaroid--a { left: 46%; top: 16%; width: 46vw; }
   .kraft { left: 6%; top: 34%; width: 88vw; }
   .polaroid--b { left: 4%; top: 60%; width: 52vw; }
   .polaroid--c { left: 52%; top: 70%; width: 42vw; }
   .gift { left: 14%; top: 84%; width: 70vw; }
-  .hand--a { left: 58%; top: 6%; }
+  .hand--a { left: 64%; top: 9.5%; max-width: 34vw; font-size: 1.05rem; }
   .hand--b { left: 10%; top: 97%; }
   .tape--loose { display: none; }
-  .story__drop { width: 34vw; left: 33%; }
+  .story__drop { width: 30vw; left: 62%; z-index: 0; }   /* passa sotto i fogli, non copre i testi */
 
   .wave__txt { font-size: 92px; }
   .wave__stk { right: 2vw; top: 6%; width: 22vw; }
 
   .rooms__stage { height: 720px; }
-  .rooms__word { top: 34%; }
-  .rooms__big { font-size: 26vw; }
-  .rooms__pre { font-size: 9vw; }
-  .rooms__stk { top: 36%; width: 58vw; }
-  .rooms__card--a { left: 2%; top: 6%; width: 28vw; }
-  .rooms__card--b { right: 3%; top: 46%; width: 26vw; }
-  .rooms__info { left: 1.2rem; right: 1.2rem; bottom: 16%; max-width: none; }
+  /* telefono: la parola sta sopra l'adesivo (non dietro), foto ai lati, testi sotto */
+  .rooms__word { top: 14%; }
+  .rooms__big { font-size: 24vw; }
+  .rooms__pre { font-size: 8vw; }
+  .rooms__stk { top: 45%; width: 50vw; }
+  .rooms__card--a { left: 3%; top: 30%; width: 25vw; }
+  .rooms__card--b { right: 3%; top: 48%; width: 24vw; }
+  .rooms__info { left: 1.2rem; right: 1.2rem; bottom: 13%; max-width: none; }
+  .rooms__price { line-height: 1.5; }
+  .rooms__more { margin-top: 1.2rem; }
   .rooms__tags { flex-direction: row; flex-wrap: wrap; }
-  .roundbtn { right: 1.2rem; top: auto; bottom: 30%; width: 92px; }
+  .roundbtn { right: 1rem; top: 25%; bottom: auto; width: 78px; }
+  .roundbtn > span { font-size: .9rem; }
   .rooms__nav { bottom: 2%; }
 
 
@@ -592,7 +598,11 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .cta__blob { margin: 0 8vw -14vw; }
   .cta__card { aspect-ratio: auto; border-radius: 40px; padding: 3rem 1.4rem; }
 
+  /* footer: più alto, così gli adesivi si ammucchiano sotto la scritta e non la coprono */
+  .foot { min-height: max(100svh, 820px); padding-top: 12vh; }
   .foot__nav { flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; }
+  .foot__nav a { font-size: 1.05rem; }
+  .foot__info { bottom: .6rem; font-size: .62rem; line-height: 1.35; }
   .foot__big > span:first-child { font-size: 13vw; }
   .foot__big > span:last-child { font-size: 22vw; }
 }

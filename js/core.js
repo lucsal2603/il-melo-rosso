@@ -357,11 +357,11 @@ window.Melo = (() => {
       ...Object.values(P).map(p => ({ type: "stk", p })),
       ...SOCIAL.map(s => ({ type: "soc", s }))
     ];
-    const sizeFor = d => { const base = Math.min(Math.max(innerWidth * .13, 104), 210); return d.type === "stk" ? base : base * .78; };
+    const sizeFor = d => { const base = Math.min(Math.max(innerWidth * .13, mobile() ? 84 : 104), 210); return d.type === "stk" ? base : base * .78; };
     function buildWalls() {
       Composite.remove(engine.world, walls);
       const w = world.clientWidth, h = world.clientHeight, t = 200;
-      const floor = h - (mobile() ? 64 : 44);
+      const floor = h - (mobile() ? 96 : 44);   // sotto il pavimento resta lo spazio per indirizzo e contatti
       walls = [
         Bodies.rectangle(w / 2, floor + t / 2, w * 3, t, { isStatic: true }),
         Bodies.rectangle(-t / 2, h / 2, t, h * 4, { isStatic: true }),
@@ -389,7 +389,7 @@ window.Melo = (() => {
         }
         wrap.appendChild(el);
         const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .45, friction: .08, frictionAir: .012, density: .002 });
-        Body.setAngularVelocity(b, gsap.utils.random(-.15, .15));
+        Body.setAngularVelocity(b, gsap.utils.random(-.04, .04));
         b.el = el; b.size = size;
         bodies.push(b);
         Composite.add(engine.world, b);
@@ -429,6 +429,8 @@ window.Melo = (() => {
       if (!running) return;
       acc += Math.min(64, time - (last || time)); last = time;
       while (acc >= FIXED) { Engine.update(engine, FIXED); acc -= FIXED; }
+      // gli adesivi possono inclinarsi ma non capovolgersi: angolo limitato a ±20°
+      bodies.forEach(b => { const m = .35; if (b.angle > m || b.angle < -m) { Body.setAngle(b, Math.max(-m, Math.min(m, b.angle))); Body.setAngularVelocity(b, 0); } });
       bodies.forEach(b => { b.el.style.transform = `translate(${b.position.x - b.size / 2}px, ${b.position.y - b.size / 2}px) rotate(${b.angle}rad)`; });
       requestAnimationFrame(step);
     }

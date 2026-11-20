@@ -11,28 +11,30 @@ python3 -m http.server 8080
 Poi apri http://localhost:8080
 
 ## Sezioni e animazioni
-1. **Caricamento**: il logo salta fuori e gira, poi archi colorati salgono e scoprono la pagina (gli stessi archi fanno da transizione quando si clicca un link)
+1. **Caricamento**: il logo (ricreato in vettoriale, `assets/img/logo.svg`, identico all'originale) si costruisce pezzo per pezzo: cerchio, anello che si disegna, disco, l'albero cresce dalle radici, la mela spunta e dondola, il gatto salta fuori e dà due zampate. Poi gli archi colorati salgono e scoprono la pagina. Gli stessi archi fanno da transizione tra le pagine: la pagina nuova si apre già coperta e gli archi continuano a salire, senza stacchi di colore
 2. **Scegli il tuo momento**: 6 adesivi rotondi (Cucina, Camere, Matrimoni, Piscina, Colazione, Fortunago). Passandoci sopra **tutta la pagina cambia colore**, l'adesivo si ingrandisce e compare la scritta a mano "cliccami!". Clic = vai alla sezione
 3. **Menu "Tirami"**: l'etichetta in alto a destra si tira giù (o si clicca) e il menu scende con un rimbalzo
 4. **La storia**: collage con post-it, polaroid attaccate con lo scotch e cartoncino kraft; il testo si colora mentre scorri, la lista "Da fare" si spunta da sola, un adesivo cade dall'alto
 5. **Fascia ondulata**: la scritta corre lungo l'onda e cambia direzione con lo scroll
-6. **Le camere**: slider a colori. Ogni camera ha il suo colore, la parola gigante cambia lettera per lettera e l'adesivo rotola via (frecce o swipe)
+6. **Le camere**: slider a colori. Ogni camera ha il suo colore, la parola gigante cambia lettera per lettera e l'adesivo scivola via. Si cambia camera con le frecce oppure trascinando con il mouse o con il dito
 7. **Perché il Melo**: tela gigante come Sweet Tape. "PER GUSTARE / PER RIPOSARE / PER FESTEGGIARE / PER SCOPRIRE" sono su altezze diverse (alta, bassa, alta, bassa); la telecamera scende dal titolo, corre lungo ogni parola e va in diagonale verso la successiva. Le lettere salgono quando arriva la telecamera; foto, adesivi e frecce disegnate a mano entrano a scatto. Font "Melo Cond" (assets/fonts, Jost Black condensato, licenza OFL), simile al Futura Condensed di Sweet Tape
-8. **Matrimoni**: foto grande che si apre, adesivo e striscia di foto che scorre
+8. **Matrimoni · la giornata** (come "The Creative" di Sweet Tape): la sezione resta ferma e, scorrendo, passa la giornata: la cerimonia (mattina), l'aperitivo (mezzogiorno), la cena (sera), la festa (notte). A ogni momento cambiano colore, titolo gigante a ventaglio, adesivo (si gira come una moneta) e foto (si staccano e ne arrivano altre col nastro); un piccolo sole attraversa il cielo e diventa luna. A destra una ruota di adesivi per saltare a un momento. Dati in `DAY` in `js/main.js`
 9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
 10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link)
 
-Passando con il mouse sui testi del menu, del footer e sulle parole grandi, le lettere saltellano.
+Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse.
+
+Gli adesivi rotondi non si capovolgono mai: al massimo si inclinano di una ventina di gradi (anche quelli che cadono nel footer).
 
 ## Le pagine interne
 Ogni adesivo della home apre la sua pagina, in stile scheda prodotto di Sweet Tape:
 `cucina.html`, `camere.html`, `matrimoni.html`, `piscina.html`, `colazione.html`, `fortunago.html`.
 
 Ogni pagina ha il colore del suo adesivo e queste sezioni:
-1. **Apertura**: titolo gigante che cade lettera per lettera, adesivo che gira; scorrendo, l'adesivo rotola fino alla descrizione
+1. **Apertura**: titolo gigante che cade lettera per lettera, adesivo che entra con un rimbalzo; scorrendo, l'adesivo scende fino alla descrizione e arriva dritto
 2. **Descrizione**: testo grande che si colora mentre scorri, foto con lo scotch, etichette e pulsante (prenota / preventivo / come arrivare)
 3. **Varianti**: card con adesivi (pranzo e cena, le 6 camere, rito e festa...)
-4. **Superpoteri**: la sezione si ferma e le card scorrono una alla volta; il titolo si "mescola" e si ricompone
+4. **Superpoteri**: la sezione si ferma e le schede sono le facce di un solido 3D che ruota scorrendo; sopra e sotto si vedono le facce vicine inclinate e un po' trasparenti. Il titolo della scheda si "mescola" e si ricompone
 5. **Frase + galleria**: frase grande, foto con lo scotch, striscia di foto che scorre (clic = foto grande)
 6. **Prossima tappa**: l'adesivo della pagina successiva, cliccabile
 7. Footer con la fisica, uguale in tutte le pagine (cliccando un adesivo si apre la sua pagina)

@@ -57,7 +57,7 @@
   const heroChars = M.hopIns.filter(h => h.el.closest(".pick")).flatMap(h => h.chars);
   if (!reduce) {
     gsap.set(heroChars, { yPercent: -160, rotation: () => gsap.utils.random(-40, 40), opacity: 0 });
-    gsap.set(".pick__item", { yPercent: 160, rotation: -300 });
+    gsap.set(".pick__item", { yPercent: 160, rotation: -22 });
     gsap.set(".pick__hill", { yPercent: 40 });
     gsap.set(".hdr__claim, .hdr__logo, .tag", { opacity: 0 });
   }
@@ -136,7 +136,6 @@
     const old = $(".stk", rStk);
     const d = rStk.offsetWidth || 300;
     const D = W / 2 + d / 2 + 60;                 // fino a fuori schermo
-    const roll = D / (Math.PI * d) * 360;          // rotola come una ruota
     const word = $(".rooms__word");
     const cards = [$(".rooms__card--a"), $(".rooms__card--b")];
     const OUT = .65, IN = .95, SWAP = .5;
@@ -145,12 +144,12 @@
     tl.to(root, { "--room": r.bg, "--room-ink": r.ink, "--room-soft": r.soft, duration: .9, ease: "power2.inOut" }, 0)
 
       // sticker: esce rotolando oltre il bordo
-      .to(old, { x: -D * dir, rotation: -roll * dir, duration: OUT, ease: "power2.in", onComplete: () => old.remove() }, 0)
+      .to(old, { x: -D * dir, rotation: -16 * dir, duration: OUT, ease: "power2.in", onComplete: () => old.remove() }, 0)   // si inclina, non si capovolge
       // nuovo sticker: entra dall'altro lato, da fuori schermo
       .add(() => {
         const s = roomSticker(r);
         rStk.appendChild(s);
-        gsap.fromTo(s, { x: D * dir, rotation: roll * dir }, { x: 0, rotation: 0, duration: IN, ease: "power3.out" });
+        gsap.fromTo(s, { x: D * dir, rotation: 16 * dir }, { x: 0, rotation: 0, duration: IN, ease: "back.out(1.2)" });
       }, SWAP)
 
       // parola gigante: stesso percorso
@@ -199,7 +198,7 @@
       v = (e.clientX - lastX) / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
       dx = ddx;
       const { stk, word, cards, d } = parts();
-      gsap.to(stk, { x: dx, rotation: dx / (Math.PI * d) * 360, duration: .35, ease: "power3.out", overwrite: true });
+      gsap.to(stk, { x: dx, rotation: gsap.utils.clamp(-16, 16, dx * .06), duration: .35, ease: "power3.out", overwrite: true });
       gsap.to(word, { x: dx * 1.15, duration: .45, ease: "power3.out", overwrite: true });
       gsap.to(cards, { x: dx * .85, duration: .5, ease: "power3.out", overwrite: true, stagger: .03 });
       gsap.to(".rooms__info", { opacity: 1 - Math.min(.7, Math.abs(dx) / innerWidth), duration: .3, overwrite: true });
@@ -315,7 +314,7 @@
       wheelBtns.forEach((b, i) => {
         const ang = Math.PI + (i - wheelRot.a) * .62;
         const on = Math.max(0, 1 - Math.abs(i - wheelRot.a));
-        gsap.set(b, { x: Math.cos(ang) * r + r * .62, y: Math.sin(ang) * r, scale: .72 + on * .45, rotation: (i - wheelRot.a) * 40, opacity: .55 + on * .45, zIndex: Math.round(on * 10) });
+        gsap.set(b, { x: Math.cos(ang) * r + r * .62, y: Math.sin(ang) * r, scale: .72 + on * .45, rotation: (i - wheelRot.a) * 8, opacity: .55 + on * .45, zIndex: Math.round(on * 10) });
       });
     }
 
@@ -389,12 +388,12 @@
           }
         });
         // entrata: l'adesivo arriva rotolando, le foto si attaccano
-        gsap.from(stkBox, { scale: .3, rotation: -200, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: wSec, start: "top 60%" } });
+        gsap.from(stkBox, { scale: .3, rotation: -20, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: wSec, start: "top 60%" } });
         gsap.from(cards, { scale: 1.5, opacity: 0, rotation: () => gsap.utils.random(-25, 25), duration: 1, ease: "back.out(1.6)", stagger: .12, scrollTrigger: { trigger: wSec, start: "top 45%" } });
-        gsap.from(".wd__explore", { scale: 0, rotation: -120, duration: 1.1, ease: "back.out(2)", scrollTrigger: { trigger: wSec, start: "top 40%" } });
+        gsap.from(".wd__explore", { scale: 0, rotation: -20, duration: 1.1, ease: "back.out(2)", scrollTrigger: { trigger: wSec, start: "top 40%" } });
         gsap.from($$(".wd__title .hc", wSec), { yPercent: 110, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .04, scrollTrigger: { trigger: wSec, start: "top 55%" } });
         // vita continua: l'adesivo gira piano, il bordo del pulsante ruota, le foto ondeggiano
-        gsap.to(spin, { rotation: 360, duration: 40, ease: "none", repeat: -1 });
+        gsap.fromTo(spin, { rotation: -6 }, { rotation: 6, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });   // ondeggia piano, il titolo resta dritto
         gsap.to(".wd__explore svg", { rotation: -360, duration: 18, ease: "none", repeat: -1, transformOrigin: "50% 50%" });
         cards.forEach((c, k) => gsap.to($("img", c), { y: k ? 10 : -10, rotation: k ? -2 : 2, duration: 2.6 + k * .4, ease: "sine.inOut", yoyo: true, repeat: -1 }));
         // il mouse sposta leggermente foto e adesivo (profondità)
@@ -426,7 +425,7 @@
 
     /* STORY */
     gsap.from(".story__big > span", { yPercent: 40, scale: .7, ease: "none", stagger: .1, scrollTrigger: { trigger: ".story", start: "top bottom", end: "top 30%", scrub: true } });
-    gsap.fromTo(".story__drop", { y: 0, rotation: -20 }, { y: () => innerHeight * 1.1, rotation: 340, ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
+    gsap.fromTo(".story__drop", { y: 0, rotation: -20 }, { y: () => innerHeight * (M.mobile() ? .55 : 1.1), rotation: 15, ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
     $$(".story__board [data-speed]").forEach(el => {
       const sp = parseFloat(el.dataset.speed);
       gsap.fromTo(el, { y: 220 * sp }, { y: -220 * sp, rotation: `+=${(sp - 1) * 14}`, ease: "none", scrollTrigger: { trigger: ".story__board", start: "top bottom", end: "bottom top", scrub: true } });
@@ -453,11 +452,11 @@
         if (off > 0) off -= unit;
         tp.setAttribute("startOffset", off);
       });
-      gsap.fromTo(".wave__stk", { rotation: -90, scale: .5 }, { rotation: 200, scale: 1, ease: "none", scrollTrigger: { trigger: ".wave", start: "top bottom", end: "bottom top", scrub: true } });
+      gsap.fromTo(".wave__stk", { rotation: -18, scale: .5 }, { rotation: 18, scale: 1, ease: "none", scrollTrigger: { trigger: ".wave", start: "top bottom", end: "bottom top", scrub: true } });
     })();
 
     /* ROOMS */
-    gsap.from(".rooms__stk", { scale: .3, rotation: -240, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
+    gsap.from(".rooms__stk", { scale: .3, rotation: -20, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
     gsap.from(".rooms__card", { scale: 0, duration: 1, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".rooms__stage", start: "top 60%" } });
     gsap.from(".rooms__word .wl", { yPercent: 110, duration: .9, ease: "back.out(1.6)", stagger: .04, scrollTrigger: { trigger: ".rooms__stage", start: "top 70%" } });
     gsap.from(".roundbtn, .rooms__info, .rooms__nav, .rooms__more", { y: 50, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .1, scrollTrigger: { trigger: ".rooms__stage", start: "top 55%" } });
