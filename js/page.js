@@ -38,12 +38,13 @@
   function scramble(el) {
     const final = el.dataset.text;
     const o = { p: 0 };
+    el.dataset.nohop = "1";       // mentre si mescola non dividiamo le lettere
     gsap.to(o, {
       p: 1, duration: .7, ease: "none", overwrite: true,
       onUpdate() {
         el.textContent = [...final].map((c, i) => (c === " " || i / final.length < o.p) ? c : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join("");
       },
-      onComplete() { el.textContent = final; }
+      onComplete() { el.textContent = final; delete el.dataset.nohop; M.letters(el); }
     });
   }
 
@@ -86,7 +87,7 @@
     measure();
     ScrollTrigger.addEventListener("refreshInit", measure);
     gsap.timeline({ scrollTrigger: { trigger: ".ph", start: "top top", endTrigger: ".pd", end: "center 55%", scrub: 1, invalidateOnRefresh: true } })
-      .to(stk, { x: () => to.x - from.x, y: () => to.y - from.y, scale: () => to.w / from.w, rotation: 540, ease: "power1.inOut" }, 0)
+      .to(stk, { x: () => to.x - from.x, y: () => to.y - from.y, scale: () => to.w / from.w, rotation: 720, ease: "power1.inOut" }, 0)
       .to(".ph__title", { yPercent: -55, ease: "none", duration: .45 }, 0)
       .to(".ph__hand, .ph__pill", { opacity: 0, y: -40, ease: "none", duration: .25 }, 0);
 
@@ -110,9 +111,9 @@
     });
     $$(".ps__card").forEach(card => {
       const s = $(".stk", card);
-      gsap.fromTo(s, { rotation: -60 }, { rotation: 40, ease: "none", scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true } });
+      gsap.fromTo(s, { rotation: -60 }, { rotation: 0, ease: "none", scrollTrigger: { trigger: card, start: "top bottom", end: "center 55%", scrub: true } });
       if (!fine) return;
-      card.addEventListener("mouseenter", () => { gsap.to(card, { scale: 1.06, rotation: `+=${gsap.utils.random(-5, 5)}`, duration: .5, ease: "back.out(3)" }); gsap.to(s, { rotation: "+=180", duration: .8, ease: "back.out(1.6)" }); });
+      card.addEventListener("mouseenter", () => { gsap.to(card, { scale: 1.06, rotation: `+=${gsap.utils.random(-5, 5)}`, duration: .5, ease: "back.out(3)" }); gsap.to(s, { rotation: "+=360", duration: .9, ease: "back.out(1.6)" }); });
       card.addEventListener("mouseleave", () => gsap.to(card, { scale: 1, duration: .7, ease: "elastic.out(1, .5)" }));
     });
 
@@ -146,7 +147,7 @@
     /* FRASE + GALLERIA */
     gsap.fromTo(".pq__img", { scale: .7, rotation: 8, borderRadius: "200px" }, { scale: 1, rotation: -2, borderRadius: "44px", ease: "none", scrollTrigger: { trigger: ".pq__row", start: "top bottom", end: "center center", scrub: true } });
     gsap.from(".pq__tape", { scale: 2.2, opacity: 0, rotation: "+=40", duration: .7, ease: "back.out(2)", stagger: .2, scrollTrigger: { trigger: ".pq__row", start: "top 45%" } });
-    gsap.fromTo(".pq__stk", { rotation: -200, scale: .3 }, { rotation: 20, scale: 1, ease: "none", scrollTrigger: { trigger: ".pq__row", start: "top bottom", end: "bottom 40%", scrub: true } });
+    gsap.fromTo(".pq__stk", { rotation: -360, scale: .3 }, { rotation: 0, scale: 1, ease: "none", scrollTrigger: { trigger: ".pq__row", start: "top bottom", end: "bottom 40%", scrub: true } });
     gsap.fromTo(".pq__strip", { x: () => innerWidth * .25 }, { x: () => -($(".pq__strip").scrollWidth - innerWidth * .75), ease: "none", scrollTrigger: { trigger: ".pq__strip", start: "top bottom", end: "bottom top", scrub: true, invalidateOnRefresh: true } });
 
     /* PROSSIMA TAPPA */

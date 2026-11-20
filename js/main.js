@@ -45,7 +45,7 @@
   }
   items.forEach(it => {
     it.addEventListener("mouseenter", () => activate(it));
-    it.addEventListener("focus", () => activate(it));
+    it.addEventListener("focus", () => { if (it.matches(":focus-visible")) activate(it); });   // solo da tastiera: un tocco sul telefono non cambia colore
     it.addEventListener("click", () => M.go(P[it.dataset.player].url));
   });
   $(".pick__row").addEventListener("mouseleave", () => activate(null));
@@ -146,14 +146,241 @@
       .fromTo(".roundbtn", { scale: 1 }, { scale: 1.15, duration: .2, yoyo: true, repeat: 1 }, .6);
   }
   $$(".rooms .arrow").forEach(b => b.addEventListener("click", () => goRoom(rI + +b.dataset.dir, +b.dataset.dir)));
-  (function swipe() {
-    let sx = null;
-    rStage.addEventListener("pointerdown", e => { if (!e.target.closest("a,button")) sx = e.clientX; });
-    rStage.addEventListener("pointerup", e => {
-      if (sx == null) return;
-      const d = e.clientX - sx; sx = null;
-      if (Math.abs(d) > 50) goRoom(rI + (d < 0 ? 1 : -1), d < 0 ? 1 : -1);
+  // trascinamento con il mouse o con il dito: l'adesivo rotola sotto il dito,
+  // parola e foto lo seguono; lasciando oltre una certa distanza cambia camera
+  (function drag() {
+    let on = false, moved = false, sx = 0, sy = 0, dx = 0, lastX = 0, lastT = 0, v = 0, id = null;
+    const parts = () => ({ stk: $(".stk", rStk), word: $(".rooms__word"), cards: [$(".rooms__card--a"), $(".rooms__card--b")], d: rStk.offsetWidth || 300 });
+    rStage.addEventListener("dragstart", e => e.preventDefault());
+    rStage.addEventListener("pointerdown", e => {
+      if (rBusy || e.button > 0 || e.target.closest("a, button")) return;
+      on = true; moved = false; id = e.pointerId;
+      sx = lastX = e.clientX; sy = e.clientY; lastT = performance.now(); dx = 0; v = 0;
     });
+    rStage.addEventListener("pointermove", e => {
+      if (!on || e.pointerId !== id) return;
+      const ddx = e.clientX - sx, ddy = e.clientY - sy;
+      if (!moved) {
+        if (Math.abs(ddx) < 6) return;
+        if (Math.abs(ddy) > Math.abs(ddx)) { on = false; return; }   // gesto verticale: è uno scroll della pagina
+        moved = true;
+        rStage.setPointerCapture(id);
+        rStage.classList.add("is-dragging");
+      }
+      const now = performance.now();
+      v = (e.clientX - lastX) / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
+      dx = ddx;
+      const { stk, word, cards, d } = parts();
+      gsap.to(stk, { x: dx, rotation: dx / (Math.PI * d) * 360, duration: .35, ease: "power3.out", overwrite: true });
+      gsap.to(word, { x: dx * 1.15, duration: .45, ease: "power3.out", overwrite: true });
+      gsap.to(cards, { x: dx * .85, duration: .5, ease: "power3.out", overwrite: true, stagger: .03 });
+      gsap.to(".rooms__info", { opacity: 1 - Math.min(.7, Math.abs(dx) / innerWidth), duration: .3, overwrite: true });
+    });
+    const end = e => {
+      if (!on || (e && e.pointerId !== id)) return;
+      on = false;
+      rStage.classList.remove("is-dragging");
+      if (!moved) return;
+      const far = Math.abs(dx) > Math.min(160, innerWidth * .18) || Math.abs(v) > .6;
+      if (far && e && e.type === "pointerup") {
+        const dir = (Math.abs(v) > .6 ? -Math.sign(v) : -Math.sign(dx)) || 1;
+        goRoom(rI + dir, dir);
+      } else {
+        const { stk, word, cards } = parts();
+        gsap.to(stk, { x: 0, rotation: 0, duration: 1.1, ease: "elastic.out(1, .55)", overwrite: true });
+        gsap.to([word, ...cards], { x: 0, duration: 1, ease: "elastic.out(1, .6)", overwrite: true });
+        gsap.to(".rooms__info", { opacity: 1, duration: .4, overwrite: true });
+      }
+    };
+    rStage.addEventListener("pointerup", end);
+    rStage.addEventListener("pointercancel", end);
+    // dopo un trascinamento non deve partire il click su link e pulsanti
+    rStage.addEventListener("click", e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  })();
+
+  /* ---------------- MATRIMONI · LA GIORNATA ----------------
+     Come "The Creative" di Sweet Tape. La sezione resta ferma e, scorrendo,
+     passa la giornata del matrimonio: ogni momento cambia colore, titolo,
+     adesivo (che si gira come una moneta) e foto (che si staccano e
+     ne arrivano altre col nastro). Il sole attraversa il cielo e diventa luna. */
+  const DAY = [
+    { top: "La", big: "Cerimonia", when: "la mattina", label: "Il Sì", stk: "assets/img/site/485.jpg",
+      cards: ["assets/img/nuove/t30-1946176-3.jpg", "assets/img/nuove/img-7615.jpg"], alts: ["Sedie per la cerimonia nel prato", "Arco fiorito"],
+      chips: ["nel prato fiorito", "tra le colline", "un matrimonio al giorno"],
+      txt: "Il prato davanti alla cascina, le colline tutt'intorno: il posto giusto per dirsi sì.",
+      bg: "#F59DB0", ink: "#6E1330", title: "#FFE3EA", chip: "#6E1330", sun: "#FFD23F" },
+    { top: "L'", big: "Aperitivo", when: "a mezzogiorno", label: "Aperitivo", stk: "assets/img/site/b5302.jpg",
+      cards: ["assets/img/site/b3601.jpg", "assets/img/nuove/img-7616.jpg"], alts: ["Aperitivo in giardino sotto gli ombrelloni", "Salumi del territorio"],
+      chips: ["in giardino", "sotto gli ombrelloni", "salumi e vini dell'Oltrepò"],
+      txt: "Il brindisi in giardino, all'ombra degli ombrelloni, con i sapori del territorio.",
+      bg: "#F7A35C", ink: "#5A2400", title: "#FFF0D6", chip: "#5A2400", sun: "#FFD23F" },
+    { top: "La", big: "Cena", when: "la sera", label: "La Cena", stk: "assets/img/site/paolo.jpg",
+      cards: ["assets/img/site/b4154.jpg", "assets/img/nuove/t30-1946176-1.jpg"], alts: ["Tavoli sotto la tensostruttura", "Tavola apparecchiata con fiori"],
+      chips: ["sotto la tensostruttura", "60 – 150 ospiti", "la cucina di Paolo"],
+      txt: "Le tavole apparecchiate sotto la tensostruttura e la cucina di casa, dall'orto alla tavola.",
+      bg: "#B98BEA", ink: "#2E0B52", title: "#F3E8FF", chip: "#2E0B52", sun: "#FF9F5A" },
+    { top: "La", big: "Festa", when: "la notte", label: "La Festa", stk: "assets/img/site/514.jpg",
+      cards: ["assets/img/site/508g.jpg", "assets/img/nuove/9642710.jpg"], alts: ["Buffet dei dolci", "Il bacio degli sposi"],
+      chips: ["il taglio della torta", "il buffet dei dolci", "balli sotto le stelle"],
+      txt: "La torta, la musica, i balli sotto le stelle. E domattina, la colazione in giardino.",
+      bg: "#26306E", ink: "#FFE3EA", title: "#FFD23F", chip: "#26306E", sun: "#F4F0DC" }
+  ];
+  const wSec = $(".wedding");
+  const wedding = (() => {
+    if (!wSec) return null;
+    DAY.forEach(d => [d.stk, ...d.cards].forEach(src => { const i = new Image(); i.src = src; }));
+    const pin = $(".wd__pin", wSec), topEl = $(".wd__top", wSec), bigEl = $(".wd__big", wSec);
+    const stkBox = $(".wd__stk", wSec), flip = $(".wd__flip", wSec), spin = $(".wd__spin", wSec);
+    const cards = $$(".wd__card", wSec), chipsEl = $(".wd__chips", wSec), txtEl = $(".wd__txt", wSec);
+    const whenEl = $(".wd__when", wSec), wheel = $(".wd__wheel", wSec);
+    const sun = $(".wd__sun", wSec), arc = $(".wd__arc", wSec), stars = $(".wd__stars", wSec);
+    const ring = "matrimoni al melo rosso   un solo matrimonio al giorno   ";
+    const mkSticker = d => sticker({ img: d.stk, bg: d.title, ink: d.chip, label: d.label, ring });
+    let cur = 0, st = null;
+
+    // titolo: ogni lettera in un "ventaglio" (le lettere esterne si aprono e sono più grandi)
+    function title(el, text, fan) {
+      el.textContent = "";
+      const chars = [...text];
+      const mid = (chars.length - 1) / 2;
+      return chars.map((c, i) => {
+        const f = document.createElement("span"); f.className = "wd__fan";
+        const ch = document.createElement("span"); ch.className = "hc"; ch.textContent = c === " " ? " " : c;
+        f.appendChild(ch); el.appendChild(f);
+        const k = chars.length > 1 ? (i - mid) / mid : 0;
+        gsap.set(f, { rotation: k * fan, scale: 1 + Math.abs(k) * .16, y: -Math.abs(k) * 6 });
+        return ch;
+      });
+    }
+    function fitBig() {
+      const W = innerWidth, H = pin.clientHeight || innerHeight, mob = W < 744;
+      bigEl.style.setProperty("--fs", "100px");
+      const w = bigEl.scrollWidth || 1;
+      // come "CREATIVE" di Sweet Tape: la parola sporge bene ai lati e sotto l'adesivo
+      const target = W * (mob ? .96 : .8);
+      const fs = Math.min(H * (mob ? .24 : .36), target / w * 100);
+      bigEl.style.setProperty("--fs", fs + "px");
+    }
+    function fill(d, i) {
+      const tc = title(topEl, d.top, 6), bc = title(bigEl, d.big, d.big.length > 5 ? 12 : 8);
+      fitBig();
+      chipsEl.innerHTML = d.chips.map(c => `<li>${c}</li>`).join("");
+      txtEl.textContent = d.txt;
+      whenEl.textContent = d.when;
+      cards.forEach((c, k) => { const img = $("img", c); img.src = d.cards[k]; img.alt = d.alts[k]; });
+      $$("button", wheel).forEach((b, k) => b.setAttribute("aria-current", k === i ? "true" : "false"));
+      return [...tc, ...bc];
+    }
+
+    // ruota di adesivi a destra ("roll it!")
+    const R = () => Math.min(innerHeight * .3, 260);
+    const wheelBtns = DAY.map((d, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.setAttribute("aria-label", d.label);
+      b.appendChild(mkSticker(d));
+      b.addEventListener("click", () => goTo(i));
+      wheel.appendChild(b); return b;
+    });
+    const wheelRot = { a: 0 };
+    function placeWheel() {
+      const r = R();
+      wheelBtns.forEach((b, i) => {
+        const ang = Math.PI + (i - wheelRot.a) * .62;
+        const on = Math.max(0, 1 - Math.abs(i - wheelRot.a));
+        gsap.set(b, { x: Math.cos(ang) * r + r * .62, y: Math.sin(ang) * r, scale: .72 + on * .45, rotation: (i - wheelRot.a) * 40, opacity: .55 + on * .45, zIndex: Math.round(on * 10) });
+      });
+    }
+
+    function colors(d, dur) {
+      gsap.to(wSec, { "--wbg": d.bg, "--wink": d.ink, "--wtitle": d.title, "--wchip": d.chip, "--wsun": d.sun, duration: dur, ease: "power2.inOut", overwrite: "auto" });
+    }
+
+    function show(i, dir = 1) {
+      if (i === cur) return;
+      const d = DAY[i];
+      cur = i;
+      const H = innerHeight;
+      colors(d, .9);
+      gsap.to(wheelRot, { a: i, duration: 1, ease: "back.out(1.4)", onUpdate: placeWheel, overwrite: true });
+
+      // titolo: le lettere vecchie cadono, le nuove saltano su
+      const oldChars = $$(".wd__title .hc", wSec);
+      const tl = gsap.timeline();
+      tl.to(oldChars, { yPercent: 110 * dir, rotation: () => gsap.utils.random(-30, 30), opacity: 0, duration: .32, ease: "power2.in", stagger: .015 }, 0)
+        .to([chipsEl, txtEl, whenEl], { opacity: 0, y: 14, duration: .25 }, 0)
+        // adesivo: si gira come una moneta e cambia faccia
+        .to(flip, { rotationY: 90 * dir, scale: .85, duration: .3, ease: "power2.in" }, 0)
+        .add(() => { spin.innerHTML = ""; spin.appendChild(mkSticker(d)); }, .3)
+        .fromTo(flip, { rotationY: -90 * dir }, { rotationY: 0, scale: 1, duration: 1.1, ease: "elastic.out(1, .5)", immediateRender: false }, .3)
+        // foto: si staccano e volano via, ne arrivano altre che si attaccano col nastro
+        .to(cards, { y: -H * .9 * dir, rotation: (k) => (k ? 40 : -40) * dir, duration: .42, ease: "power2.in", stagger: .05 }, 0)
+        .add(() => {
+          const chars = fill(d, i);
+          gsap.fromTo(chars, { yPercent: -110 * dir, rotation: () => gsap.utils.random(-25, 25), opacity: 0 },
+            { yPercent: 0, rotation: 0, opacity: 1, duration: .9, ease: "back.out(2.2)", stagger: .035 });
+          gsap.fromTo(cards, { y: H * .5 * dir, rotation: () => gsap.utils.random(-30, 30), scale: 1.35 },
+            { y: 0, rotation: 0, scale: 1, duration: .9, ease: "back.out(1.5)", stagger: .08 });
+          gsap.fromTo($$(".wd__card .tape", wSec), { scaleX: 0 }, { scaleX: 1, duration: .35, ease: "power2.out", delay: .55, stagger: .08 });
+          gsap.fromTo([whenEl, txtEl], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, delay: .15 });
+          gsap.set(chipsEl, { opacity: 1, y: 0 });
+          gsap.from($$("li", chipsEl), { scale: 0, rotation: -20, duration: .6, ease: "back.out(2.5)", stagger: .07, delay: .2 });
+        }, .45);
+    }
+
+    function goTo(i) {
+      if (!st) { show(i, i > cur ? 1 : -1); return; }
+      const y = st.start + (st.end - st.start) * i / (DAY.length - 1);
+      M.lenis ? M.lenis.scrollTo(y, { duration: 1.2 }) : scrollTo({ top: y, behavior: "smooth" });
+    }
+
+    // stato iniziale
+    fill(DAY[0], 0);
+    spin.appendChild(mkSticker(DAY[0]));
+    colors(DAY[0], 0);
+    placeWheel();
+    addEventListener("resize", () => { fitBig(); placeWheel(); });
+    M.fontsReady.then(fitBig);
+
+    return {
+      scenes() {
+        const L = arc.getTotalLength();
+        const setSun = p => {
+          const pt = arc.getPointAtLength(L * p);
+          gsap.set(sun, { attr: { cx: pt.x, cy: pt.y } });
+          gsap.set(stars, { opacity: gsap.utils.clamp(0, 1, (p - .62) / .3) });
+        };
+        setSun(0);
+        st = ScrollTrigger.create({
+          trigger: pin, start: "top top", end: () => "+=" + innerHeight * (DAY.length - 1) * 1.1,
+          pin: true, anticipatePin: 1,
+          snap: { snapTo: 1 / (DAY.length - 1), duration: { min: .3, max: .8 }, delay: .08, ease: "power2.inOut" },
+          onUpdate(self) {
+            setSun(self.progress);
+            const i = Math.round(self.progress * (DAY.length - 1));
+            if (i !== cur) show(i, i > cur ? 1 : -1);
+          }
+        });
+        // entrata: l'adesivo arriva rotolando, le foto si attaccano
+        gsap.from(stkBox, { scale: .3, rotation: -200, duration: 1.4, ease: "back.out(1.4)", scrollTrigger: { trigger: wSec, start: "top 60%" } });
+        gsap.from(cards, { scale: 1.5, opacity: 0, rotation: () => gsap.utils.random(-25, 25), duration: 1, ease: "back.out(1.6)", stagger: .12, scrollTrigger: { trigger: wSec, start: "top 45%" } });
+        gsap.from(".wd__explore", { scale: 0, rotation: -120, duration: 1.1, ease: "back.out(2)", scrollTrigger: { trigger: wSec, start: "top 40%" } });
+        gsap.from($$(".wd__title .hc", wSec), { yPercent: 110, opacity: 0, duration: .9, ease: "back.out(2)", stagger: .04, scrollTrigger: { trigger: wSec, start: "top 55%" } });
+        // vita continua: l'adesivo gira piano, il bordo del pulsante ruota, le foto ondeggiano
+        gsap.to(spin, { rotation: 360, duration: 40, ease: "none", repeat: -1 });
+        gsap.to(".wd__explore svg", { rotation: -360, duration: 18, ease: "none", repeat: -1, transformOrigin: "50% 50%" });
+        cards.forEach((c, k) => gsap.to($("img", c), { y: k ? 10 : -10, rotation: k ? -2 : 2, duration: 2.6 + k * .4, ease: "sine.inOut", yoyo: true, repeat: -1 }));
+        // il mouse sposta leggermente foto e adesivo (profondità)
+        if (fine) {
+          const qt = (el, prop) => gsap.quickTo(el, prop, { duration: .9, ease: "power3.out" });
+          // le foto si spostano solo in orizzontale (in verticale le muovono i cambi di momento)
+          const mv = [[stkBox, 14, true], [cards[0], 34], [cards[1], 28], [$(".wd__explore", wSec), 22, true]].map(([el, k, both]) => ({ k, x: qt(el, "x"), y: both ? qt(el, "y") : null }));
+          pin.addEventListener("mousemove", e => {
+            const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+            mv.forEach(m => { m.x(nx * m.k); m.y && m.y(ny * m.k); });
+          });
+        }
+      }
+    };
   })();
 
   /* ---------------- SCROLL SCENES ---------------- */
@@ -170,7 +397,7 @@
     M.hopInOnScroll(M.hopIns.filter(h => !h.el.closest(".pick")));
 
     /* STORY */
-    gsap.from(".story__big span", { yPercent: 40, scale: .7, ease: "none", stagger: .1, scrollTrigger: { trigger: ".story", start: "top bottom", end: "top 30%", scrub: true } });
+    gsap.from(".story__big > span", { yPercent: 40, scale: .7, ease: "none", stagger: .1, scrollTrigger: { trigger: ".story", start: "top bottom", end: "top 30%", scrub: true } });
     gsap.fromTo(".story__drop", { y: 0, rotation: -20 }, { y: () => innerHeight * 1.1, rotation: 340, ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
     $$(".story__board [data-speed]").forEach(el => {
       const sp = parseFloat(el.dataset.speed);
@@ -279,7 +506,8 @@
         gsap.set(cv, { x: -cam.x, y: -cam.y });
         R.forEach((r, i) => {
           const rel = cam.x - r.x;
-          props[i].forEach(({ el, pp, stk }) => gsap.set(el, stk ? { x: rel * pp, rotation: rel * .05 } : { x: rel * pp }));
+          // gli adesivi oscillano un po' ma restano sempre dritti (mai capovolti)
+          props[i].forEach(({ el, pp, stk }) => gsap.set(el, stk ? { x: rel * pp, rotation: Math.sin(rel / 420) * 16 } : { x: rel * pp }));
           if (!done[i] && cam.x + W > r.x + W * .12 && cam.y + H > r.y + rowH * .35) reveal(i);
         });
         A.forEach((a, i) => {
@@ -302,13 +530,8 @@
       hScroll = tl;
     })();
 
-    /* WEDDING */
-    gsap.fromTo(".wedding__photo img", { yPercent: -15 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".wedding__photo", start: "top bottom", end: "bottom top", scrub: true } });
-    gsap.fromTo(".wedding__photo", { scale: .86, borderRadius: "120px" }, { scale: 1, borderRadius: "40px", ease: "none", scrollTrigger: { trigger: ".wedding__photo", start: "top bottom", end: "top 25%", scrub: true } });
-    gsap.from(".wedding__stk", { scale: 0, rotation: -360, duration: 1.4, ease: "back.out(1.5)", scrollTrigger: { trigger: ".wedding", start: "top 60%" } });
-    gsap.fromTo(".wedding__stk", { y: 0 }, { y: -120, rotation: "+=90", ease: "none", scrollTrigger: { trigger: ".wedding", start: "top bottom", end: "bottom top", scrub: true } });
-    gsap.from(".wedding__hand", { opacity: 0, y: 30, rotation: -12, duration: 1, ease: "back.out(2)", scrollTrigger: { trigger: ".wedding__hand", start: "top 90%" } });
-    gsap.fromTo(".wedding__strip", { x: () => innerWidth * .2 }, { x: () => -($(".wedding__strip").scrollWidth - innerWidth * .8), ease: "none", scrollTrigger: { trigger: ".wedding__strip", start: "top bottom", end: "bottom top", scrub: true } });
+    /* WEDDING · la giornata */
+    wedding && wedding.scenes();
 
     /* CTA */
     gsap.from(".cta__blob", { scale: .4, rotation: -30, duration: 1.4, ease: "elastic.out(1, .6)", scrollTrigger: { trigger: ".cta", start: "top 70%" } });

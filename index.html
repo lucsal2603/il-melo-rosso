@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- arrivo da un cambio pagina: la pagina nasce già coperta dagli archi colorati,
+       così la transizione continua senza stacchi di colore -->
+  <script>try{if(sessionStorage.getItem("meloArc")){sessionStorage.removeItem("meloArc");var d=document.documentElement;d.classList.add("is-arriving");d.style.setProperty("--arcY",(-innerHeight*1.45)+"px")}}catch(e){}</script>
   <title>Il Melo Rosso — Agriturismo a Fortunago · Oltrepò Pavese</title>
   <meta name="description" content="Agriturismo il Melo Rosso a Fortunago, uno dei Borghi più belli d'Italia: cucina di casa, camere in una vera casa di famiglia, matrimoni nel prato e piscina panoramica sulle colline dell'Oltrepò Pavese.">
   <meta name="theme-color" content="#E5372B">
@@ -215,21 +218,40 @@
     </div>
   </section>
 
-  <!-- ============ MATRIMONI · BIG PHOTO ============ -->
+  <!-- ============ MATRIMONI · LA GIORNATA (come "The Creative" di Sweet Tape) ============ -->
   <section class="wedding" id="matrimoni">
-    <figure class="wedding__photo">
-      <img src="assets/img/nuove/13660935-2.jpg" alt="Due sposi a braccia aperte davanti alle colline dell'Oltrepò">
-    </figure>
-    <div class="wedding__stk" data-player="matrimoni"></div>
-    <p class="hand wedding__hand">prato fiorito, veranda<br>e tensostruttura ✿</p>
-    <div class="wedding__strip">
-      <figure><img src="assets/img/nuove/9642710.jpg" alt="Bacio degli sposi" loading="lazy"></figure>
-      <figure><img src="assets/img/nuove/img-7841.jpg" alt="Tavola con fiori di campo" loading="lazy"></figure>
-      <figure><img src="assets/img/nuove/t30-1946176-3.jpg" alt="Cerimonia nel prato" loading="lazy"></figure>
-      <figure><img src="assets/img/site/gatto.jpg" alt="Sposi e il gatto di casa" loading="lazy"></figure>
-      <figure><img src="assets/img/nuove/img-7844.jpg" alt="Sposi al tramonto" loading="lazy"></figure>
+    <div class="wd__brow" aria-hidden="true"></div>
+    <div class="wd__pin">
+      <span class="wd__kicker">Matrimoni · un solo matrimonio al giorno</span>
+      <h2 class="wd__title" aria-label="La vostra giornata al Melo Rosso">
+        <span class="wd__top" aria-hidden="true"></span>
+        <span class="wd__big" aria-hidden="true"></span>
+      </h2>
+      <div class="wd__stk"><div class="wd__flip"><div class="wd__spin"></div></div></div>
+      <a class="wd__explore" href="matrimoni.html" aria-label="Scopri i matrimoni">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45"/></svg>
+        <span class="wd__exp-txt">Scopri</span>
+        <span class="wd__exp-dot">↗</span>
+      </a>
+      <figure class="wd__card wd__card--a"><img src="assets/img/nuove/t30-1946176-3.jpg" alt=""><i class="tape tape--top"></i></figure>
+      <figure class="wd__card wd__card--b"><img src="assets/img/nuove/img-7615.jpg" alt=""><i class="tape tape--top"></i></figure>
+      <div class="wd__side">
+        <div class="wd__sky" aria-hidden="true">
+          <svg viewBox="0 0 200 112">
+            <path class="wd__arc" d="M12,100 A88,88 0 0 1 188,100"/>
+            <line x1="0" y1="100" x2="200" y2="100"/>
+            <g class="wd__stars"><circle cx="40" cy="30" r="2"/><circle cx="150" cy="22" r="2.4"/><circle cx="100" cy="8" r="1.8"/><circle cx="172" cy="60" r="1.6"/><circle cx="24" cy="66" r="1.6"/></g>
+            <circle class="wd__sun" r="12" cx="12" cy="100"/>
+          </svg>
+          <p class="wd__when">la mattina</p>
+        </div>
+        <ul class="wd__chips"></ul>
+        <p class="wd__txt"></p>
+      </div>
+      <div class="wd__wheel" aria-label="Momenti della giornata"></div>
+      <p class="hand wd__roll">gira la giornata!</p>
     </div>
-    <div class="center"><a class="pill pill--dark" href="matrimoni.html" data-hop>Scopri i matrimoni →</a></div>
+    <div class="wd__chin" aria-hidden="true"></div>
   </section>
 
   <!-- ============ CTA · VIENI A TROVARCI ============ -->

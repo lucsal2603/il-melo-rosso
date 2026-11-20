@@ -58,6 +58,9 @@ h1, h2, h3 { font-weight: 400; }
 
 .hc { display: inline-block; will-change: transform; }
 .hop-word { display: inline-block; white-space: nowrap; }
+/* lettere che saltano al passaggio del mouse */
+.hw { white-space: nowrap; }
+.hl { display: inline-block; }
 .hand { font-family: var(--hand); line-height: 1.15; }
 
 /* =========================================================
@@ -66,6 +69,8 @@ h1, h2, h3 { font-weight: 400; }
 .loader { position: fixed; inset: 0; z-index: 9500; background: #E5372B; display: grid; place-items: center; }
 .loader__logo { width: clamp(90px, 9vw, 130px); transform: scale(0); }
 .arcs { position: fixed; inset: 0; z-index: 9600; pointer-events: none; overflow: hidden; }
+html.is-arriving .arcs span { transform: translateY(var(--arcY, -145vh)); }
+html.is-arriving .loader { visibility: hidden; }
 .arcs span {
   position: absolute; left: -40vw; width: 180vw; height: 180vh;
   top: 100%;
@@ -264,7 +269,9 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   transition: background-color .7s, color .7s;
 }
 .pillbox--ink { background: var(--ink); color: var(--bg); }
-.rooms__stage { position: relative; height: clamp(560px, 86vh, 900px); }
+.rooms__stage { position: relative; height: clamp(560px, 86vh, 900px); touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; }
+.rooms__stage.is-dragging { cursor: grabbing; }
+.rooms__stage img { -webkit-user-drag: none; }
 .rooms__word {
   position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
   display: flex; flex-direction: column; align-items: center;
@@ -275,7 +282,7 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .rooms__pre { font-size: clamp(2.4rem, 7vw, 8rem); }
 .rooms__big { font-size: clamp(5rem, 23vw, 26rem); white-space: nowrap; }
 .rooms__pre .wl, .rooms__big .wl { display: inline-block; }
-.rooms__mask { display: block; overflow: hidden; padding: .02em .05em .04em; }
+.rooms__mask { display: block; overflow: hidden; padding: .3em .05em .04em; margin-top: -.28em; }
 .rooms__stk { position: absolute; left: 50%; top: 50%; width: clamp(220px, min(30vw, 50vh), 460px); transform: translate(-50%, -50%); z-index: 3; }
 /* durante il cambio ci sono due adesivi: stanno sovrapposti nello stesso punto, così niente salti */
 .rooms__stk { aspect-ratio: 1; }
@@ -388,18 +395,99 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 }
 
 /* =========================================================
-   WEDDING
+   WEDDING · LA GIORNATA
+   Come "The Creative" di Sweet Tape: sezione fissa con bordi curvi,
+   titolo gigante a ventaglio dietro un grande adesivo, foto con nastro,
+   pulsante rotondo tratteggiato, ruota di adesivi a destra.
+   Scorrendo passa la giornata: il sì → aperitivo → cena → festa.
    ========================================================= */
-.wedding { position: relative; padding: clamp(3rem, 6vw, 6rem) var(--pad) clamp(4rem, 8vw, 7rem); z-index: 1; overflow-x: clip; }
-.wedding__photo { border-radius: clamp(24px, 3vw, 48px); overflow: hidden; height: clamp(420px, 88vh, 900px); }
-.wedding__photo img { width: 100%; height: 120%; object-fit: cover; will-change: transform; }
-.wedding__stk { position: absolute; right: 7vw; top: 1vw; width: clamp(150px, 16vw, 260px); z-index: 2; }
-.wedding__hand { position: absolute; left: 6vw; top: calc(clamp(3rem, 6vw, 6rem) + clamp(420px, 88vh, 900px) - 4.2rem); color: var(--cream); font-size: clamp(1.3rem, 2vw, 2.1rem); transform: rotate(-4deg); text-shadow: 0 2px 10px rgba(0,0,0,.35); z-index: 2; }
-.wedding__strip { display: flex; gap: 1.2rem; margin-top: clamp(2rem, 4vw, 3.5rem); width: max-content; will-change: transform; }
-.wedding__strip figure { width: clamp(180px, 20vw, 320px); background: var(--cream); padding: 8px; border-radius: 22px; box-shadow: 0 18px 30px -16px rgba(0,0,0,.45); }
-.wedding__strip figure:nth-child(odd) { transform: rotate(-4deg); }
-.wedding__strip figure:nth-child(even) { transform: rotate(3deg) translateY(16px); }
-.wedding__strip img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; }
+.wedding {
+  position: relative; z-index: 1;
+  --wbg: #F59DB0; --wink: #6E1330; --wtitle: #FFE3EA; --wchip: #6E1330; --wsun: #FFD23F;
+  color: var(--wink);
+}
+.wd__brow, .wd__chin { position: relative; z-index: 2; height: clamp(46px, 7vw, 120px); background: var(--wbg); }
+.wd__brow { border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin-bottom: -1px; }
+.wd__chin { border-radius: 0 0 50% 50% / 0 0 100% 100%; margin-top: -1px; }
+.wd__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--wbg); }
+.wd__kicker {
+  position: absolute; left: 50%; top: 9vh; z-index: 5;
+  translate: -50% 0; rotate: -2deg;
+  padding: .45rem .95rem; border-radius: 8px;
+  background: var(--wtitle); color: var(--wchip);
+  font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+}
+.wd__title { position: absolute; inset: 0; margin: 0; z-index: 1; pointer-events: none; font-family: var(--cond); font-weight: 900; text-transform: uppercase; color: var(--wtitle); }
+.wd__top, .wd__big { position: absolute; left: 50%; display: flex; white-space: nowrap; translate: -50% 0; line-height: .8; pointer-events: auto; }
+.wd__top { top: 17.5vh; font-size: min(17vw, 29vh); letter-spacing: -.01em; }
+.wd__big { top: 51vh; font-size: var(--fs, 30vh); letter-spacing: -.01em; }
+.wd__fan { display: block; transform-origin: 50% 260%; }
+.wd__fan > .hc { display: block; }
+.wd__stk { position: absolute; left: 50%; top: 50vh; z-index: 2; width: min(27vw, 42vh); aspect-ratio: 1; translate: -50% -50%; perspective: 1000px; }
+.wd__flip, .wd__spin { position: relative; width: 100%; height: 100%; }
+.wd__spin > .stk { position: absolute; inset: 0; filter: drop-shadow(1vw 1.4vw 1.2vw rgba(0, 0, 0, .3)); }
+.wd__explore {
+  position: absolute; z-index: 4; left: calc(50% + min(9vw, 14vh)); top: 24vh;
+  width: min(11.5vw, 18vh); aspect-ratio: 1; border-radius: 50%;
+  display: grid; place-items: center; background: var(--cream); color: var(--wine);
+  box-shadow: 0 18px 30px -14px rgba(0, 0, 0, .45); rotate: -8deg;
+  transition: scale .5s var(--bounce);
+}
+.wd__explore:hover { scale: 1.1; }
+.wd__explore svg { position: absolute; inset: 5%; width: 90%; height: 90%; overflow: visible; }
+.wd__explore circle { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-dasharray: .1 6.2; stroke-linecap: round; }
+.wd__exp-txt { font-family: var(--cond); font-weight: 900; text-transform: uppercase; font-size: min(2.6vw, 4vh); line-height: 1; rotate: 6deg; }
+.wd__exp-dot { position: absolute; left: 50%; top: 66%; translate: -50% 0; width: 1.6em; height: 1.6em; border-radius: 50%; display: grid; place-items: center; background: var(--wbg); color: var(--wtitle); font-size: min(1vw, 1.6vh); font-weight: 800; }
+.wd__card { position: absolute; z-index: 3; margin: 0; width: min(15.5vw, 25vh); }
+.wd__card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16%; box-shadow: .6vw 1vw 1.6vw rgba(0, 0, 0, .35); }
+.wd__card .tape { width: 50%; height: 15%; margin-left: -25%; top: -7%; transform-origin: 0 50%; }
+.wd__card--a { left: 15%; top: 26vh; rotate: -6deg; }
+.wd__card--b { left: 69%; top: 36vh; rotate: 7deg; }
+.wd__side { position: absolute; left: clamp(1rem, 3vw, 3rem); top: 17vh; z-index: 4; width: min(21vw, 300px); display: flex; flex-direction: column; gap: 1.4rem; top: 22vh; }
+.wd__sky { width: min(150px, 100%); }
+.wd__sky svg { display: block; width: 100%; overflow: visible; }
+.wd__arc { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-dasharray: 2 6; stroke-linecap: round; opacity: .7; }
+.wd__sky line { stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.wd__stars circle { fill: var(--wtitle); }
+.wd__stars { opacity: 0; }
+.wd__sun { fill: var(--wsun); stroke: var(--wink); stroke-width: 2; }
+.wd__when { margin: .3rem 0 0; font-family: var(--hand); font-size: 1.2rem; rotate: -3deg; }
+.wd__chips { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; }
+.wd__chips li {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .45rem .8rem .45rem .55rem; border-radius: 8px; rotate: -2deg;
+  background: var(--wtitle); color: var(--wchip);
+  font-family: var(--cond); font-weight: 900; text-transform: uppercase; font-size: .95rem; letter-spacing: .02em;
+  box-shadow: 0 6px 12px -8px rgba(0, 0, 0, .5);
+}
+.wd__chips li::before { content: "⋮"; opacity: .6; }
+.wd__chips li:nth-child(even) { rotate: 1.5deg; }
+.wd__txt { margin: 0; font-size: clamp(.95rem, 1.15vw, 1.15rem); line-height: 1.32; font-weight: 600; color: var(--wink); }
+.wd__wheel { position: absolute; right: 0; top: 50%; z-index: 4; width: 1px; height: 1px; }
+.wd__wheel button { position: absolute; left: 0; top: 0; width: min(9vw, 15vh); aspect-ratio: 1; padding: 0; border: 0; background: none; cursor: pointer; translate: -50% -50%; }
+.wd__wheel button > .stk { position: absolute; inset: 0; filter: drop-shadow(.4vw .6vw .6vw rgba(0, 0, 0, .3)); }
+.wd__roll { position: absolute; right: min(11vw, 18vh); top: 31vh; z-index: 4; margin: 0; font-size: clamp(1rem, 1.4vw, 1.4rem); rotate: -12deg; color: var(--wink); }
+
+@media (max-width: 743px) {
+  .wd__kicker { top: 11vh; font-size: .56rem; }
+  .wd__kicker { top: 10vh; }
+  .wd__top { top: 15.5vh; font-size: 24vw; }
+  .wd__big { top: 47vh; }
+  .wd__stk { top: 43vh; width: 46vw; }
+  .wd__explore { width: 21vw; left: 66vw; top: 27vh; }
+  .wd__exp-txt { font-size: 4.6vw; }
+  .wd__exp-dot { font-size: 2vw; }
+  .wd__card { width: 27vw; }
+  .wd__card--a { left: 3vw; top: 25vh; }
+  .wd__card--b { left: 71vw; top: 51vh; }
+  .wd__side { top: auto; bottom: 3vh; left: 5vw; right: 5vw; width: auto; gap: .7rem; }
+  .wd__sky { position: absolute; right: 0; bottom: 0; width: 26vw; }
+  .wd__when { font-size: .9rem; text-align: center; }
+  .wd__chips { flex-direction: row; flex-wrap: wrap; max-width: 64vw; }
+  .wd__chips li { font-size: .78rem; padding: .35rem .6rem .35rem .45rem; }
+  .wd__txt { max-width: 64vw; font-size: .82rem; }
+  .wd__wheel, .wd__roll { display: none; }
+}
 
 /* =========================================================
    CTA
@@ -423,7 +511,6 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .pill--dark { background: var(--wine); color: var(--cream); }
 .rooms__more { margin-top: -.6rem; }
 .center { display: flex; justify-content: center; }
-.wedding .center { margin-top: clamp(2.5rem, 5vw, 4rem); }
 
 /* =========================================================
    FOOTER · PHYSICS
@@ -436,8 +523,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .foot__brand { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; margin-top: clamp(1rem, 3vh, 2.5rem); }
 .foot__brand img { width: clamp(70px, 7vw, 100px); border-radius: 50%; background: var(--cream); padding: 3px; margin-bottom: .8rem; position: relative; z-index: 2; transform: rotate(-8deg); }
 .foot__big { display: flex; flex-direction: column; align-items: center; font-family: var(--disp); text-transform: uppercase; line-height: .8; text-align: center; }
-.foot__big span:first-child { font-size: clamp(3rem, 9vw, 10rem); }
-.foot__big span:last-child { font-size: clamp(4rem, 15vw, 16rem); transform: rotate(-3deg); }
+.foot__big > span:first-child { font-size: clamp(3rem, 9vw, 10rem); }
+.foot__big > span:last-child { font-size: clamp(4rem, 15vw, 16rem); transform: rotate(-3deg); }
 .foot__world { position: absolute; inset: 0; z-index: 2; }
 .foot__bodies { position: absolute; inset: 0; }
 .fbody { position: absolute; left: 0; top: 0; cursor: grab; touch-action: none; will-change: transform; }
@@ -500,18 +587,14 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .rooms__nav { bottom: 2%; }
 
 
-  .wedding__photo { height: 70vh; }
-  .wedding__stk { width: 32vw; right: 4vw; top: 0; }
-  .wedding__hand { top: calc(clamp(3rem, 6vw, 6rem) + 70vh - 4.4rem); }
-  .wedding__strip figure { width: 46vw; }
 
   .cta { grid-template-columns: 1fr; }
   .cta__blob { margin: 0 8vw -14vw; }
   .cta__card { aspect-ratio: auto; border-radius: 40px; padding: 3rem 1.4rem; }
 
   .foot__nav { flex-wrap: wrap; justify-content: center; gap: .4rem 1.4rem; }
-  .foot__big span:first-child { font-size: 13vw; }
-  .foot__big span:last-child { font-size: 22vw; }
+  .foot__big > span:first-child { font-size: 13vw; }
+  .foot__big > span:last-child { font-size: 22vw; }
 }
 
 @media (prefers-reduced-motion: reduce) {

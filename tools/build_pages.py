@@ -308,6 +308,9 @@ def page(p):
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- arrivo da un cambio pagina: la pagina nasce già coperta dagli archi colorati,
+       così la transizione continua senza stacchi di colore -->
+  <script>try{{if(sessionStorage.getItem("meloArc")){{sessionStorage.removeItem("meloArc");var d=document.documentElement;d.classList.add("is-arriving");d.style.setProperty("--arcY",(-innerHeight*1.45)+"px")}}}}catch(e){{}}</script>
   <title>{E(t1 + " " + t2)} — Il Melo Rosso · Agriturismo a Fortunago</title>
   <meta name="description" content="{E(p["meta"])}">
   <meta name="theme-color" content="{c["bg"]}">

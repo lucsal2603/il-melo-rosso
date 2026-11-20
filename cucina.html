@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- arrivo da un cambio pagina: la pagina nasce già coperta dagli archi colorati,
+       così la transizione continua senza stacchi di colore -->
+  <script>try{if(sessionStorage.getItem("meloArc")){sessionStorage.removeItem("meloArc");var d=document.documentElement;d.classList.add("is-arriving");d.style.setProperty("--arcY",(-innerHeight*1.45)+"px")}}catch(e){}</script>
   <title>La Cucina — Il Melo Rosso · Agriturismo a Fortunago</title>
   <meta name="description" content="La cucina di casa del Melo Rosso: menù degustazione con 8/9 antipasti, primo, secondo, dolce e caffè. Pranzo alle 13:00, cena alle 20:30, solo su prenotazione.">
   <meta name="theme-color" content="#F58A1F">

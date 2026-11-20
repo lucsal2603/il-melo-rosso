@@ -110,6 +110,19 @@ window.Melo = (() => {
     gsap.to(arcs, { y: -H * 1.45, duration: .95, ease: "power2.in", stagger: .07, onComplete: undefined });
     gsap.delayedCall((arcs.length - 1) * .07 + .95, () => onCovered && onCovered());
   }
+  // pagina appena aperta da un cambio pagina: gli archi sono ancora lì dove li ha lasciati
+  // la pagina precedente e continuano a salire (prima il bordeaux, poi viola, giallo,
+  // arancio, rosa), scoprendo la nuova pagina. Nessuno schermo di colore in mezzo.
+  function arcsArrive(onReveal) {
+    const H = innerHeight;
+    gsap.set(arcs, { y: -H * 1.45 });
+    root.classList.remove("is-arriving");
+    const tl = gsap.timeline();
+    tl.to(arcs, { y: -H * 3.05, duration: 1.25, ease: "power2.inOut", stagger: { each: .1, from: "end" } });
+    tl.call(() => onReveal && onReveal(), null, .45);
+    tl.set(arcs, { y: 0 });
+    return tl;
+  }
   addEventListener("pageshow", e => { if (e.persisted) { gsap.set(arcs, { y: 0 }); lenis && lenis.start(); } });
 
   /* ---------------- NAVIGATION ---------------- */
@@ -124,7 +137,10 @@ window.Melo = (() => {
     closeMenu(true);
     if (reduce) { location.href = url; return; }
     lenis && lenis.stop();
-    arcsCover(() => (location.href = url));
+    arcsCover(() => {
+      try { sessionStorage.setItem("meloArc", "1"); } catch (e) {}
+      location.href = url;
+    });
   }
   document.addEventListener("click", e => {
     const a = e.target.closest("a[href]");
@@ -150,7 +166,11 @@ window.Melo = (() => {
     const walk = node => {
       [...node.childNodes].forEach(n => {
         if (n.nodeType === 3) {
-          const frag = document.createDocumentFragment();
+          if (!/\S/.test(n.textContent)) return;     // solo spazi/a capo tra elementi: lasciali stare
+          // tutto il testo in un unico contenitore: così, anche dentro un elemento "flex",
+          // gli spazi tra le parole non spariscono
+          const frag = document.createElement("span");
+          frag.className = "hop-text";
           n.textContent.split(/(\s+)/).forEach(w => {
             if (!w) return;
             if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(" ")); return; }
@@ -166,14 +186,59 @@ window.Melo = (() => {
     walk(el);
     return out;
   }
-  $$("[data-hop]").forEach(el => {
-    const target = el.querySelector(":scope > span") || el;
-    const chars = splitChars(target);
-    if (!fine) return;
-    el.addEventListener("mouseenter", () => {
-      gsap.fromTo(chars, { yPercent: 0 }, { yPercent: -28, duration: .18, ease: "power2.out", stagger: .025, yoyo: true, repeat: 1, overwrite: true });
+  $$("[data-hop]").forEach(el => splitChars(el.querySelector(":scope > span") || el));
+
+  /* ---------------- LETTERE CHE SALTANO ----------------
+     Ogni lettera del sito è un elemento a sé: quando il mouse ci passa sopra
+     salta solo quella lettera (non tutta la parola). I testi che cambiano dopo
+     (camere, menu, titoli "mescolati") vengono divisi di nuovo in automatico. */
+  const LETTER_CLS = ["hl", "hc", "wl", "gch"];
+  const isLetter = el => el && el.nodeType === 1 && LETTER_CLS.some(c => el.classList.contains(c));
+  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only";
+  const okText = n => {
+    const p = n.parentElement;
+    return !!p && /\S/.test(n.nodeValue) && !isLetter(p) && !p.closest(SKIP);
+  };
+  function splitText(n) {
+    const wrap = document.createElement("span");
+    wrap.className = "ht";
+    n.nodeValue.split(/(\s+)/).forEach(w => {
+      if (!w) return;
+      if (/^\s+$/.test(w)) { wrap.appendChild(document.createTextNode(w)); return; }
+      const word = document.createElement("span");
+      word.className = "hw";
+      for (const c of w) { const l = document.createElement("span"); l.className = "hl"; l.textContent = c; word.appendChild(l); }
+      wrap.appendChild(word);
     });
-  });
+    n.replaceWith(wrap);
+  }
+  function letters(root = document.body) {
+    if (!fine || !root) return;
+    if (root.nodeType === 3) { if (okText(root)) splitText(root); return; }
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (okText(n) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+    const list = [];
+    while (w.nextNode()) list.push(w.currentNode);
+    list.forEach(splitText);
+  }
+  if (fine) {
+    document.addEventListener("mouseover", e => {
+      const t = e.target;
+      if (!isLetter(t) || t._hop) return;
+      t._hop = true;
+      const h = t.offsetHeight || 20;
+      const up = t.classList.contains("gch") ? .2 : .34;     // le lettere giganti stanno in una finestra: saltano un po' meno
+      gsap.timeline({ onComplete: () => { t._hop = false; } })
+        .to(t, { y: -h * up, rotation: gsap.utils.random(-12, 12), duration: .16, ease: "power2.out", overwrite: "auto" })
+        .to(t, { y: 0, rotation: 0, duration: .55, ease: "bounce.out" });
+    }, { passive: true });
+    document.addEventListener("DOMContentLoaded", () => {
+      letters();
+      new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+        if (n.nodeType === 1 && (n.classList.contains("ht") || isLetter(n))) return;
+        if (n.nodeType === 1 || n.nodeType === 3) letters(n);
+      }))).observe(document.body, { childList: true, subtree: true });
+    });
+  }
   const hopIns = $$(".js-hop-in").map(el => ({ el, chars: splitChars(el) }));
   function hopInOnScroll(list) {
     list.forEach(({ el, chars }) => {
@@ -377,7 +442,7 @@ window.Melo = (() => {
     addEventListener("resize", () => { if (built) buildWalls(); });
 
     if (!reduce) {
-      gsap.from(".foot__big span", { yPercent: -80, rotation: i => (i ? 8 : -8), opacity: 0, duration: 1.2, ease: "back.out(1.8)", stagger: .12, scrollTrigger: { trigger: ".foot", start: "top 55%" } });
+      gsap.from(".foot__big > span", { yPercent: -80, rotation: i => (i ? 8 : -8), opacity: 0, duration: 1.2, ease: "back.out(1.8)", stagger: .12, scrollTrigger: { trigger: ".foot", start: "top 55%" } });
       gsap.from(".foot__nav a", { y: -40, opacity: 0, duration: .8, ease: "back.out(2)", stagger: .06, scrollTrigger: { trigger: ".foot", start: "top 60%" } });
     }
   }
@@ -394,6 +459,7 @@ window.Melo = (() => {
       after && after();
     };
     if (reduce) { done(); return; }
+    if (root.classList.contains("is-arriving")) { arcsArrive(done); return; }
     arcsSweep(done);
   }
 
@@ -404,6 +470,6 @@ window.Melo = (() => {
   return Object.assign(api, {
     $, $$, root, reduce, fine, mobile, DEFAULT, P, SOCIAL, sticker, shade, theme,
     get lenis() { return lenis; }, jump, arcsSweep, go, scrollToId, jumpToHash,
-    splitChars, hopIns, hopInOnScroll, openMenu, closeMenu, headerScroll, footerPhysics, fontsReady, reveal
+    splitChars, letters, hopIns, hopInOnScroll, openMenu, closeMenu, headerScroll, footerPhysics, fontsReady, reveal
   });
 })();
