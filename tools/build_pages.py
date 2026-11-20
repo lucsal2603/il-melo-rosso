@@ -220,7 +220,7 @@ def shared_top():
     return f'''<!-- ============ HEADER ============ -->
 <header class="hdr">
   <p class="hdr__claim">Una cascina rossa<br>sulle colline dell'Oltrepò</p>
-  <a class="hdr__logo" href="index.html" aria-label="Il Melo Rosso, torna alla home"><img src="assets/img/site/logo.png" alt="Il Melo Rosso" width="64" height="64"></a>
+  <a class="hdr__logo" href="index.html" aria-label="Il Melo Rosso, torna alla home"><img src="assets/img/logo.svg" alt="Il Melo Rosso" width="64" height="64"></a>
   <button class="tag" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu">
     <span class="tag__string"></span>
     <span class="tag__paper"><span class="tag__txt">Tirami</span></span>
@@ -252,7 +252,7 @@ def shared_foot():
     <a href="{E(MAPS)}" target="_blank" rel="noopener" data-hop>Dove siamo</a>
   </nav>
   <div class="foot__brand">
-    <img src="assets/img/site/logo.png" alt="" width="90" height="90">
+    <img src="assets/img/logo.svg" alt="" width="90" height="90">
     <p class="foot__big"><span>Ti aspettiamo</span><span>al Melo!</span></p>
   </div>
   <div class="foot__world" aria-label="Gioca: trascina gli adesivi">

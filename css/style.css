@@ -67,7 +67,7 @@ h1, h2, h3 { font-weight: 400; }
    LOADER + ARCS (also used as page transition)
    ========================================================= */
 .loader { position: fixed; inset: 0; z-index: 9500; background: #E5372B; display: grid; place-items: center; }
-.loader__logo { width: clamp(90px, 9vw, 130px); transform: scale(0); }
+.loader__logo { width: clamp(150px, 17vw, 230px); height: auto; overflow: visible; visibility: hidden; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .3)); }
 .arcs { position: fixed; inset: 0; z-index: 9600; pointer-events: none; overflow: hidden; }
 html.is-arriving .arcs span { transform: translateY(var(--arcY, -145vh)); }
 html.is-arriving .loader { visibility: hidden; }

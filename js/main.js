@@ -75,11 +75,39 @@
     if (reduce) { M.reveal(); M.jumpToHash(); return; }
     const after = () => { M.jumpToHash(); intro(); };
     if (fromInside || location.hash) { gsap.set(".loader__logo", { display: "none" }); M.reveal(after); return; }
+    // animazione del logo durante il caricamento: una piccola storia
+    // cerchio → anello che si disegna → disco → l'albero cresce dalle radici →
+    // spunta la mela che dondola → arriva il gatto e prova a prenderla
+    const L = $(".loader__logo");
+    const q = s => $(s, L);
+    const base = q(".lg-base"), ring = q(".lg-ring"), disc = q(".lg-disc"), grow = q(".lg-grow");
+    const tree = q(".lg-tree"), apple = q(".lg-apple"), cat = q(".lg-cat");
+    const C = 2 * Math.PI * +ring.getAttribute("r");
+    gsap.set(ring, { strokeDasharray: C, strokeDashoffset: C, rotation: -90, svgOrigin: "150 150" });
+    gsap.set([base, disc], { scale: 0, svgOrigin: "150 150" });
+    gsap.set(tree, { svgOrigin: "222 252" });
+    gsap.set(apple, { scale: 0, svgOrigin: "136 85" });
+    gsap.set(cat, { y: 95, rotation: -12, svgOrigin: "175 248" });   // spunta dal prato, dentro il disco
+    gsap.set(L, { visibility: "visible" });
     gsap.timeline()
-      .to(".loader__logo", { scale: 1, duration: .9, ease: "elastic.out(1, .45)" })
-      .to(".loader__logo", { rotation: 360, duration: .9, ease: "back.inOut(1.6)" }, "+=.15")
-      .to(".loader__logo", { scale: 0, duration: .35, ease: "back.in(2)" })
-      .add(() => M.reveal(after), "-=.1");
+      .to(base, { scale: 1, duration: .7, ease: "back.out(1.8)" }, 0)
+      .to(ring, { strokeDashoffset: 0, duration: 1, ease: "power2.inOut" }, .1)
+      .to(disc, { scale: 1, duration: .8, ease: "power3.out" }, .35)
+      // l'albero cresce dalla base del tronco e la chioma si scuote
+      .to(grow, { attr: { r: 250 }, duration: 1.1, ease: "power2.out" }, .75)
+      .fromTo(tree, { skewX: -9 }, { skewX: 0, duration: 1.4, ease: "elastic.out(1, .35)" }, 1.2)
+      // la mela spunta e dondola sul picciolo
+      .to(apple, { scale: 1, duration: .55, ease: "back.out(3)" }, 1.35)
+      .fromTo(apple, { rotation: 30 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1.2, .22)" }, 1.4)
+      // arriva il gatto con un salto
+      .to(cat, { y: 0, rotation: 0, duration: .75, ease: "back.out(1.8)" }, 1.65)
+      // ...e dà due zampate verso la mela, che torna a dondolare
+      .to(cat, { rotation: 7, duration: .16, ease: "sine.inOut", yoyo: true, repeat: 3 }, 2.35)
+      .to(apple, { rotation: -22, duration: .2, ease: "power2.out" }, 2.45)
+      .to(apple, { rotation: 0, duration: 1.2, ease: "elastic.out(1.2, .22)" }, 2.65)
+      // il logo gira, si chiude e partono gli archi
+      .to(L, { scale: 0, rotation: 200, duration: .5, ease: "back.in(2)" }, 3.05)
+      .add(() => M.reveal(after), 3.2);
   }
   M.fontsReady.then(() => { buildScenes(); start(); });
 
