@@ -20,9 +20,9 @@ Poi apri http://localhost:8080
 7. **Perché il Melo**: tela gigante come Sweet Tape. "PER GUSTARE / PER RIPOSARE / PER FESTEGGIARE / PER SCOPRIRE" sono su altezze diverse (alta, bassa, alta, bassa); la telecamera scende dal titolo, corre lungo ogni parola e va in diagonale verso la successiva. Le lettere salgono quando arriva la telecamera; foto, adesivi e frecce disegnate a mano entrano a scatto. Font "Melo Cond" (assets/fonts, Jost Black condensato, licenza OFL), simile al Futura Condensed di Sweet Tape
 8. **Matrimoni · la giornata** (come "The Creative" di Sweet Tape): la sezione resta ferma e, scorrendo, passa la giornata: la cerimonia (mattina), l'aperitivo (mezzogiorno), la cena (sera), la festa (notte). A ogni momento cambiano colore, titolo gigante a ventaglio, adesivo (si gira come una moneta) e foto (si staccano e ne arrivano altre col nastro); un piccolo sole attraversa il cielo e diventa luna. A destra una ruota di adesivi per saltare a un momento. Dati in `DAY` in `js/main.js`
 9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
-10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link)
+10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link). Sono un po' pesanti e non possono uscire dal bordo alto del footer
 
-Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse.
+Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse (tranne i nomi dentro i cerchi, che restano fermi).
 
 Gli adesivi rotondi girano durante le animazioni ma si fermano sempre dritti (giri completi), anche quelli che cadono nel footer.
 

@@ -194,7 +194,8 @@ window.Melo = (() => {
      (camere, menu, titoli "mescolati") vengono divisi di nuovo in automatico. */
   const LETTER_CLS = ["hl", "hc", "wl", "gch"];
   const isLetter = el => el && el.nodeType === 1 && LETTER_CLS.some(c => el.classList.contains(c));
-  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only";
+  // i nomi dentro i cerchi (adesivi, "Prenota", "Scopri") restano fermi: niente salto delle lettere
+  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only, .stk, .roundbtn, .wd__explore";
   const okText = n => {
     const p = n.parentElement;
     return !!p && /\S/.test(n.nodeValue) && !isLetter(p) && !p.closest(SKIP);
@@ -351,7 +352,7 @@ window.Melo = (() => {
     if (!window.Matter || !$(".foot__world")) return;
     const { Engine, Bodies, Body, Composite } = Matter;
     const world = $(".foot__world"), wrap = $(".foot__bodies");
-    const engine = Engine.create({ gravity: { y: 1.1 } });
+    const engine = Engine.create({ gravity: { y: 1.4 } });   // palle un po' più pesanti
     let walls = [], bodies = [], running = false, built = false;
     const defs = [
       ...Object.values(P).map(p => ({ type: "stk", p })),
@@ -388,7 +389,7 @@ window.Melo = (() => {
           el.innerHTML = `<span class="soc"><svg viewBox="0 0 24 24">${d.s.icon}</svg></span>`;
         }
         wrap.appendChild(el);
-        const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .45, friction: .08, frictionAir: .012, density: .002 });
+        const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .3, friction: .1, frictionAir: .018, density: .004 });
         Body.setAngularVelocity(b, gsap.utils.random(-.15, .15));
         b.el = el; b.size = size;
         bodies.push(b);
@@ -408,12 +409,13 @@ window.Melo = (() => {
         const r = world.getBoundingClientRect();
         vx = e.clientX - lx; vy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
         moved += Math.abs(vx) + Math.abs(vy);
-        Body.setPosition(b, { x: e.clientX - r.left, y: e.clientY - r.top });
+        const rad = b.size / 2;
+        Body.setPosition(b, { x: Math.max(rad, Math.min(r.width - rad, e.clientX - r.left)), y: Math.max(rad, Math.min(r.height - rad, e.clientY - r.top)) });
         Body.setVelocity(b, { x: vx, y: vy });
       });
       const up = () => {
         if (!down) return; down = false;
-        Body.setVelocity(b, { x: vx * .9, y: vy * .9 });
+        Body.setVelocity(b, { x: vx * .75, y: vy * .75 });
         if (moved < 6) {
           if (d.type === "stk") go(d.p.url);
           else window.open(el.href, el.target || "_self");
@@ -435,6 +437,15 @@ window.Melo = (() => {
         if (b.speed < .35 && Math.abs(b.angularVelocity) < .03) {
           const up = Math.round(b.angle / (Math.PI * 2)) * Math.PI * 2;
           Body.setAngle(b, b.angle + (up - b.angle) * .06); Body.setAngularVelocity(b, 0);
+        }
+      });
+      // soffitto = bordo alto del footer: una palla entrata non può più salire oltre
+      bodies.forEach(b => {
+        const rad = b.size / 2;
+        if (!b.inside) { if (b.position.y - rad >= 0) b.inside = true; return; }
+        if (b.position.y - rad < 0) {
+          Body.setPosition(b, { x: b.position.x, y: rad });
+          Body.setVelocity(b, { x: b.velocity.x * .8, y: Math.abs(b.velocity.y) * .3 });
         }
       });
       bodies.forEach(b => { b.el.style.transform = `translate(${b.position.x - b.size / 2}px, ${b.position.y - b.size / 2}px) rotate(${b.angle}rad)`; });
