@@ -506,6 +506,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .cta__card h2 { font-family: var(--disp); text-transform: uppercase; font-size: clamp(3rem, 8.2vw, 9.4rem); line-height: .86; }
 .cta__card p { margin: 1rem 0 1.6rem; font-weight: 700; font-size: .95rem; color: var(--cream); }
 .cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+/* i 3 pulsanti di "Vieni a trovarci!" restano fermi al passaggio del mouse */
+.cta__btns .pill:hover { scale: none; rotate: none; background: var(--cream); }
 /* hover con "scale"/"rotate" separati: la proprietà transform resta libera per le animazioni GSAP
    (una transizione CSS su transform le confonde e lasciava i pulsanti a grandezza zero) */
 .pill { display: inline-flex; align-items: center; height: 46px; padding: 0 1.3rem; border-radius: 99px; background: var(--cream); color: var(--wine); font-weight: 800; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; transition: scale .5s var(--bounce), rotate .5s var(--bounce), background-color .3s; }
