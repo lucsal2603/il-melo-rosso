@@ -6,7 +6,7 @@ le parti condivise (header, menu, footer, script) anche in index.html.
 Uso:   python3 tools/build_pages.py
 Per cambiare un testo o una foto di una pagina, modifica PAGES qui sotto e rilancia.
 """
-import html, json, re
+import html, json, re, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -429,6 +429,19 @@ def main():
     s = replace_block(s, "SCRIPTS", shared_scripts("main.js"))
     idx.write_text(s, encoding="utf-8")
     print("aggiornata index.html")
+    stamp_versions()
+
+
+def stamp_versions():
+    """Aggiunge ?v=... a CSS e JS in tutte le pagine: dopo ogni pubblicazione
+    il browser è costretto a scaricare i file nuovi (niente versioni vecchie in memoria)."""
+    v = time.strftime("%Y%m%d%H%M")
+    for f in ROOT.glob("*.html"):
+        s = f.read_text(encoding="utf-8")
+        s2 = re.sub(r'((?:href|src)="(?:css|js)/[\w.-]+\.(?:css|js))(?:\?v=\w+)?"', r'\1?v=' + v + '"', s)
+        if s2 != s:
+            f.write_text(s2, encoding="utf-8")
+    print("versione file:", v)
 
 if __name__ == "__main__":
     main()

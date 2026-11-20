@@ -188,6 +188,40 @@ window.Melo = (() => {
   }
   $$("[data-hop]").forEach(el => splitChars(el.querySelector(":scope > span") || el));
 
+  /* ---------------- CURSORE ----------------
+     Come su Sweet Tape: il cursore di sistema è nascosto e al suo posto c'è una freccia
+     disegnata che segue il mouse, si inclina nel verso del movimento, si ingrandisce
+     sopra link e pulsanti e si schiaccia quando clicchi. Solo con il mouse. */
+  if (fine && !reduce) {
+    const cur = document.createElement("div");
+    cur.className = "cursor"; cur.setAttribute("aria-hidden", "true");
+    cur.innerHTML = '<svg viewBox="0 0 48 52"><path class="cursor__depth" d="M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z" transform="translate(2.2 2.6)"/><path class="cursor__face" d="M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z"/></svg>';
+    document.body.appendChild(cur);
+    root.classList.add("has-cursor");
+    const TIP_X = 9, TIP_Y = 7;
+    const mx = gsap.quickTo(cur, "x", { duration: .18, ease: "power3.out" });
+    const my = gsap.quickTo(cur, "y", { duration: .18, ease: "power3.out" });
+    const rot = gsap.quickTo(cur, "rotation", { duration: .5, ease: "power3.out" });
+    let lastX = null, shown = false;
+    gsap.set(cur, { xPercent: 0, yPercent: 0, x: -100, y: -100, transformOrigin: `${TIP_X}px ${TIP_Y}px` });
+    addEventListener("mousemove", e => {
+      const x = e.clientX - TIP_X, y = e.clientY - TIP_Y;
+      if (!shown) { gsap.set(cur, { x, y }); gsap.to(cur, { opacity: 1, duration: .2 }); shown = true; }
+      mx(x); my(y);
+      if (lastX !== null) rot(gsap.utils.clamp(-24, 24, (e.clientX - lastX) * 1.6));
+      lastX = e.clientX;
+      clearTimeout(cur._t); cur._t = setTimeout(() => rot(0), 120);
+    }, { passive: true });
+    document.addEventListener("mouseleave", () => { gsap.to(cur, { opacity: 0, duration: .2 }); shown = false; });
+    const HOT = "a, button, [role=button], .fbody, .pick__item, .rooms__stage, .tag, label, .pw__card";
+    document.addEventListener("mouseover", e => {
+      const hot = !!e.target.closest(HOT);
+      if (hot !== cur._hot) { cur._hot = hot; gsap.to(cur, { scale: hot ? 1.22 : 1, duration: .4, ease: "back.out(3)" }); }
+    }, { passive: true });
+    addEventListener("mousedown", () => gsap.to(cur, { scale: .82, duration: .12 }));
+    addEventListener("mouseup", () => gsap.to(cur, { scale: cur._hot ? 1.22 : 1, duration: .45, ease: "elastic.out(1.1, .4)" }));
+  }
+
   /* ---------------- LETTERE CHE SALTANO ----------------
      Ogni lettera del sito è un elemento a sé: quando il mouse ci passa sopra
      salta solo quella lettera (non tutta la parola). I testi che cambiano dopo

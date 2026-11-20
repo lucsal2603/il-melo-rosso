@@ -426,9 +426,8 @@
 
     /* STORY */
     gsap.from(".story__big > span", { yPercent: 40, scale: .7, ease: "none", stagger: .1, scrollTrigger: { trigger: ".story", start: "top bottom", end: "top 30%", scrub: true } });
-    gsap.fromTo(".story__drop", { y: 0 }, { y: () => innerHeight * (M.mobile() ? .55 : 1.1), ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
-    // mentre cade fa un giro completo e si ferma dritto
-    gsap.fromTo(".story__drop", { rotation: -360 }, { rotation: 0, duration: 1.8, ease: "power2.out", scrollTrigger: { trigger: ".story", start: "top 60%", toggleActions: "play none none reverse" } });
+    // cade girando per tutta la discesa (due giri) e atterra dritto alla fine
+    gsap.fromTo(".story__drop", { y: 0, rotation: -720 }, { y: () => innerHeight * (M.mobile() ? .55 : 1.1), rotation: 0, ease: "none", scrollTrigger: { trigger: ".story", start: "top 70%", end: "top -60%", scrub: 1 } });
     $$(".story__board [data-speed]").forEach(el => {
       const sp = parseFloat(el.dataset.speed);
       gsap.fromTo(el, { y: 220 * sp }, { y: -220 * sp, rotation: `+=${(sp - 1) * 14}`, ease: "none", scrollTrigger: { trigger: ".story__board", start: "top bottom", end: "bottom top", scrub: true } });
@@ -455,6 +454,22 @@
         if (off > 0) off -= unit;
         tp.setAttribute("startOffset", off);
       });
+      // posizione: sul percorso della fascia, vicino al bordo destro (calcolata sulla curva vera)
+      const wStk = $(".wave__stk"), wPath = $("#wavePath");
+      const placeWaveStk = () => {
+        const box = $(".wave").getBoundingClientRect(), ctm = wPath.getScreenCTM();
+        if (!ctm) return;
+        const target = box.width - wStk.offsetWidth * .62, L = wPath.getTotalLength();
+        let best = null;
+        for (let l = L * .6; l <= L; l += L / 400) {
+          const pt = wPath.getPointAtLength(l).matrixTransform(ctm);
+          const x = pt.x - box.left;
+          if (!best || Math.abs(x - target) < Math.abs(best.x - target)) best = { x, y: pt.y - box.top };
+        }
+        gsap.set(wStk, { left: best.x, top: best.y });
+      };
+      placeWaveStk();
+      ScrollTrigger.addEventListener("refresh", placeWaveStk);
       gsap.fromTo(".wave__stk", { rotation: -360, scale: .5 }, { rotation: 0, scale: 1, duration: 1.4, ease: "back.out(1.3)", scrollTrigger: { trigger: ".wave", start: "top 75%", toggleActions: "play none none reverse" } });
     })();
 

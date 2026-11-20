@@ -22,6 +22,8 @@ Poi apri http://localhost:8080
 9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
 10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link). Sono un po' pesanti e non possono uscire dal bordo alto del footer
 
+Il cursore è una freccia disegnata (come Sweet Tape): segue il mouse, si inclina muovendosi, si ingrandisce sopra link e cerchi e si schiaccia al clic. Sul telefono non c'è.
+
 Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse (tranne i nomi dentro i cerchi, che restano fermi).
 
 Gli adesivi rotondi girano durante le animazioni ma si fermano sempre dritti (giri completi), anche quelli che cadono nel footer.
@@ -44,6 +46,7 @@ Ogni pagina ha il colore del suo adesivo e queste sezioni:
 python3 tools/build_pages.py
 ```
 Lo script riscrive le 6 pagine e aggiorna anche menu, intestazione e footer della home, così restano uguali ovunque.
+Aggiunge anche un numero di versione ai file CSS e JS (`?v=...`): lancialo prima di ogni pubblicazione, così i visitatori non vedono mai versioni vecchie rimaste in memoria nel browser.
 (Se modifichi a mano un file `cucina.html` ecc., la modifica viene persa al prossimo lancio dello script.)
 
 ## File
