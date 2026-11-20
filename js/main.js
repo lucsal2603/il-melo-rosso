@@ -136,6 +136,7 @@
     const old = $(".stk", rStk);
     const d = rStk.offsetWidth || 300;
     const D = W / 2 + d / 2 + 60;                 // fino a fuori schermo
+    const roll = D / (Math.PI * d) * 360;          // rotola come una ruota (e si ferma sempre dritto)
     const word = $(".rooms__word");
     const cards = [$(".rooms__card--a"), $(".rooms__card--b")];
     const OUT = .65, IN = .95, SWAP = .5;
@@ -144,12 +145,12 @@
     tl.to(root, { "--room": r.bg, "--room-ink": r.ink, "--room-soft": r.soft, duration: .9, ease: "power2.inOut" }, 0)
 
       // sticker: esce rotolando oltre il bordo
-      .to(old, { x: -D * dir, rotation: -16 * dir, duration: OUT, ease: "power2.in", onComplete: () => old.remove() }, 0)   // si inclina, non si capovolge
+      .to(old, { x: -D * dir, rotation: -roll * dir, duration: OUT, ease: "power2.in", onComplete: () => old.remove() }, 0)
       // nuovo sticker: entra dall'altro lato, da fuori schermo
       .add(() => {
         const s = roomSticker(r);
         rStk.appendChild(s);
-        gsap.fromTo(s, { x: D * dir, rotation: 16 * dir }, { x: 0, rotation: 0, duration: IN, ease: "back.out(1.2)" });
+        gsap.fromTo(s, { x: D * dir, rotation: roll * dir }, { x: 0, rotation: 0, duration: IN, ease: "power3.out" });
       }, SWAP)
 
       // parola gigante: stesso percorso
@@ -198,7 +199,7 @@
       v = (e.clientX - lastX) / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
       dx = ddx;
       const { stk, word, cards, d } = parts();
-      gsap.to(stk, { x: dx, rotation: gsap.utils.clamp(-16, 16, dx * .06), duration: .35, ease: "power3.out", overwrite: true });
+      gsap.to(stk, { x: dx, rotation: dx / (Math.PI * d) * 360, duration: .35, ease: "power3.out", overwrite: true });   // rotola sotto il dito
       gsap.to(word, { x: dx * 1.15, duration: .45, ease: "power3.out", overwrite: true });
       gsap.to(cards, { x: dx * .85, duration: .5, ease: "power3.out", overwrite: true, stagger: .03 });
       gsap.to(".rooms__info", { opacity: 1 - Math.min(.7, Math.abs(dx) / innerWidth), duration: .3, overwrite: true });
