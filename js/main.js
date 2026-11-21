@@ -382,7 +382,6 @@
         st = ScrollTrigger.create({
           trigger: pin, start: "top top", end: () => "+=" + innerHeight * (DAY.length - 1) * 1.1,
           pin: true, anticipatePin: 1,
-          snap: { snapTo: 1 / (DAY.length - 1), duration: { min: .3, max: .8 }, delay: .08, ease: "power2.inOut" },
           onUpdate(self) {
             setSun(self.progress);
             const i = Math.round(self.progress * (DAY.length - 1));
@@ -445,42 +444,50 @@
     /* WAVE */
     (function wave() {
       const tp = $(".wave textPath"), txt = $(".wave__txt"), svg = $(".wave__svg");
-      // su telefono la fascia ha un disegno suo: più alta, più curva, proporzioni vere (testo non schiacciato)
-      const SHAPES = {
-        desk: { vb: "0 0 1600 420",
-          below: "M-100,436 C250,276 520,276 820,386 C1120,496 1380,476 1700,326 L1700,452 L-100,452 Z",
-          band: "M-100,250 C250,90 520,90 820,200 C1120,310 1380,300 1700,140 L1700,330 C1380,480 1120,500 820,390 C520,280 250,280 -100,440 Z",
-          line: "M-100,345 C250,185 520,185 820,295 C1120,405 1380,395 1700,235" },
-        mob: { vb: "0 0 400 520",
-          below: "M-60,330 C20,160 120,140 200,280 C280,420 380,420 460,230 L460,540 L-60,540 Z",
-          band: "M-60,190 C20,20 120,0 200,140 C280,280 380,280 460,90 L460,234 C380,424 280,424 200,284 C120,144 20,164 -60,334 Z",
-          line: "M-60,262 C20,92 120,72 200,212 C280,352 380,352 460,162" },
-      };
-      let unit = 0, shape = "";
+      const below = $(".wave__below"), band = $(".wave__band"), line = $("#wavePath");
+      const DESK = { vb: "0 0 1600 420", below: below.getAttribute("d"), band: band.getAttribute("d"), line: line.getAttribute("d") };
+      /* Telefono: la fascia è calcolata qui. Linea centrale a onda (sinusoide) e fascia con lo
+         STESSO spessore in ogni punto (bordi paralleli presi perpendicolari alla curva), così il
+         testo resta sempre esattamente al centro e non esce mai. Le curve sono abbastanza
+         morbide rispetto all'altezza delle lettere, così non si accavallano nelle pieghe. */
+      function mobileShape() {
+        const w = svg.clientWidth || innerWidth, h = svg.clientHeight || innerWidth;
+        const VW = 400, VH = Math.round(VW * h / w);          // stesse proporzioni dello schermo: niente lettere deformate
+        const fs = parseFloat(getComputedStyle(txt).fontSize) || 56;
+        const half = fs * .8;                                   // mezza fascia: testo (circa .36em) + margine
+        const A = 52, L = 470, cy = VH * .5, x0 = -90, x1 = VW + 90;
+        const f = x => cy + A * Math.sin((x + 60) / L * Math.PI * 2);
+        const P = [], T = [], B = [];
+        for (let x = x0; x <= x1; x += 2) {
+          const y = f(x), d = f(x + .5) - f(x - .5);
+          const len = Math.hypot(1, d), nx = d / len, ny = -1 / len;   // normale verso l'alto
+          P.push([x, y]); T.push([x + nx * half, y + ny * half]); B.push([x - nx * half, y - ny * half]);
+        }
+        const pts = a => a.map(([x, y]) => x.toFixed(1) + "," + y.toFixed(1)).join(" L");
+        return {
+          vb: `0 0 ${VW} ${VH}`,
+          line: "M" + pts(P),
+          band: "M" + pts(T) + " L" + pts(B.slice().reverse()) + " Z",
+          below: "M" + pts(B.map(([x, y]) => [x, y - 2])) + ` L${x1},${VH + 30} L${x0},${VH + 30} Z`,
+        };
+      }
+      let unit = 0, mob = null;
       const fit = () => {
-        const k = M.mobile() ? "mob" : "desk";
-        if (k === shape) return;
-        shape = k; const S = SHAPES[k];
+        const m = M.mobile();
+        if (m === mob && !m) return;
+        mob = m; const S = m ? mobileShape() : DESK;
         svg.setAttribute("viewBox", S.vb);
-        $(".wave__below").setAttribute("d", S.below);
-        $(".wave__band").setAttribute("d", S.band);
-        $("#wavePath").setAttribute("d", S.line);
+        below.setAttribute("d", S.below); band.setAttribute("d", S.band); line.setAttribute("d", S.line);
         unit = txt.getComputedTextLength() / 4;
       };
-      fit(); addEventListener("resize", fit);
+      fit();
+      let rw = innerWidth; addEventListener("resize", () => { if (innerWidth !== rw) { rw = innerWidth; fit(); } });
       let off = 0, dir = -1, boost = 0;
       ScrollTrigger.create({ trigger: ".wave", start: "top bottom", end: "bottom top", onUpdate(self) { dir = self.direction > 0 ? -1 : 1; boost = Math.min(Math.abs(self.getVelocity()) / 90, 14); } });
       gsap.ticker.add(() => {
-        if (shape === "mob") {
-          // telefono: il nastro scorre solo mentre scorri la pagina (come un nastro tirato), morbido
-          const target = -(scrollY * .45) % unit;
-          off += (target - off) * .12;
-          if (Math.abs(target - off) > unit / 2) off = target;
-        } else {
-          off += dir * (1.2 + boost); boost *= .92;
-          if (off < -unit) off += unit;
-          if (off > 0) off -= unit;
-        }
+        off += dir * ((mob ? .6 : 1.2) + boost); boost *= .92;
+        if (off < -unit) off += unit;
+        if (off > 0) off -= unit;
         tp.setAttribute("startOffset", off);
       });
     })();
@@ -529,6 +536,20 @@
         const y0 = H * (mob ? .74 : .8);        // la prima parola spunta in basso all'inizio
         gsap.set(title, { x: 0, y: H * .42 - title.offsetHeight / 2 });
         let x = W * (mob ? .03 : .045);
+        /* telefono: foto, adesivi e nota scritta a mano non vanno MAI sopra le lettere.
+           Si spargono lungo la parola, alternati sopra e sotto, con un po' di aria. */
+        rows.forEach(r => {
+          const items = [$(".gnote", r), ...$$(".gprop", r)].filter(Boolean);   // la nota (larga) per prima, sopra all'inizio
+          if (!mob) { items.forEach(el => { el.style.left = el.style.top = ""; }); return; }
+          const w = r.offsetWidth, n = items.length;
+          items.forEach((el, k) => {
+            const ew = el.offsetWidth, eh = el.offsetHeight;
+            const cx = gsap.utils.clamp(w * .06, Math.max(w * .06, w * .9 - ew), (k + .5) / n * w - ew / 2);   // lontano dalle estremità: lì passano le frecce
+            const up = k % 2 === 0;
+            el.style.left = cx + "px";
+            el.style.top = (up ? -eh - rowH * .14 : rowH * 1.14) + "px";
+          });
+        });
         props.flat().forEach(p => { p.cx = p.el.offsetLeft + p.el.offsetWidth / 2; });   // centro dell'adesivo nella sua riga
         R = rows.map((r, i) => {
           const y = y0 + (i % 2 ? drop : 0), w = r.offsetWidth;

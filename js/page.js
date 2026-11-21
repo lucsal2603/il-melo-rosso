@@ -167,7 +167,6 @@
         scrollTrigger: {
           trigger: ".pw__pin", start: "top top", end: () => "+=" + innerHeight * .8 * cards.length,
           pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
-          snap: { snapTo: 1 / (cards.length - 1), duration: { min: .2, max: .6 }, ease: "power2.inOut" },
           onUpdate: self => setActive(Math.round(self.progress * (cards.length - 1)))
         }
       });

@@ -555,8 +555,18 @@ window.Melo = (() => {
     arcsSweep(done);
   }
 
-  let rT;
-  addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => ScrollTrigger.refresh(), 250); });
+  /* Scroll senza scatti su telefono: quando scorri, Safari/Chrome mostrano e nascondono la barra
+     dell'indirizzo e la finestra cambia altezza. Prima ogni volta si ricalcolava tutta la pagina
+     (sezioni bloccate comprese) e lo scroll si fermava o saltava indietro. Ora si ricalcola solo
+     se cambia davvero la larghezza (rotazione, finestra ridimensionata) o l'altezza di molto. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  let rT, lastW = innerWidth, lastH = innerHeight;
+  addEventListener("resize", () => {
+    const touch = matchMedia("(pointer: coarse)").matches;
+    if (innerWidth === lastW && (touch || Math.abs(innerHeight - lastH) < 120)) return;
+    lastW = innerWidth; lastH = innerHeight;
+    clearTimeout(rT); rT = setTimeout(() => ScrollTrigger.refresh(), 250);
+  });
   addEventListener("load", () => ScrollTrigger.refresh());
 
   return Object.assign(api, {

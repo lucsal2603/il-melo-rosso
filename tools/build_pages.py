@@ -58,7 +58,7 @@ def svg_icon(name):
 # --------------------------------------------------------------------------
 PAGES = [
   dict(key="cucina", file="cucina.html",
-    title=("La", "Cucina"), pill="Ti presentiamo", hand="dall'orto alla tavola ✿",
+    title=("La", "Cucina"), pill="Ti presentiamo", hand="dall'orto alla tavola *",
     meta="La cucina di casa del Melo Rosso: menù degustazione con 8/9 antipasti, primo, secondo, dolce e caffè. Pranzo alle 13:00, cena alle 20:30, solo su prenotazione.",
     desc="Paolo cucina con passione e fantasia: piatti semplici e tradizionali, materie prime fresche di giornata e tutto fatto al momento, dagli antipasti al dolce.",
     card=("assets/img/site/paolo.jpg", "Paolo ai fornelli"),
@@ -237,7 +237,7 @@ def shared_top():
     <a href="{MAIL}">agriturismo@ilmelorosso.it</a>
     <span>Via Ca' De' Vecchi 1 · Fortunago (PV)</span>
   </div>
-  <p class="menu__hand">tirami su per chiudere ↑</p>
+  <p class="menu__hand">tirami su per chiudere <span class="ico ico--up" aria-hidden="true"></span></p>
 </nav>'''
 
 def shared_foot():
@@ -337,7 +337,7 @@ def page(p):
     <span class="pillbox pillbox--ink ph__pill">{E(p["pill"])}</span>
     <h1 class="ph__title" style="--len:{max(len(t2), 5)}"><span class="ph__l1 js-hop-in">{E(t1)}</span><span class="ph__l2 js-hop-in">{E(t2)}</span></h1>
     <div class="ph__stk" data-player="{p["key"]}"></div>
-    <p class="hand ph__hand">{E(p["hand"])}</p>
+    <p class="hand ph__hand">{E(p["hand"]).replace(" *", ' <span class="ico ico--flower" aria-hidden="true"></span>')}</p>
     <div class="ph__hill" aria-hidden="true"></div>
   </section>
 
