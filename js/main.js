@@ -1,5 +1,5 @@
 /* =========================================================
-   IL MELO ROSSO — HOME · "Scegli il tuo momento"
+   IL MELO ROSSO — HOME · "Il Melo Rosso"
    (usa js/core.js)
    ========================================================= */
 (() => {
