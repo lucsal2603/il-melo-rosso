@@ -466,7 +466,20 @@
         const pts = a => a.map(([x, y]) => x.toFixed(1) + "," + y.toFixed(1)).join(" L");
         return {
           vb: `0 0 ${VW} ${VH}`,
-          line: "M" + pts(P),
+          // linea del testo come curva CONTINUA (Bézier che passano per punti della sinusoide):
+          // con tanti tratti dritti ogni lettera cambiava angolo a scatti e sembrava tremare
+          line: (() => {
+            const Q = [];
+            for (let x = x0 - L / 16; x <= x1 + L / 8; x += L / 16) Q.push([x, f(x)]);
+            let d = `M${Q[1][0].toFixed(2)},${Q[1][1].toFixed(2)}`;
+            for (let i = 1; i < Q.length - 2; i++) {
+              const [p0, p1, p2, p3] = [Q[i - 1], Q[i], Q[i + 1], Q[i + 2]];
+              const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+              const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+              d += ` C${c1.map(v => v.toFixed(2))} ${c2.map(v => v.toFixed(2))} ${p2.map(v => v.toFixed(2))}`;
+            }
+            return d;
+          })(),
           band: "M" + pts(T) + " L" + pts(B.slice().reverse()) + " Z",
           below: "M" + pts(B.map(([x, y]) => [x, y - 2])) + ` L${x1},${VH + 30} L${x0},${VH + 30} Z`,
         };
@@ -485,7 +498,8 @@
       let off = 0, dir = -1, boost = 0;
       ScrollTrigger.create({ trigger: ".wave", start: "top bottom", end: "bottom top", onUpdate(self) { dir = self.direction > 0 ? -1 : 1; boost = Math.min(Math.abs(self.getVelocity()) / 90, 14); } });
       gsap.ticker.add(() => {
-        off += dir * ((mob ? .6 : 1.2) + boost); boost *= .92;
+        // telefono: scorre sempre nello stesso verso, piano e costante (niente inversioni né accelerazioni con lo scroll)
+        if (mob) off -= .5; else { off += dir * (1.2 + boost); boost *= .92; }
         if (off < -unit) off += unit;
         if (off > 0) off -= unit;
         tp.setAttribute("startOffset", off);

@@ -191,9 +191,33 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   transition: color .6s var(--ease);
   z-index: 1;
 }
-/* nome del posto: su computer due righe semplici; su telefono composizione decorata (vedi sotto) */
-.pick__l1 { display: flex; gap: .22em; }
-.pick__sub { display: none; }
+/* nome del posto, composizione decorata: "IL" come etichetta di carta inclinata, MELO pieno,
+   ROSSO solo contorno un po' storto che si sovrappone, e la firma a mano con la mela disegnata */
+.pick__title { line-height: .8; }
+.pick__l1 { position: relative; display: block; }
+.pick__il {
+  position: absolute; z-index: 2; right: 100%; top: -.04em; margin-right: -.16em;
+  font-size: .3em; line-height: 1; padding: .14em .28em .04em; border-radius: .18em;
+  background: var(--cream); color: var(--wine); rotate: -12deg;
+  box-shadow: 0 6px 12px -6px rgba(0, 0, 0, .45);
+}
+.pick__melo { display: block; rotate: -3deg; }
+.pick__l2 { position: relative; display: block; }
+.pick__rosso {
+  display: block; margin-top: -.02em; rotate: 2deg;
+  color: transparent; -webkit-text-stroke: max(2px, .022em) var(--title);
+}
+/* computer: la firma sta a destra di ROSSO, come una nota scritta a mano */
+.pick__sub {
+  position: absolute; left: 100%; bottom: .2em; margin-left: .35em;
+  display: flex; align-items: center; gap: .4rem; white-space: nowrap;
+  font-size: clamp(1.2rem, 1.9vw, 2.2rem); line-height: 1; text-transform: none; rotate: -6deg;
+}
+.pick__apple { width: 1.35em; height: 1.48em; overflow: visible; flex: none; }
+.pick__apple-body { fill: currentColor; }
+.pick__apple-leaf { fill: currentColor; opacity: .75; }
+.pick__apple-stem, .pick__apple-shine { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.pick__apple-shine { stroke: var(--bg); opacity: .6; transition: stroke .6s; }
 .pick__row {
   position: absolute; left: 0; right: 0; top: calc(clamp(5.5rem, 13vh, 9rem) + clamp(6.5rem, 20.5vw, 23rem));
   display: flex; justify-content: center; align-items: flex-end;
@@ -285,7 +309,7 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .wave__below { fill: var(--room); transition: fill .6s var(--ease); }
 .wave__svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; overflow: visible; }
 .wave__band { fill: #F5CF33; }
-.wave__txt { font-family: var(--disp); font-size: 68px; text-transform: uppercase; fill: var(--wine); letter-spacing: 1px; }
+.wave__txt { font-family: var(--disp); font-size: 68px; text-transform: uppercase; fill: var(--wine); letter-spacing: 1px; text-rendering: geometricPrecision; }
 
 /* =========================================================
    ROOMS · SLIDER
@@ -625,31 +649,11 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .menu__foot span { display: none; }
   .menu__hand { left: 1.1rem; right: auto; bottom: 26px; font-size: .95rem; }
 
-  /* telefono: "IL" come etichetta di carta inclinata, MELO pieno e grande, ROSSO solo contorno
-     un po' storto che si sovrappone, e sotto la firma a mano con la mela disegnata */
-  .pick__title { top: 6.3rem; font-size: 27vw; line-height: .8; }
-  .pick__l1 { position: relative; display: block; }
-  .pick__il {
-    position: absolute; z-index: 2; right: 100%; top: -.04em; margin-right: -.16em;
-    font-size: .3em; line-height: 1; padding: .14em .28em .04em; border-radius: .18em;
-    background: var(--cream); color: var(--wine); rotate: -12deg;
-    box-shadow: 0 6px 12px -6px rgba(0, 0, 0, .45);
-  }
-  .pick__melo { display: block; rotate: -3deg; }
-  .pick__rosso {
-    display: block; margin-top: -.02em; rotate: 2deg;
-    color: transparent; -webkit-text-stroke: max(2px, .022em) var(--title);
-    transition: -webkit-text-stroke-color .6s var(--ease);
-  }
-  .pick__sub {
-    display: flex; align-items: center; gap: .4rem; margin-top: .55rem;
-    font-size: 1.3rem; line-height: 1; text-transform: none; rotate: -4deg;
-  }
-  .pick__apple { width: 1.7rem; height: 1.85rem; overflow: visible; }
-  .pick__apple-body { fill: currentColor; }
-  .pick__apple-leaf { fill: currentColor; opacity: .75; }
-  .pick__apple-stem, .pick__apple-shine { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
-  .pick__apple-shine { stroke: var(--bg); opacity: .6; transition: stroke .6s; }
+  .pick__title { top: 6.3rem; font-size: min(27vw, 15svh); }
+  /* telefono: la firma a mano va sotto ROSSO, centrata */
+  .pick__l2 { display: flex; flex-direction: column; align-items: center; }
+  .pick__sub { position: static; margin: .55rem 0 0; font-size: 1.3rem; }
+  .pick__apple { width: 1.7rem; height: 1.85rem; }
   .pick__row { top: auto; bottom: 16vh; flex-wrap: wrap; padding: 0 4vw; row-gap: 0; }
   .pick__item { width: 33vw; margin: -3vw -1.5vw; }
   .pick__hill { top: 60%; }
