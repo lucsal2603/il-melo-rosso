@@ -439,7 +439,11 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 .wd__brow, .wd__chin { position: relative; z-index: 2; height: clamp(46px, 7vw, 120px); background: var(--wbg); }
 .wd__brow { border-radius: 50% 50% 0 0 / 100% 100% 0 0; margin-bottom: -1px; }
 .wd__chin { border-radius: 0 0 50% 50% / 0 0 100% 100%; margin-top: -1px; }
-.wd__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--wbg); }
+.wd__pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--wbg); --pinbg: var(--wbg); }
+/* sezioni bloccate a tutto schermo: su telefono, quando la barra del browser si nasconde o compare,
+   lo schermo diventa più alto della sezione e sopra/sotto si vedevano i colori delle sezioni vicine.
+   Mentre la sezione è bloccata, il suo colore continua oltre i bordi e copre quelle fessure. */
+.is-pinned { box-shadow: 0 -50vh 0 var(--pinbg, var(--bg)), 0 50vh 0 var(--pinbg, var(--bg)); }
 .wd__kicker {
   position: absolute; left: 50%; top: 9vh; z-index: 5;
   translate: -50% 0; rotate: -2deg;

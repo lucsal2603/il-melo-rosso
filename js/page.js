@@ -166,7 +166,7 @@
         rotationX: STEP * (cards.length - 1), z: () => -RAD, ease: "none", onUpdate: shade,
         scrollTrigger: {
           trigger: ".pw__pin", start: "top top", end: () => "+=" + innerHeight * .8 * cards.length,
-          pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
+          pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1, onToggle: self => self.pin.classList.toggle("is-pinned", self.isActive), 
           onUpdate: self => setActive(Math.round(self.progress * (cards.length - 1)))
         }
       });

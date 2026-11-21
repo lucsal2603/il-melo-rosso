@@ -381,7 +381,7 @@
         setSun(0);
         st = ScrollTrigger.create({
           trigger: pin, start: "top top", end: () => "+=" + innerHeight * (DAY.length - 1) * 1.1,
-          pin: true, anticipatePin: 1,
+          pin: true, anticipatePin: 1, onToggle: self => self.pin.classList.toggle("is-pinned", self.isActive), 
           onUpdate(self) {
             setSun(self.progress);
             const i = Math.round(self.progress * (DAY.length - 1));
@@ -601,7 +601,7 @@
       const total = () => K.slice(1).reduce((s, k, i) => s + segLen(i), 0) * .85;
       const tl = gsap.timeline({
         defaults: { ease: "none" }, onUpdate: render,
-        scrollTrigger: { trigger: pin, start: "top top", end: () => "+=" + total(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
+        scrollTrigger: { trigger: pin, start: "top top", end: () => "+=" + total(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1, onToggle: self => self.pin.classList.toggle("is-pinned", self.isActive) }
       });
       for (let i = 0; i < K.length - 1; i++) {
         tl.fromTo(cam, { x: () => K[i].x, y: () => K[i].y }, { x: () => K[i + 1].x, y: () => K[i + 1].y, duration: Math.max(1, segLen(i)), immediateRender: false });
