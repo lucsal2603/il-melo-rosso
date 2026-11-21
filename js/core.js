@@ -191,35 +191,65 @@ window.Melo = (() => {
   /* ---------------- CURSORE ----------------
      Come su Sweet Tape: il cursore di sistema è nascosto e al suo posto c'è una freccia
      disegnata che segue il mouse, si inclina nel verso del movimento, si ingrandisce
-     sopra link e pulsanti e si schiaccia quando clicchi. Solo con il mouse. */
+     sopra link e pulsanti e si schiaccia quando clicchi.
+     Sopra le cose da trascinare (camere, etichetta "Tirami", palle del footer) diventa
+     una mano aperta, che si chiude e afferra mentre tieni premuto. Solo con il mouse. */
   if (fine && !reduce) {
+    const ARROW = "M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z";
+    // mano disegnata: dita, pollice e palmo (aperta) / dita piegate (chiusa)
+    const HAND_OPEN = '<rect x="13" y="9" width="6.4" height="21" rx="3.2"/><rect x="19.6" y="5" width="6.4" height="24" rx="3.2"/><rect x="26.2" y="6.5" width="6.4" height="22" rx="3.2"/><rect x="32.6" y="11" width="5.8" height="18" rx="2.9"/><rect x="5.5" y="21" width="6.4" height="16" rx="3.2" transform="rotate(-38 8.7 29)"/><path d="M12.4 25 h26 v9 c0 8 -5 13 -12.5 13 h-1.5 c-7 0 -12 -5 -12 -12 z"/>';
+    const HAND_GRAB = '<rect x="13" y="17" width="6.4" height="13" rx="3.2"/><rect x="19.6" y="15" width="6.4" height="14" rx="3.2"/><rect x="26.2" y="15.5" width="6.4" height="14" rx="3.2"/><rect x="32.6" y="17.5" width="5.8" height="12" rx="2.9"/><rect x="7" y="22" width="6.4" height="13" rx="3.2" transform="rotate(-50 10.2 28.5)"/><path d="M12.4 25 h26 v9 c0 8 -5 13 -12.5 13 h-1.5 c-7 0 -12 -5 -12 -12 z"/>';
+    const layer = (cls, inner) => `<g class="${cls}"><g class="cursor__depth" transform="translate(2.2 2.6)">${inner}</g><g class="cursor__face">${inner}</g></g>`;
     const cur = document.createElement("div");
     cur.className = "cursor"; cur.setAttribute("aria-hidden", "true");
-    cur.innerHTML = '<svg viewBox="0 0 48 52"><path class="cursor__depth" d="M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z" transform="translate(2.2 2.6)"/><path class="cursor__face" d="M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z"/></svg>';
+    cur.innerHTML = `<svg viewBox="0 0 48 52">${layer("cursor__arrow", `<path d="${ARROW}"/>`)}${layer("cursor__hand", HAND_OPEN)}${layer("cursor__grab", HAND_GRAB)}</svg>`;
     document.body.appendChild(cur);
     root.classList.add("has-cursor");
-    const TIP_X = 9, TIP_Y = 7;
+    // punto "attivo": la punta della freccia, il centro della mano
+    const HOT_ARROW = [9, 7], HOT_HAND = [25, 27];
+    let hot = HOT_ARROW, mode = "arrow", pressed = false, isLink = false;
     const mx = gsap.quickTo(cur, "x", { duration: .18, ease: "power3.out" });
     const my = gsap.quickTo(cur, "y", { duration: .18, ease: "power3.out" });
     const rot = gsap.quickTo(cur, "rotation", { duration: .5, ease: "power3.out" });
-    let lastX = null, shown = false;
-    gsap.set(cur, { xPercent: 0, yPercent: 0, x: -100, y: -100, transformOrigin: `${TIP_X}px ${TIP_Y}px` });
+    let lastX = null, px = -100, py = -100, shown = false;
+    gsap.set(cur, { x: -100, y: -100, transformOrigin: `${hot[0]}px ${hot[1]}px` });
+    const scaleFor = () => pressed ? (mode === "arrow" ? .82 : .92) : (isLink && mode === "arrow" ? 1.22 : 1);
+    function setMode(m) {
+      if (m === mode) return;
+      mode = m;
+      cur.classList.toggle("cursor--hand", m !== "arrow");
+      cur.classList.toggle("cursor--grab", m === "grab");
+      hot = m === "arrow" ? HOT_ARROW : HOT_HAND;
+      gsap.set(cur, { transformOrigin: `${hot[0]}px ${hot[1]}px`, x: px - hot[0], y: py - hot[1] });
+      gsap.fromTo(cur, { scale: scaleFor() * .8 }, { scale: scaleFor(), duration: .35, ease: "back.out(3)" });
+    }
     addEventListener("mousemove", e => {
-      const x = e.clientX - TIP_X, y = e.clientY - TIP_Y;
+      px = e.clientX; py = e.clientY;
+      const x = px - hot[0], y = py - hot[1];
       if (!shown) { gsap.set(cur, { x, y }); gsap.to(cur, { opacity: 1, duration: .2 }); shown = true; }
       mx(x); my(y);
-      if (lastX !== null) rot(gsap.utils.clamp(-24, 24, (e.clientX - lastX) * 1.6));
-      lastX = e.clientX;
+      if (lastX !== null) rot(gsap.utils.clamp(-24, 24, (px - lastX) * 1.6));
+      lastX = px;
       clearTimeout(cur._t); cur._t = setTimeout(() => rot(0), 120);
     }, { passive: true });
     document.addEventListener("mouseleave", () => { gsap.to(cur, { opacity: 0, duration: .2 }); shown = false; });
-    const HOT = "a, button, [role=button], .fbody, .pick__item, .rooms__stage, .tag, label, .pw__card";
+    const LINKS = "a, button, [role=button], .pick__item, label, .pw__card";
+    const GRAB = ".rooms__stage, .tag, .fbody";
     document.addEventListener("mouseover", e => {
-      const hot = !!e.target.closest(HOT);
-      if (hot !== cur._hot) { cur._hot = hot; gsap.to(cur, { scale: hot ? 1.22 : 1, duration: .4, ease: "back.out(3)" }); }
+      const t = e.target;
+      const g = t.closest(GRAB);
+      // sopra le frecce e i pulsanti dentro le camere resta la freccia
+      const grab = g && (g.matches(".tag, .fbody") || !t.closest("a, button"));
+      if (!pressed) setMode(grab ? "hand" : "arrow");
+      const link = !grab && !!t.closest(LINKS);
+      if (link !== isLink) { isLink = link; gsap.to(cur, { scale: scaleFor(), duration: .4, ease: "back.out(3)" }); }
     }, { passive: true });
-    addEventListener("mousedown", () => gsap.to(cur, { scale: .82, duration: .12 }));
-    addEventListener("mouseup", () => gsap.to(cur, { scale: cur._hot ? 1.22 : 1, duration: .45, ease: "elastic.out(1.1, .4)" }));
+    addEventListener("mousedown", () => { pressed = true; if (mode === "hand") setMode("grab"); gsap.to(cur, { scale: scaleFor(), duration: .12 }); });
+    addEventListener("mouseup", e => {
+      pressed = false;
+      if (mode === "grab") { const t = document.elementFromPoint(e.clientX, e.clientY); setMode(t && t.closest(GRAB) ? "hand" : "arrow"); }
+      gsap.to(cur, { scale: scaleFor(), duration: .45, ease: "elastic.out(1.1, .4)" });
+    });
   }
 
   /* ---------------- LETTERE CHE SALTANO ----------------
@@ -386,7 +416,7 @@ window.Melo = (() => {
     if (!window.Matter || !$(".foot__world")) return;
     const { Engine, Bodies, Body, Composite } = Matter;
     const world = $(".foot__world"), wrap = $(".foot__bodies");
-    const engine = Engine.create({ gravity: { y: 1.4 } });   // palle un po' più pesanti
+    const engine = Engine.create({ gravity: { y: 2 } });   // palle pesanti: cadono decise
     let walls = [], bodies = [], running = false, built = false;
     const defs = [
       ...Object.values(P).map(p => ({ type: "stk", p })),
@@ -423,7 +453,7 @@ window.Melo = (() => {
           el.innerHTML = `<span class="soc"><svg viewBox="0 0 24 24">${d.s.icon}</svg></span>`;
         }
         wrap.appendChild(el);
-        const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .3, friction: .1, frictionAir: .018, density: .004 });
+        const b = Bodies.circle(gsap.utils.random(size, w - size), -gsap.utils.random(100, 900) - i * 90, size / 2, { restitution: .12, friction: .15, frictionAir: .035, density: .01 });
         Body.setAngularVelocity(b, gsap.utils.random(-.15, .15));
         b.el = el; b.size = size;
         bodies.push(b);
@@ -445,11 +475,12 @@ window.Melo = (() => {
         moved += Math.abs(vx) + Math.abs(vy);
         const rad = b.size / 2;
         Body.setPosition(b, { x: Math.max(rad, Math.min(r.width - rad, e.clientX - r.left)), y: Math.max(rad, Math.min(r.height - rad, e.clientY - r.top)) });
-        Body.setVelocity(b, { x: vx, y: vy });
+        Body.setVelocity(b, { x: gsap.utils.clamp(-8, 8, vx * .5), y: gsap.utils.clamp(-8, 8, vy * .5) });
       });
       const up = () => {
         if (!down) return; down = false;
-        Body.setVelocity(b, { x: vx * .75, y: vy * .75 });
+        // lancio morbido: velocità ridotta e con un limite, così non schizzano via
+        Body.setVelocity(b, { x: gsap.utils.clamp(-11, 11, vx * .45), y: gsap.utils.clamp(-11, 11, vy * .45) });
         if (moved < 6) {
           if (d.type === "stk") go(d.p.url);
           else window.open(el.href, el.target || "_self");
@@ -473,6 +504,8 @@ window.Melo = (() => {
           Body.setAngle(b, b.angle + (up - b.angle) * .06); Body.setAngularVelocity(b, 0);
         }
       });
+      // limite di velocità: niente palle che schizzano
+      bodies.forEach(b => { const v = b.speed; if (v > 16) Body.setVelocity(b, { x: b.velocity.x * 16 / v, y: b.velocity.y * 16 / v }); });
       // soffitto = bordo alto del footer: una palla entrata non può più salire oltre
       bodies.forEach(b => {
         const rad = b.size / 2;
