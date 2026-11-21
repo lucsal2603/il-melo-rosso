@@ -193,20 +193,19 @@ window.Melo = (() => {
      disegnata che segue il mouse, si inclina nel verso del movimento, si ingrandisce
      sopra link e pulsanti e si schiaccia quando clicchi.
      Sopra le cose da trascinare (camere, etichetta "Tirami", palle del footer) diventa
-     una mano aperta, che si chiude e afferra mentre tieni premuto. Solo con il mouse. */
+     una manina che indica, come su Sweet Tape. Solo con il mouse. */
   if (fine && !reduce) {
     const ARROW = "M9 7 L9 41 L18 32.5 L24.5 46.5 L31 43.5 L24.8 30 L37 30 Z";
-    // mano disegnata: dita, pollice e palmo (aperta) / dita piegate (chiusa)
-    const HAND_OPEN = '<rect x="13" y="9" width="6.4" height="21" rx="3.2"/><rect x="19.6" y="5" width="6.4" height="24" rx="3.2"/><rect x="26.2" y="6.5" width="6.4" height="22" rx="3.2"/><rect x="32.6" y="11" width="5.8" height="18" rx="2.9"/><rect x="5.5" y="21" width="6.4" height="16" rx="3.2" transform="rotate(-38 8.7 29)"/><path d="M12.4 25 h26 v9 c0 8 -5 13 -12.5 13 h-1.5 c-7 0 -12 -5 -12 -12 z"/>';
-    const HAND_GRAB = '<rect x="13" y="17" width="6.4" height="13" rx="3.2"/><rect x="19.6" y="15" width="6.4" height="14" rx="3.2"/><rect x="26.2" y="15.5" width="6.4" height="14" rx="3.2"/><rect x="32.6" y="17.5" width="5.8" height="12" rx="2.9"/><rect x="7" y="22" width="6.4" height="13" rx="3.2" transform="rotate(-50 10.2 28.5)"/><path d="M12.4 25 h26 v9 c0 8 -5 13 -12.5 13 h-1.5 c-7 0 -12 -5 -12 -12 z"/>';
+    // manina che indica (come quella di Sweet Tape): dito alzato, altre dita piegate, pollice
+    const HAND = '<rect x="18" y="3" width="7.6" height="27" rx="3.8"/><rect x="25" y="17" width="7" height="14" rx="3.5"/><rect x="31.4" y="19" width="6.6" height="13" rx="3.3"/><rect x="37.4" y="22" width="5.6" height="11" rx="2.8"/><rect x="9.5" y="24" width="7" height="14" rx="3.5" transform="rotate(-35 13 31)"/><path d="M16.5 27 H43 V36 C43 44 37 49.5 30 49.5 H27.5 C20.5 49.5 15.5 44 15.5 37 Z"/>';
     const layer = (cls, inner) => `<g class="${cls}"><g class="cursor__depth" transform="translate(2.2 2.6)">${inner}</g><g class="cursor__face">${inner}</g></g>`;
     const cur = document.createElement("div");
     cur.className = "cursor"; cur.setAttribute("aria-hidden", "true");
-    cur.innerHTML = `<svg viewBox="0 0 48 52">${layer("cursor__arrow", `<path d="${ARROW}"/>`)}${layer("cursor__hand", HAND_OPEN)}${layer("cursor__grab", HAND_GRAB)}</svg>`;
+    cur.innerHTML = `<svg viewBox="0 0 48 52">${layer("cursor__arrow", `<path d="${ARROW}"/>`)}${layer("cursor__hand", HAND)}</svg>`;
     document.body.appendChild(cur);
     root.classList.add("has-cursor");
     // punto "attivo": la punta della freccia, il centro della mano
-    const HOT_ARROW = [9, 7], HOT_HAND = [25, 27];
+    const HOT_ARROW = [9, 7], HOT_HAND = [21.8, 4];   // punta della freccia / punta del dito
     let hot = HOT_ARROW, mode = "arrow", pressed = false, isLink = false;
     const mx = gsap.quickTo(cur, "x", { duration: .18, ease: "power3.out" });
     const my = gsap.quickTo(cur, "y", { duration: .18, ease: "power3.out" });
@@ -218,8 +217,7 @@ window.Melo = (() => {
       if (m === mode) return;
       mode = m;
       cur.classList.toggle("cursor--hand", m !== "arrow");
-      cur.classList.toggle("cursor--grab", m === "grab");
-      hot = m === "arrow" ? HOT_ARROW : HOT_HAND;
+            hot = m === "arrow" ? HOT_ARROW : HOT_HAND;
       gsap.set(cur, { transformOrigin: `${hot[0]}px ${hot[1]}px`, x: px - hot[0], y: py - hot[1] });
       gsap.fromTo(cur, { scale: scaleFor() * .8 }, { scale: scaleFor(), duration: .35, ease: "back.out(3)" });
     }
@@ -244,10 +242,10 @@ window.Melo = (() => {
       const link = !grab && !!t.closest(LINKS);
       if (link !== isLink) { isLink = link; gsap.to(cur, { scale: scaleFor(), duration: .4, ease: "back.out(3)" }); }
     }, { passive: true });
-    addEventListener("mousedown", () => { pressed = true; if (mode === "hand") setMode("grab"); gsap.to(cur, { scale: scaleFor(), duration: .12 }); });
+    addEventListener("mousedown", () => { pressed = true; gsap.to(cur, { scale: scaleFor(), duration: .12 }); });
     addEventListener("mouseup", e => {
       pressed = false;
-      if (mode === "grab") { const t = document.elementFromPoint(e.clientX, e.clientY); setMode(t && t.closest(GRAB) ? "hand" : "arrow"); }
+      const t = document.elementFromPoint(e.clientX, e.clientY); setMode(t && t.closest(GRAB) && (t.closest(".tag, .fbody") || !t.closest("a, button")) ? "hand" : "arrow");
       gsap.to(cur, { scale: scaleFor(), duration: .45, ease: "elastic.out(1.1, .4)" });
     });
   }
@@ -259,7 +257,7 @@ window.Melo = (() => {
   const LETTER_CLS = ["hl", "hc", "wl", "gch"];
   const isLetter = el => el && el.nodeType === 1 && LETTER_CLS.some(c => el.classList.contains(c));
   // i nomi dentro i cerchi (adesivi, "Prenota", "Scopri") restano fermi: niente salto delle lettere
-  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only, .stk, .roundbtn, .wd__explore";
+  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only, .stk, .roundbtn, .wd__explore, .menu";
   const okText = n => {
     const p = n.parentElement;
     return !!p && /\S/.test(n.nodeValue) && !isLetter(p) && !p.closest(SKIP);
@@ -354,8 +352,9 @@ window.Melo = (() => {
   (function pullTag() {
     let sy = 0, dy = 0, base = 0, lastY = 0, lastT = 0;
     tag.addEventListener("pointerdown", e => {
+      if (dragging) up();                       // un gesto precedente rimasto a metà: chiudilo prima
       dragging = true; sy = lastY = e.clientY; lastT = performance.now(); dy = 0; base = menuOpen ? TAG_DROP() : 0;
-      tag.setPointerCapture(e.pointerId);
+      try { tag.setPointerCapture(e.pointerId); } catch (err) {}
       gsap.killTweensOf([menu, tag]);
       gsap.to(tag, { scaleY: 1.12, scaleX: .94, duration: .3, ease: "power2.out" });
     });
@@ -373,16 +372,23 @@ window.Melo = (() => {
       gsap.to(tag, { y, scaleY: s, scaleX: 2.06 - s, duration: .25, ease: "power3.out", overwrite: "auto" });
       gsap.to(menu, { yPercent: -104 + Math.max(0, Math.min(1.08, y / max)) * 104, duration: .45, ease: "power3.out", overwrite: true });
     });
-    const up = () => {
+    function up() {
       if (!dragging) return;
       dragging = false;
       gsap.to(tag, { scaleY: 1, scaleX: 1, duration: 1.1, ease: "elastic.out(1.1, .3)" });
       if (Math.abs(dy) < 6) { menuOpen ? closeMenu() : openMenu(); return; }
       const wantOpen = menuOpen ? dy > -80 : dy > 80;
       if (wantOpen) { menuOpen = false; openMenu(); } else { menuOpen = true; closeMenu(); }
-    };
+    }
+    // il gesto finisce SEMPRE: anche se si rilascia fuori dall'etichetta o fuori dalla finestra,
+    // se la finestra perde il focus o il browser annulla il tocco → il menu va fino in fondo, mai a metà
     tag.addEventListener("pointerup", up);
     tag.addEventListener("pointercancel", up);
+    tag.addEventListener("lostpointercapture", up);
+    addEventListener("pointerup", up);
+    addEventListener("pointercancel", up);
+    addEventListener("blur", up);
+    document.addEventListener("visibilitychange", up);
 
     // hover: l'etichetta si allunga come se qualcuno la tirasse (resta attaccata)
     if (fine) {

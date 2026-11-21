@@ -66,10 +66,11 @@ h1, h2, h3 { font-weight: 400; }
 html.has-cursor, html.has-cursor * { cursor: none !important; }
 .cursor { position: fixed; left: 0; top: 0; z-index: 100000; width: 48px; height: 52px; pointer-events: none; opacity: 0; will-change: transform; filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .45)); }
 .cursor svg { width: 100%; height: 100%; overflow: visible; }
-.cursor__depth { fill: var(--wine); stroke: var(--wine); stroke-width: 2.6; stroke-linejoin: round; }
-.cursor__face { fill: #FFF4E2; stroke: var(--wine); stroke-width: 2.4; stroke-linejoin: round; }
-.cursor__hand, .cursor__grab, .cursor--hand .cursor__arrow, .cursor--grab .cursor__hand { display: none; }
-.cursor--hand .cursor__hand, .cursor--grab .cursor__grab { display: inline; }
+/* colori come il cursore di Sweet Tape: sabbia con bordo bianco e una leggera ombra */
+.cursor__depth { fill: #BFA77A; stroke: #BFA77A; stroke-width: 2.4; stroke-linejoin: round; }
+.cursor__face { fill: #E8D8B3; stroke: #fff; stroke-width: 2.2; stroke-linejoin: round; }
+.cursor__hand, .cursor--hand .cursor__arrow { display: none; }
+.cursor--hand .cursor__hand { display: inline; }
 
 /* =========================================================
    LOADER + ARCS (also used as page transition)
@@ -137,7 +138,9 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 /* il foglio continua sopra il bordo dello schermo: quando rimbalza non si stacca mai dall'alto */
 .menu::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 70vh; background: inherit; pointer-events: none; }
 .menu__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .2rem 5vw; }
-.menu__list a { display: flex; align-items: center; gap: 1.2rem; }
+/* voce del menu: al passaggio si "accende" tutta l'etichetta (sfondo chiaro), così si vede subito cosa si sceglie */
+.menu__list a { display: flex; width: fit-content; align-items: center; gap: 1.2rem; padding: .15em .9em .15em .35em; margin-left: -.35em; border-radius: 22px; transition: background-color .3s var(--ease), color .3s var(--ease), box-shadow .3s; }
+.menu__list a:hover, .menu__list a:focus-visible { background: var(--cream); color: var(--wine); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5); outline: none; }
 .menu__list img { width: clamp(52px, 5vw, 80px); height: clamp(52px, 5vw, 80px); border-radius: 18px; object-fit: cover; transform: rotate(-6deg); transition: transform .5s var(--bounce); }
 .menu__list a:hover img { transform: rotate(8deg) scale(1.15); }
 .menu__list span { font-family: var(--disp); text-transform: uppercase; font-size: clamp(2.6rem, 6.4vw, 6.4rem); line-height: 1.02; }
@@ -314,10 +317,7 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   transition: scale .6s var(--bounce), rotate .6s var(--bounce);
 }
 .roundbtn:hover { scale: 1.12; rotate: -8deg; }
-.roundbtn svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 14s linear infinite; }
-.roundbtn text { font-family: var(--body); font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; fill: currentColor; }
-.roundbtn > span { font-family: var(--disp); font-size: 1.15rem; text-transform: uppercase; display: flex; align-items: center; gap: .3rem; }
-.roundbtn > span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--room); }
+.roundbtn > span { font-family: var(--disp); font-size: clamp(1.3rem, 1.6vw, 1.8rem); text-transform: uppercase; display: flex; align-items: center; gap: .3rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .rooms__nav { position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%); display: flex; align-items: center; gap: 1.2rem; z-index: 4; }
 .arrow { width: 54px; height: 54px; border-radius: 50%; background: var(--room-ink); color: var(--room); font-size: 1.3rem; font-weight: 800; transition: scale .5s var(--bounce), background-color .7s, color .7s; }
@@ -598,8 +598,8 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
   .rooms__price { line-height: 1.5; }
   .rooms__more { margin-top: 1.2rem; }
   .rooms__tags { flex-direction: row; flex-wrap: wrap; }
-  .roundbtn { right: 1rem; top: 25%; bottom: auto; width: 78px; }
-  .roundbtn > span { font-size: .9rem; }
+  .roundbtn { right: 1rem; top: 25%; bottom: auto; width: 88px; }
+  .roundbtn > span { font-size: 1.1rem; }
   .rooms__nav { bottom: 2%; }
 
 
@@ -619,6 +619,5 @@ body.scrolled .hdr__claim { opacity: 0; transform: translateY(-10px); }
 
 @media (prefers-reduced-motion: reduce) {
   .loader, .arcs { display: none; }
-  .roundbtn svg { animation: none; }
   .kraft__txt .ic { opacity: 1; }
 }

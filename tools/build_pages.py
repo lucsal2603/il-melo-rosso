@@ -216,7 +216,7 @@ MENU = [
 ]
 
 def shared_top():
-    items = "\n".join(f'    <li><a href="{h}" data-hop><img src="{i}" alt=""><span>{E(t)}</span></a></li>' for h, t, i in MENU)
+    items = "\n".join(f'    <li><a href="{h}"><img src="{i}" alt=""><span>{E(t)}</span></a></li>' for h, t, i in MENU)
     return f'''<!-- ============ HEADER ============ -->
 <header class="hdr">
   <p class="hdr__claim">Una cascina rossa<br>sulle colline dell'Oltrepò</p>

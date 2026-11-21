@@ -8,6 +8,7 @@
 .pill--ink { background: var(--ink); color: var(--bg); }
 .pill--ink:hover { background: var(--cream); color: var(--ink); }
 .menu__list a.is-here span { color: var(--cream); }
+.menu__list a.is-here:hover span { color: var(--wine); }
 .menu__list a.is-here img { outline: 3px solid var(--cream); outline-offset: 3px; }
 .is-page .foot__curve { background: var(--nbg); }
 

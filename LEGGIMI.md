@@ -13,7 +13,7 @@ Poi apri http://localhost:8080
 ## Sezioni e animazioni
 1. **Caricamento**: il logo (ricreato in vettoriale, `assets/img/logo.svg`, identico all'originale) si costruisce pezzo per pezzo: cerchio, anello che si disegna, disco, l'albero cresce dalle radici, la mela spunta e dondola, il gatto salta fuori e dà due zampate. Poi gli archi colorati salgono e scoprono la pagina. Gli stessi archi fanno da transizione tra le pagine: la pagina nuova si apre già coperta e gli archi continuano a salire, senza stacchi di colore
 2. **Scegli il tuo momento**: 6 adesivi rotondi (Cucina, Camere, Matrimoni, Piscina, Colazione, Fortunago). Passandoci sopra **tutta la pagina cambia colore**, l'adesivo si ingrandisce e compare la scritta a mano "cliccami!". Clic = vai alla sezione
-3. **Menu "Tirami"**: l'etichetta in alto a destra si tira giù (o si clicca) e il menu scende con un rimbalzo
+3. **Menu "Tirami"**: l'etichetta in alto a destra si tira giù (o si clicca) e il menu scende come un foglio con un rimbalzo (non si stacca mai dal bordo alto). Passando su una voce si illumina tutta l'etichetta
 4. **La storia**: collage con post-it, polaroid attaccate con lo scotch e cartoncino kraft; il testo si colora mentre scorri, la lista "Da fare" si spunta da sola, un adesivo cade dall'alto
 5. **Fascia ondulata**: la scritta corre lungo l'onda e cambia direzione con lo scroll
 6. **Le camere**: slider a colori. Ogni camera ha il suo colore, la parola gigante cambia lettera per lettera e l'adesivo rotola via come una ruota; quello nuovo arriva rotolando e si ferma dritto. Si cambia camera con le frecce oppure trascinando con il mouse o con il dito
@@ -22,7 +22,7 @@ Poi apri http://localhost:8080
 9. **Vieni a trovarci!**: forme morbide che si deformano lentamente, pulsanti Chiama / WhatsApp / Scrivici
 10. **Footer giocabile**: adesivi e bottoni social cadono con la fisica e si possono trascinare e lanciare (i bottoni social sono link). Sono pesanti (lanci morbidi, velocità massima limitata, quasi nessun rimbalzo) e non possono uscire dal bordo alto del footer
 
-Il cursore è una freccia disegnata (come Sweet Tape): segue il mouse, si inclina muovendosi, si ingrandisce sopra link e cerchi e si schiaccia al clic. Sopra le cose da trascinare (camere, etichetta "Tirami", palle del footer) diventa una mano aperta che si chiude quando afferri. Sul telefono non c'è.
+Il cursore è una freccia disegnata (come Sweet Tape): segue il mouse, si inclina muovendosi, si ingrandisce sopra link e cerchi e si schiaccia al clic. Sopra le cose da trascinare (camere, etichetta "Tirami", palle del footer) diventa una manina che indica, come su Sweet Tape. Sul telefono non c'è.
 
 Passando con il mouse su qualsiasi testo del sito, salta solo la lettera sotto il mouse (tranne i nomi dentro i cerchi, che restano fermi).
 
