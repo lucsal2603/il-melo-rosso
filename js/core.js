@@ -257,7 +257,7 @@ window.Melo = (() => {
   const LETTER_CLS = ["hl", "hc", "wl", "gch"];
   const isLetter = el => el && el.nodeType === 1 && LETTER_CLS.some(c => el.classList.contains(c));
   // i nomi dentro i cerchi (adesivi, "Prenota", "Scopri") restano fermi: niente salto delle lettere
-  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only, .stk, .roundbtn, .wd__explore, .menu";
+  const SKIP = "svg, script, style, noscript, textarea, select, option, title, iframe, [data-nohop], .sr-only, .stk, .roundbtn, .wd__explore, .menu, .foot__nav";
   const okText = n => {
     const p = n.parentElement;
     return !!p && /\S/.test(n.nodeValue) && !isLetter(p) && !p.closest(SKIP);

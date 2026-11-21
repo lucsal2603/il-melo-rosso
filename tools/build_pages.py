@@ -245,11 +245,11 @@ def shared_foot():
 <footer class="foot" id="contatti">
   <div class="foot__curve" aria-hidden="true"></div>
   <nav class="foot__nav" aria-label="Footer">
-    <a href="cucina.html" data-hop>La cucina</a>
-    <a href="camere.html" data-hop>Le camere</a>
-    <a href="matrimoni.html" data-hop>Matrimoni</a>
-    <a href="fortunago.html" data-hop>Fortunago</a>
-    <a href="{E(MAPS)}" target="_blank" rel="noopener" data-hop>Dove siamo</a>
+    <a href="cucina.html">La cucina</a>
+    <a href="camere.html">Le camere</a>
+    <a href="matrimoni.html">Matrimoni</a>
+    <a href="fortunago.html">Fortunago</a>
+    <a href="{E(MAPS)}" target="_blank" rel="noopener">Dove siamo</a>
   </nav>
   <div class="foot__brand">
     <img src="assets/img/logo.svg" alt="" width="90" height="90">
