@@ -1,0 +1,7 @@
+melo-cond.woff2 ("Melo Cond") e' una versione condensata (larghezza 68%)
+del font Jost Black, di Owen Earl (indestructible type*), creata per il sito.
+
+Jost e' distribuito con licenza SIL Open Font License 1.1, che permette di
+modificarlo e ridistribuirlo con un nome diverso (per questo si chiama "Melo Cond").
+Testo completo della licenza: https://openfontlicense.org/open-font-license-official-text/
+Font originale: https://fonts.google.com/specimen/Jost
